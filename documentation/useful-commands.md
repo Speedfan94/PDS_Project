@@ -10,6 +10,7 @@ feat/<SHORT_FEATURE_NAME>
 | Show changes of a specific commit | ```git show <COMMIT_HASH>``` |
 | Review uncommitted code changes | ```git diff``` |
 | See what files you have changed, which are already added to be committed etc. | ```git status``` |
+| List all existing branches | ```git branch -l``` |
 | Add files to a commit | ```git add <PATH_TO_FILE>``` |
 | Push all commits to upstream/online repository | ```git push``` |
 | Push new branch to upstream/online repository | ```git push -u origin <BRANCH_NAME>``` |
@@ -46,6 +47,10 @@ If you have merge conflicts after a ```git merge``` command, do the following:
 |---------|------------------|--------------|
 | Open a file or search for a PyCharm setting/action/menu | Double Shift | Double Shift |
 | Open recent files | Strg + E | Cmd + E |
+| Search in current file | Strg + F | Cmd + F |
+| Search in whole project | Strg + Shift + F | Cmd + Shift + F |
 | Rename variables | Shift + F6 | Shift + F6 |
 | Move a code line up/down | Shift + Alt + Arrow up/down | Shift + (Alt or Cmd) + Arrow up/down |
-
+| Delete a line | Shift + Entf | Alt + Backspace |
+| Copy a whole line (without marking anything) | Strg + C | Cmd + C |
+| Open/Close project/directory structure | Alt + 1 | Cmd + 1 |
