@@ -47,3 +47,4 @@ If you have merge conflicts after a ```git merge``` command, do the following:
 | Open recent files | Strg + E | Cmd + E |
 | Rename variables | Shift + F6 | Shift + F6 |
 | Move a code line up/down | Shift + Alt + Arrow up/down | Shift + (Alt or Cmd) + Arrow up/down |
+
