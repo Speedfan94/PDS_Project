@@ -14,21 +14,22 @@ feat/<SHORT_FEATURE_NAME>
 | Push all commits to upstream/online repository | ```git push``` |
 | Push new branch to upstream/online repository | ```git push -u origin <BRANCH_NAME>``` |
 ## 2. Daily Git Routines
-### 2.1. (Morning) Get Updates:
-1. Check if there are updates: ```git fetch --all```
-2. If there are changes in dev, switch to dev branch: ```git checkout dev```
-3. Pull the changes: ```git pull```
-4. Switch back to your feature branch: ```git checkout <BRANCH_NAME>```
-5. Merge the changes into your branch: ```git merge dev```
+### 2.1. (Morning routine) Get Updates:
+1. ```git fetch --all``` - Check if there are updates
+2. ```git checkout dev``` - If there are changes in dev, switch to dev branch
+3. ```git pull``` - Pull the changes
+4. ```git checkout <BRANCH_NAME>``` - Switch back to your feature branch
+5. ```git merge dev``` - Merge the changes into your branch
 
-### 2.2. (Evening) Push Changes:
-1. Check what files you changed: ```git status```
-2. (Optional, but recommended:) Review your changes: ```git diff```
-3. Add files you want to commit: ```git add <FILEPATHES_TO_ADD>```
-   Recommended to split by root folders (commit separately, e.g. documentation / data / code)
-4. Commit your changes: ```git commit -m "<COMMIT_MESSAGE>"```
-   See commit-style.md for detailed info about committing style
-5. Push changes to origin repository: ```git push```
+### 2.2. (Evening routine) Push Changes:
+1. ```git status``` - Check what files you changed
+2. ```git diff``` - (Optional, but recommended:) Review your changes
+3. ```git add <FILEPATHES_TO_ADD>``` - Add files you want to commit.
+    Recommended to split by root folders
+    (commit separately, e.g. "documentation" / "data" / "nextbike/io")
+4. ```git commit -m "<COMMIT_MESSAGE>"``` - Commit your changes.
+   See "commit-style.md" for detailed info about committing style
+5. ```git push``` - Push changes to origin repository
 
 ## 3. Handling Merge Conflicts
 If you have merge conflicts after a ```git merge``` command, do the following:
