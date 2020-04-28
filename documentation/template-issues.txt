@@ -1,0 +1,18 @@
+**Steps to reproduce:**
+
+1. Open terminal
+2. Create Trip Data DF (to be done)
+3. Inspect some data entries (of a specific bike, sorted by datetime e.g.)
+
+**Actual behaviour:**
+
+- There are some start entries in the timeline which do not have end entries after it
+- The next entry following is a start entry again (does not make sense)
+
+**Expected behaviour:**
+
+- The first start entry should stay, all start entries following without an end entry in-between should be cancelled out
+
+**Possible solution(s) / ideas to work on:**
+
+- Currently none...
