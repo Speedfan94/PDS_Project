@@ -1,10 +1,18 @@
 import click
+from . import io
 from . import model
 
 
 @click.command()
 @click.option('--train/--no-train', default=False, help="Train the model.")
 def main(train):
+
+    # read in nuremberg file
+    print("Reading in nuremberg file...")
+    df = io.read_file()
+    print("Done!")
+    print(df)
+
     if train:
         model.train()
     else:
