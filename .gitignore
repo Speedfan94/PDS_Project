@@ -1,3 +1,9 @@
+# IDE
+.idea/
+
+# too big files
+nextbike/data/input/nuremberg.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
