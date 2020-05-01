@@ -31,6 +31,7 @@ def datapreparation(df_original):
     df_clean_unique_trip = df_clean_unique[(df_clean_unique["trip"] == "start") | (df_clean_unique["trip"] == "end")]
 
     # TODO: Add Sort by Aufsteigend
+    df_clean_unique_trip.sort_values(["Bike Number", "datetime"], inplace=True)
 
     # ToDo: Same amount of start and ends?
 
