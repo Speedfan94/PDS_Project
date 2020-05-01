@@ -35,50 +35,55 @@ def datapreparation(df_original):
     # ToDo: Same amount of start and ends?
 
     # ToDO: check, whether every bike has same amount of starts and ends
-    # ToDo: check Zugehörigkeit zum entsprechenden Bike
+    # ToDo: check Zugehoerigkeit zum entsprechenden Bike
     # ToDo: check first position of df must be a "Start"
 
-    # Theoretischer FAll: Special FAll: Die allererste BikeID fängt mit Ende an und das allerletzte Bike enden mit Start
+    # Theoretischer FAll: Special FAll: Die allererste BikeID faengt mit Ende an und das allerletzte Bike enden mit Start
     # 2: Fahrrad x: endet mit Start und Fahrrad x+1 startet mit End
-    # 3: Lösungsansätze: dadurch, dass die Fahrräder nach Zeit sortiert, ist die wahrscheinlich gering
+    # 3: Loesungsansaetze: dadurch, dass die Fahrraeder nach Zeit sortiert, ist die wahrscheinlich gering
 
     # Eliminate Noise
-    print("Eliminate Noise")
+    print("Eliminating Noise")
     # create series with
-    sr_noise = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
-    df_clean_unique_trip['Noisy Entry'] = sr_noise
-    df_final = df_clean_unique_trip[df_clean_unique_trip["Noisy Entry"] == True]
+    # check for multiple start entries
+    sr_noise_start = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
+    df_clean_unique_trip['valid_start'] = sr_noise_start
 
+    # check for multiple end entries
+    sr_noise_end = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift(-1))
+    df_clean_unique_trip['valid_end'] = sr_noise_end
 
+    # check if entries are valid
+    valid_start_entry = ((df_clean_unique_trip['trip'] == 'start') & (df_clean_unique_trip['valid_start'] == True))
+    valid_end_entry = ((df_clean_unique_trip['trip'] == 'end') & (df_clean_unique_trip['valid_end'] == True))
+    df_clean_unique_trip['valid_trip'] = valid_start_entry | valid_end_entry
 
+    # only take valid trip entries and drop validation values
+    df_final = df_clean_unique_trip[df_clean_unique_trip['valid_trip'] == True]
+    df_final.drop(['valid_start', 'valid_end', 'valid_trip'], axis=1, inplace=True)
+
+    print("DONE Noise elimination")
     # split, reindex, merge
-    print("Create Master DataFrame")
+    print("Creating Final Trip DataFrame")
 
     df_start = df_final[df_final["trip"] == "start"]
     df_end = df_final[df_final["trip"] == "end"]
 
-    df_end.reset_index(drop=True)
-    df_start.reset_index(drop=True)
-    #ToDo: check runtime mit itime --> Niklas
-    #df_end["index"] = range(0, len(df_end))
-    #df_start["index"] = range(0, len(df_start))
+    df_end.reset_index(drop=True, inplace=True)
+    df_start.reset_index(drop=True, inplace=True)
+    # ToDo: check runtime mit itime --> Niklas
+    # df_end["index"] = range(0, len(df_end))
+    # df_start["index"] = range(0, len(df_start))
 
     df_merged = df_start.merge(df_end, left_on=df_start.index, right_on=df_end.index, suffixes=('_start', '_end'))
     df_merged.drop(["key_0",
                     "trip_start",
-                    "Noisy Entry_start",
-                    "index_start",
-                    #"Bike Number_end",
-                    "trip_end",
-                    "Noisy Entry_end",
-                    "index_end"], axis=1, inplace=True, errors="ignore")
+                    "Bike Number_end",
+                    "trip_end"], axis=1, inplace=True)
     df_merged.rename({"datetime_start": "Start Time", "Bike Number_start": "Bike Number", "datetime_end": "End Time"},
                      axis=1)
 
-
-    print("DONE")
+    print("DONE creating final trip dataframe")
     print(df_merged.head())
-
-
 
     return df_merged
