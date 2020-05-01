@@ -30,14 +30,13 @@ def datapreparation(df_original):
     print("Filter on start/end...")
     df_clean_unique_trip = df_clean_unique[(df_clean_unique["trip"] == "start") | (df_clean_unique["trip"] == "end")]
 
-    # TODO: Add Sort by Aufsteigend
     df_clean_unique_trip.sort_values(["Bike Number", "datetime"], inplace=True)
 
-    # ToDo: Same amount of start and ends?
+    # We do not check, whether every bike has same amount of starts and ends because merge only returns valid entries
 
-    # ToDO: check, whether every bike has same amount of starts and ends
-    # ToDo: check Zugehoerigkeit zum entsprechenden Bike
-    # ToDo: check first position of df must be a "Start"
+    # TODO: check bike number of start and end trips
+    # TODO: check first position of df must be a "start"
+    # TODO: check last position of df must be a "end"
 
     # Theoretischer FAll: Special FAll: Die allererste BikeID faengt mit Ende an und das allerletzte Bike enden mit Start
     # 2: Fahrrad x: endet mit Start und Fahrrad x+1 startet mit End
