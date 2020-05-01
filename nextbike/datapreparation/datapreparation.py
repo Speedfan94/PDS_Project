@@ -81,7 +81,7 @@ def datapreparation(df_original):
                     "Bike Number_end",
                     "trip_end"], axis=1, inplace=True)
     df_merged.rename({"datetime_start": "Start Time", "Bike Number_start": "Bike Number", "datetime_end": "End Time"},
-                     axis=1)
+                     axis=1, inplace=True)
 
     print("DONE creating final trip dataframe")
     print(df_merged.head())
