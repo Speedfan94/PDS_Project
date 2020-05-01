@@ -1,6 +1,7 @@
 import click
 from . import io
 from . import model
+from . import datapreparation
 
 
 @click.command()
@@ -12,6 +13,12 @@ def main(train):
     df = io.read_file()
     print("Done!")
     print(df)
+
+
+
+    df_trips = datapreparation.datapreparation(df)
+
+
 
     if train:
         model.train()
