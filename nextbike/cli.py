@@ -18,6 +18,8 @@ def main(train):
 
     df_trips = datapreparation.datapreparation(df)
 
+    print("Saving trip dataframe")
+    io.saveTrip(df_trips)
 
 
     if train:
