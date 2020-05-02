@@ -1,5 +1,8 @@
 import os
 import pandas as pd
+import numpy as np
+from datetime import datetime
+# remove in the end, just for testing the time
 
 
 # ToDo : comment all functions in detail
@@ -87,3 +90,46 @@ def datapreparation(df_original):
     print(df_merged.head())
 
     return df_merged
+
+
+def onlynuremberg(df):
+    # DropTrips outside of Nuremberg, depending on their Start and End Point
+    # Information: Nuremberg City Center: 49.460983, 11.061859
+    # Borders of our Data:
+    # Latitude North: 50 --> ca.
+    north = 50
+    # Latitude South:
+    south = 49
+    # Longitude West:
+    west = 11.6
+    # Longitude East:
+    east = 10.5
+    print("Startet OnlyNuremberg for Removing Positions outside Nuremberg")
+    # create column with information:
+    # inside --> start and end is outside of our defined square
+
+    bol_start = (df["Latitude_start"] < north) & (df["Latitude_start"] > south) & (df["Longitude_start"] < west) & (
+                df["Longitude_start"] > east)
+
+    bol_end = (df["Latitude_end"] < north) & (df["Latitude_end"] > south) & (df["Longitude_end"] < west) & (
+            df["Longitude_end"] > east)
+
+    # method 1
+    start = datetime.now()
+    df['outside'] = np.where(bol_end & bol_start, 'inside', 'outside')
+    print("Method 1: " + str(datetime.now() - start))
+    # --> Method 1: 0:00:00.085453
+    # --> Method 2: 0:00:00.124790
+
+    print(df)
+
+    # method 2
+    # start = datetime.now()
+    # df['outside2'] = 'outside'
+    # df.loc[(bol_end & bol_start), 'outside3'] = 'inside'
+    # print("Method 2: " + str(datetime.now() - start))
+    # --> method 2 is slower
+
+    df_nuremberg = df[df["outside"] == "inside"]
+
+    return df_nuremberg
