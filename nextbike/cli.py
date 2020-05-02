@@ -18,6 +18,11 @@ def main(train):
 
     df_trips = datapreparation.datapreparation(df)
 
+    print("Dropping trips outside Nuremberg")
+    df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
+
+    # print(df_trips_onlynuremberg)
+
     print("Saving trip dataframe")
     io.saveTrip(df_trips)
 
