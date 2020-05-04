@@ -20,17 +20,23 @@ DISTANCE = 0.07 * 1
 
 # ToDo : comment all functions in detail
 def datapreparation(df_original):
+    # Drop Nan-Values
+    df_clean = df_original.dropna(how="any", axis=0)
+    print("Hier wird und die Size ausgegeben")
+    # print(df_original.size()-df_clean.size())
+    print("Amount of Dropped NaN-Rows:", len(df_original) - len(df_clean))
+
     # Prepare Columns
     print("Prepare columns...")
     # create new DataFrame from received DF and remove unnecessary columns.
-    df_clean = df_original.drop(["Unnamed: 0",
+    df_clean.drop(["Unnamed: 0",
                         "p_spot",
                         "p_place_type",
                         "p_bike",
                         "b_bike_type",
                         "p_bikes",
                         "p_uid",
-                        "p_number"], axis=1)
+                        "p_number"], axis=1, inplace = True)
 
     # Renaming the columns
     df_clean.rename({"p_lat": "Latitude",
@@ -100,7 +106,6 @@ def datapreparation(df_original):
                      axis=1, inplace=True)
 
     print("DONE creating final trip dataframe")
-    print(df_merged.head())
 
     return df_merged
 
@@ -136,8 +141,7 @@ def onlynuremberg(df):
     # print("Method 1: " + str(datetime.now() - start))
     # --> Method 1: 0:00:00.001999
     # --> Method 2: 0:00:00.005000
-    print("This is df before removing NUREMBERG")
-    print(df)
+
 
     # method 2
     # start = datetime.now()
