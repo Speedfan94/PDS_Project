@@ -11,8 +11,7 @@ def main(train):
     # read in nuremberg file
     print("Reading in nuremberg file...")
     df = io.read_file()
-    print("Done!")
-    print(df)
+    print("Successfully Read File!")
 
 
 
@@ -21,7 +20,7 @@ def main(train):
     print("Dropping trips outside Nuremberg")
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
 
-    # print(df_trips_onlynuremberg)
+    print(df_trips_onlynuremberg)
 
     print("Saving trip dataframe")
     io.saveTrip(df_trips)
@@ -32,7 +31,8 @@ def main(train):
     else:
         print("You don't do anything.")
 
+    print("Program Done")
+
 
 if __name__ == '__main__':
     main()
-
