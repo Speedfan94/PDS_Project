@@ -4,6 +4,19 @@ import numpy as np
 from datetime import datetime
 # remove in the end, just for testing the time
 
+NUREMBERG_CITY_LONG = 49.452030
+NUREMBERG_CITY_LAT = 11.076750
+DISTANCE = 0.07 * 1
+
+
+# 05--> 191502
+# 07--> 196178
+# 09-_> 196441
+# 10--> 196486
+# *1 -> 196505
+# *2 -> 197192
+# *3 -> 197199
+# *4 -> 197202
 
 # ToDo : comment all functions in detail
 def datapreparation(df_original):
@@ -94,19 +107,22 @@ def datapreparation(df_original):
 
 def onlynuremberg(df):
     # DropTrips outside of Nuremberg, depending on their Start and End Point
-    # Information: Nuremberg City Center: 49.460983, 11.061859
+    # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
+    # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
     # Borders of our Data:
-    # Latitude North: 50 --> ca.
-    north = 50
+    # Latitude North: 49,56 --> ca. 13.6 km
+    # Constants are defined on the top
+
+    north = NUREMBERG_CITY_LONG + DISTANCE
     # Latitude South:
-    south = 49
+    south = NUREMBERG_CITY_LONG - DISTANCE
     # Longitude West:
-    west = 11.6
+    west = NUREMBERG_CITY_LAT + DISTANCE
     # Longitude East:
-    east = 10.5
+    east = NUREMBERG_CITY_LAT - DISTANCE
     print("Startet OnlyNuremberg for Removing Positions outside Nuremberg")
-    # create column with information:
-    # inside --> start and end is outside of our defined square
+    # create column "outside" with information:
+    # inside --> start and end is inside of our defined square
 
     bol_start = (df["Latitude_start"] < north) & (df["Latitude_start"] > south) & (df["Longitude_start"] < west) & (
                 df["Longitude_start"] > east)
@@ -115,21 +131,21 @@ def onlynuremberg(df):
             df["Longitude_end"] > east)
 
     # method 1
-    start = datetime.now()
-    df['outside'] = np.where(bol_end & bol_start, 'inside', 'outside')
-    print("Method 1: " + str(datetime.now() - start))
-    # --> Method 1: 0:00:00.085453
-    # --> Method 2: 0:00:00.124790
-
+    # start = datetime.now()
+    df['inside'] = np.where(bol_end & bol_start, True, False)
+    # print("Method 1: " + str(datetime.now() - start))
+    # --> Method 1: 0:00:00.001999
+    # --> Method 2: 0:00:00.005000
+    print("This is df before removing NUREMBERG")
     print(df)
 
     # method 2
     # start = datetime.now()
-    # df['outside2'] = 'outside'
-    # df.loc[(bol_end & bol_start), 'outside3'] = 'inside'
+    # df['inside2'] = False
+    # df.loc[(bol_end & bol_start), 'inside2'] = True
     # print("Method 2: " + str(datetime.now() - start))
     # --> method 2 is slower
 
-    df_nuremberg = df[df["outside"] == "inside"]
+    df_nuremberg = df[df["inside"] == True]
 
     return df_nuremberg
