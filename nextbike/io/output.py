@@ -10,4 +10,4 @@ def save_model(model):
 def saveTrip(df):
     # Save final df
     print("Save csv")
-    df.to_csv("../nextbike/data/output/Trips.csv")
+    df.to_csv(os.path.join(get_data_path(), "output/Trips.csv"))
