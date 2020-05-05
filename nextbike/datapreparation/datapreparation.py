@@ -40,11 +40,15 @@ def datapreparation(df_original):
 
     # Drop Duplicates and creating new df with only unique files
     print("Drop duplicates...")
-    df_clean_unique = df_clean.drop_duplicates(subset=df_clean.columns.difference(["Longitude", "Latitude"]))
+    df_clean.drop_duplicates(subset=df_clean.columns.difference(["Longitude", "Latitude"]), inplace=True)
 
     # Drop trip first/last
     print("Filter on start/end...")
-    df_clean_unique_trip = df_clean_unique[(df_clean_unique["trip"] == "start") | (df_clean_unique["trip"] == "end")]
+
+    # TODO: Fix that bad style right here:
+    pd.options.mode.chained_assignment = None
+
+    df_clean_unique_trip = df_clean[(df_clean["trip"] == "start") | (df_clean["trip"] == "end")]
 
     df_clean_unique_trip.sort_values(["Bike Number", "datetime"], inplace=True)
 
@@ -59,7 +63,7 @@ def datapreparation(df_original):
     # 3: Loesungsansaetze: dadurch, dass die Fahrraeder nach Zeit sortiert, ist die wahrscheinlich gering
 
     # Eliminate Noise
-    print("Eliminating Noise")
+    print("Eliminate booking errors...")
     # create series with
     # check for multiple start entries
     sr_noise_start = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
@@ -78,9 +82,11 @@ def datapreparation(df_original):
     df_final = df_clean_unique_trip[df_clean_unique_trip['valid_trip'] == True]
     df_final.drop(['valid_start', 'valid_end', 'valid_trip'], axis=1, inplace=True)
 
-    print("DONE Noise elimination")
+    # Todo: fix that bad style right here
+    pd.options.mode.chained_assignment = "warn"
+
     # split, reindex, merge
-    print("Creating Final Trip DataFrame")
+    print("Merge corresponding start and end...")
 
     df_start = df_final[df_final["trip"] == "start"]
     df_end = df_final[df_final["trip"] == "end"]
@@ -98,9 +104,6 @@ def datapreparation(df_original):
                     "trip_end"], axis=1, inplace=True)
     df_merged.rename({"datetime_start": "Start Time", "Bike Number_start": "Bike Number", "datetime_end": "End Time"},
                      axis=1, inplace=True)
-
-    print("DONE creating final trip dataframe")
-    print(df_merged.head())
 
     return df_merged
 
@@ -120,7 +123,7 @@ def onlynuremberg(df):
     west = NUREMBERG_CITY_LAT + DISTANCE
     # Longitude East:
     east = NUREMBERG_CITY_LAT - DISTANCE
-    print("Startet OnlyNuremberg for Removing Positions outside Nuremberg")
+    print("Remove bookings outside nuremberg...")
     # create column "outside" with information:
     # inside --> start and end is inside of our defined square
 
@@ -136,8 +139,6 @@ def onlynuremberg(df):
     # print("Method 1: " + str(datetime.now() - start))
     # --> Method 1: 0:00:00.001999
     # --> Method 2: 0:00:00.005000
-    print("This is df before removing NUREMBERG")
-    print(df)
 
     # method 2
     # start = datetime.now()
