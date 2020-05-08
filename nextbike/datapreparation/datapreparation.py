@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from datetime import datetime
+
 # remove in the end, just for testing the time
 
 NUREMBERG_CITY_LONG = 49.452030
@@ -24,13 +25,14 @@ def datapreparation(df_original):
     print("Prepare columns...")
     # create new DataFrame from received DF and remove unnecessary columns.
     df_clean = df_original.drop(["Unnamed: 0",
-                        "p_spot",
-                        "p_place_type",
-                        "p_bike",
-                        "b_bike_type",
-                        "p_bikes",
-                        "p_uid",
-                        "p_number"], axis=1)
+                                 "p_spot",
+                                 "p_place_type",
+                                 "p_bike",
+                                 "b_bike_type",
+                                 "p_bikes",
+                                 "p_uid",
+                                 # "p_number"
+                                 ], axis=1)
 
     # Renaming the columns
     df_clean.rename({"p_lat": "Latitude",
@@ -102,7 +104,11 @@ def datapreparation(df_original):
                     "trip_start",
                     "Bike Number_end",
                     "trip_end"], axis=1, inplace=True)
-    df_merged.rename({"datetime_start": "Start Time", "Bike Number_start": "Bike Number", "datetime_end": "End Time"},
+    df_merged.rename({"datetime_start": "Start Time",
+                      "Bike Number_start": "Bike Number",
+                      "datetime_end": "End Time",
+                      "p_number_start": "Start Place_id",
+                      "p_number_end": "End Place_id"},
                      axis=1, inplace=True)
 
     return df_merged
@@ -128,7 +134,7 @@ def onlynuremberg(df):
     # inside --> start and end is inside of our defined square
 
     bol_start = (df["Latitude_start"] < north) & (df["Latitude_start"] > south) & (df["Longitude_start"] < west) & (
-                df["Longitude_start"] > east)
+            df["Longitude_start"] > east)
 
     bol_end = (df["Latitude_end"] < north) & (df["Latitude_end"] > south) & (df["Longitude_end"] < west) & (
             df["Longitude_end"] > east)
