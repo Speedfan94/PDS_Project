@@ -10,12 +10,7 @@ from . import visualization
 def main(train):
     cleaning()
 
-    df = io.read_trips()
-    visualize(df)
-
-
-
-
+    visualize()
 
     if train:
         model.train()
@@ -24,20 +19,25 @@ def main(train):
 
 
 def cleaning():
-    # read in nuremberg file
     print("Read in nuremberg file...")
     df = io.read_file()
 
     df_trips = datapreparation.datapreparation(df)
 
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
+    #print(df_trips.head())
 
     print("Save trip dataframe...")
-    io.saveTrip(df_trips)
+    io.saveTrip(df_trips_onlynuremberg)
 
-def visualize(df):
+
+def visualize():
+    print("Read in trips file...")
+    df = io.read_trips()
+
     visualization.visualize_moment(df)
+    visualization.visualize_heatmap(df)
+
 
 if __name__ == '__main__':
     main()
-
