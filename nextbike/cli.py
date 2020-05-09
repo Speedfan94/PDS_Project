@@ -2,6 +2,7 @@ import click
 from . import io
 from . import model
 from . import datapreparation
+from . import plz
 
 
 @click.command()
@@ -21,11 +22,12 @@ def main(train):
     print("Dropping trips outside Nuremberg")
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
 
-    # print(df_trips_onlynuremberg)
+    print(df_trips_onlynuremberg)
 
     print("Saving trip dataframe")
-    io.saveTrip(df_trips)
+    # io.saveTrip(df_trips)
 
+    df_trips_onlynuremberg_plz = plz.plz2(df_trips_onlynuremberg)
 
     if train:
         model.train()
