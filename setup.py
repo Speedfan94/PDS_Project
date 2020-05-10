@@ -7,7 +7,7 @@ setup(
     author="Student",
     author_email="student@uni-koeln.de",
     packages=["nextbike"],
-    install_requires=['pandas', 'scikit-learn', 'click', 'vincenty'],
+    install_requires=['pandas', 'scikit-learn', 'click', 'vincenty', 'shapely'],
     entry_points={
         'console_scripts': ['nextbike=nextbike.cli:main']
     }

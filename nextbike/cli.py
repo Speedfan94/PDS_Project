@@ -15,8 +15,6 @@ def main(train):
     print("Done!")
     print(df)
 
-
-
     df_trips = datapreparation.datapreparation(df)
 
     print("Dropping trips outside Nuremberg")
@@ -27,7 +25,8 @@ def main(train):
     print("Saving trip dataframe")
     # io.saveTrip(df_trips)
 
-    df_trips_onlynuremberg_plz = plz.plz2(df_trips_onlynuremberg)
+    df_trips_inkl_plz = plz.plz(df_trips_onlynuremberg)
+    print(df_trips_inkl_plz)
 
     if train:
         model.train()
