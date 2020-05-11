@@ -140,6 +140,19 @@ def additional_feature_creation(df_trips):
     return df_trips
 
 
+def get_aggregate_statistics(data_series):
+    print("Calculating duration mean...")
+    mean = data_series.mean()
+    standard_deviation = data_series.std()
+    aggr_stats = {
+        "mean": mean,
+        "std": standard_deviation
+    }
+    print("DONE calculating aggregate statistics!")
+
+    return aggr_stats
+
+
 def onlynuremberg(df):
     # DropTrips outside of Nuremberg, depending on their Start and End Point
     # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750

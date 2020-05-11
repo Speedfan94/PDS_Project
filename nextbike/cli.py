@@ -14,14 +14,17 @@ def main(train):
     print("Done!")
     print(df)
 
-
-
     df_trips = datapreparation.datapreparation(df)
 
     print("Dropping trips outside Nuremberg")
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
-
     # print(df_trips_onlynuremberg)
+
+    aggr_stats = datapreparation.get_aggregate_statistics(df_trips_onlynuremberg['Duration'])
+    print("======== Aggregate Statistics ========")
+    print("Mean:               ", aggr_stats['mean'])
+    print("Standard deviation: ", aggr_stats['std'])
+    print("======================================")
 
     print("Saving trip dataframe")
     io.saveTrip(df_trips)
