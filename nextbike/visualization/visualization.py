@@ -17,6 +17,7 @@ def visualize_plz(df):
 
 
 def visualize_moment(df):
+    # TODO: Motivated BEE <3: Search usefull time for this plot
     # For one moment in time, visualize the number of bikes at fixed stations meaningfully.
     most_bookings = df.groupby(by="Start Time").count()["Bike Number"].sort_values().tail(5).index
     # choose Datetime 3
@@ -43,6 +44,7 @@ def visualize_moment(df):
 
 
 def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
+    # Todo: Class with constants
     north = 49.485
     east = 11.13
     south = 49.425
@@ -59,7 +61,7 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
 
     station = ax.scatter(pDf_stations["Longitude_start"],
                          pDf_stations["Latitude_start"],
-                         zorder=1, alpha=0.1, c="b", s=30)
+                         zorder=1, alpha=0.08, c="b", s=30)
 
     unused = ax.scatter(pDf_unused["Longitude_start"],
                          pDf_unused["Latitude_start"],
@@ -78,9 +80,10 @@ def visualize_heatmap(df):
     # before the start of a major public event.
     # https://alysivji.github.io/getting-started-with-folium.html
 
-    stations = df[pd.to_datetime(df["End Time"], format="%Y-%m-%d").dt.date == dt.date(year=2019, month=12, day=24)]
+    stations = df[pd.to_datetime(df["End Time"], format="%Y-%m-%d").dt.date == dt.date(year=2019, month=8, day=24)]
 
     # ToDo: Maybe filter out 0.0 ids and duplicated places
+    # todo: variable time to plot heatmap
     print("Create Heatmap for " + str(dt.date(year=2019, month=12, day=24)) + "...")
     m = folium.Map([49.452030, 11.076750], zoom_start=13)
 
