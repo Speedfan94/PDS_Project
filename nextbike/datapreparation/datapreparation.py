@@ -102,7 +102,42 @@ def datapreparation(df_original):
     print("DONE creating final trip dataframe")
     print(df_merged.head())
 
+    # TODO: !!! TO DISCUSS !!!
+    #  When to create additional features?!
+    #  After only_nuremberg would be more performant (because there are much less datapoints)
+    #  But we only save the result of this datapreparation method as CSV,
+    #  not the result of the only_nuremberg method
+    df_merged = additional_feature_creation(df_merged)
+
     return df_merged
+
+
+def additional_feature_creation(df_trips):
+    # TODO: Calculate Weekend Start & Weekend End? What to do when these are unequal?
+    # Calculating if trip was on a weekend, storing a boolean
+    print("Adding column 'Weekend'...")
+    # First convert start time string into datetime object
+    df_trips['Start Time'] = pd.to_datetime(df_trips['Start Time'])
+    # Then check which day of the week the given date is
+    # Counting from 0 to 6 (0=monday, 1=tuesday, ...) a 5 or 6 means it was a saturday or sunday
+    # So storing if dayofweek is bigger than 4 builds a weekend boolean
+    df_trips['Weekend'] = (df_trips['Start Time'].dt.dayofweek > 4)
+    print("DONE adding 'Weekend'")
+
+    # Calculation trip duration of each trip
+    print("Adding column 'Duration'...")
+    # First also convert end time string into datetime object
+    df_trips['End Time'] = pd.to_datetime(df_trips['End Time'])
+    # Calculating simply (end time - start time) for trip duration would
+    #   build the duration in the format 'X days HH:MM:SS.sssssssss'
+    # So to better calculate with this value in the future,
+    #   lets get the total seconds of the duration and
+    #   divide it be 60 to manually calculate duration in minutes
+    # TODO: Which format should we use??
+    df_trips['Duration'] = (df_trips['End Time'] - df_trips['Start Time']).dt.total_seconds() / 60.0
+    print("DONE adding 'Duration'")
+
+    return df_trips
 
 
 def onlynuremberg(df):
