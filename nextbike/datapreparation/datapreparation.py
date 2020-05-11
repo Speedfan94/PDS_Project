@@ -102,18 +102,10 @@ def datapreparation(df_original):
     print("DONE creating final trip dataframe")
     print(df_merged.head())
 
-    # TODO: !!! TO DISCUSS !!!
-    #  When to create additional features?!
-    #  After only_nuremberg would be more performant (because there are much less datapoints)
-    #  But we only save the result of this datapreparation method as CSV,
-    #  not the result of the only_nuremberg method
-    df_merged = additional_feature_creation(df_merged)
-
     return df_merged
 
 
 def additional_feature_creation(df_trips):
-    # TODO: Calculate Weekend Start & Weekend End? What to do when these are unequal?
     # Calculating if trip was on a weekend, storing a boolean
     print("Adding column 'Weekend'...")
     # First convert start time string into datetime object
@@ -133,7 +125,7 @@ def additional_feature_creation(df_trips):
     # So to better calculate with this value in the future,
     #   lets get the total seconds of the duration and
     #   divide it be 60 to manually calculate duration in minutes
-    # TODO: Which format should we use??
+    # TODO: round up to 2 decimals
     df_trips['Duration'] = (df_trips['End Time'] - df_trips['Start Time']).dt.total_seconds() / 60.0
     print("DONE adding 'Duration'")
 
@@ -142,7 +134,8 @@ def additional_feature_creation(df_trips):
 
 def get_aggregate_statistics(df_trips):
     print("Calculating duration mean...")
-    # TODO: Discuss whether to use pandas oder numpy values array
+    # TODO: kick out durations <1min & >2h / 3-5%
+    # TODO: stats per month/day/hour
     mean = df_trips['Duration'].mean()
     std = df_trips['Duration'].std()
 
@@ -163,7 +156,7 @@ def get_aggregate_statistics(df_trips):
         "mean": mean,
         "std": std,
         "mean_weekends": mean_weekends,
-        "std_weekends": mean_weekends,
+        "std_weekends": std_weekends,
         "mean_weekdays": mean_weekdays,
         "std_weekdays": std_weekdays
     }

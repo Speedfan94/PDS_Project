@@ -18,9 +18,10 @@ def main(train):
 
     print("Dropping trips outside Nuremberg")
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
+    df_with_additional_columns = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
     # print(df_trips_onlynuremberg)
 
-    aggr_stats = datapreparation.get_aggregate_statistics(df_trips_onlynuremberg)
+    aggr_stats = datapreparation.get_aggregate_statistics(df_with_additional_columns)
     print()
     print("============ Aggregate Statistics ============")
     print("Mean:                      ", aggr_stats['mean'])
@@ -33,7 +34,7 @@ def main(train):
     print()
 
     print("Saving trip dataframe")
-    io.saveTrip(df_trips)
+    io.saveTrip(df_with_additional_columns)
 
 
     if train:
