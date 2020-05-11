@@ -140,13 +140,32 @@ def additional_feature_creation(df_trips):
     return df_trips
 
 
-def get_aggregate_statistics(data_series):
+def get_aggregate_statistics(df_trips):
     print("Calculating duration mean...")
-    mean = data_series.mean()
-    standard_deviation = data_series.std()
+    # TODO: Discuss whether to use pandas oder numpy values array
+    mean = df_trips['Duration'].mean()
+    std = df_trips['Duration'].std()
+
+    # Split into weekends df and weekdays df
+    df_weekends = df_trips[df_trips['Weekend'] == True]
+    df_weekdays = df_trips[df_trips['Weekend'] == False]
+
+    # Calculate mean and std for weekends
+    mean_weekends = df_weekends['Duration'].mean()
+    std_weekends = df_weekends['Duration'].std()
+
+    # Calculate mean and std for weekdays
+    mean_weekdays = df_weekdays['Duration'].mean()
+    std_weekdays = df_weekdays['Duration'].std()
+
+    # package all aggregate statistics into a dictionary to return them
     aggr_stats = {
         "mean": mean,
-        "std": standard_deviation
+        "std": std,
+        "mean_weekends": mean_weekends,
+        "std_weekends": mean_weekends,
+        "mean_weekdays": mean_weekdays,
+        "std_weekdays": std_weekdays
     }
     print("DONE calculating aggregate statistics!")
 
