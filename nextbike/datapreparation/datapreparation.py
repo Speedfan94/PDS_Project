@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import numpy as np
+from ..plz import plz
+
 from datetime import datetime
 
 # remove in the end, just for testing the time
@@ -18,6 +20,8 @@ DISTANCE = 0.07 * 1
 # *2 -> 197192
 # *3 -> 197199
 # *4 -> 197202
+
+# --> only PLZ = 189112
 
 # ToDo : comment all functions in detail
 def datapreparation(df_original):
@@ -114,7 +118,7 @@ def datapreparation(df_original):
     return df_merged
 
 
-def onlynuremberg(df):
+def only_nuremberg_square(df):
     # DropTrips outside of Nuremberg, depending on their Start and End Point
     # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
@@ -156,3 +160,20 @@ def onlynuremberg(df):
     df_nuremberg = df[df["inside"] == True]
 
     return df_nuremberg
+
+
+def only_nuremberg_plz(df):
+    # DropTrips outside of Nuremberg with no PLZ, depending on their Start
+    # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
+    # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
+    # Borders of our Data:
+
+    # adding plz to df
+    print ("Start addind PLZ to every column and then dropping everythin without plz")
+    df_plz = plz(df)
+
+    # df_nurem = df_plz[df_plz["plz_start"] is None]
+    df_nurem = df_plz.dropna(axis=0)
+    df_nurem = plz_end(df_nurem)
+
+    return df_nurem

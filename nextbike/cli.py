@@ -10,7 +10,7 @@ from . import visualization
 def main(train):
     cleaning()
 
-    visualize()
+    # visualize()
 
     if train:
         model.train()
@@ -24,8 +24,8 @@ def cleaning():
 
     df_trips = datapreparation.datapreparation(df)
 
-    df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
-    #print(df_trips.head())
+    df_trips_onlynuremberg = datapreparation.onlynuremberg_plz(df_trips)
+    print(df_trips_onlynuremberg)
 
     print("Save trip dataframe...")
     io.saveTrip(df_trips_onlynuremberg)
