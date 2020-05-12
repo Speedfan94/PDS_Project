@@ -24,11 +24,11 @@ def cleaning():
 
     df_trips = datapreparation.datapreparation(df)
 
-    df_trips_onlynuremberg = datapreparation.onlynuremberg_plz(df_trips)
-    print(df_trips_onlynuremberg)
+    df_trips_only_nuremberg = datapreparation.only_nuremberg_plz(df_trips)
+    print(df_trips_only_nuremberg)
 
     print("Save trip dataframe...")
-    io.saveTrip(df_trips_onlynuremberg)
+    io.saveTrip(df_trips_only_nuremberg)
 
 
 def visualize():

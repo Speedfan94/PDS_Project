@@ -31,18 +31,29 @@ def plz1(df):
     return Point
 
 
+def plz_value_def():
+    if plz_value == {}:
+        for feature in geo['features']:
+            if feature['geometry']['type'] == 'MultiPolygon':
+                plz_value[feature['properties']['plz']] = list(shapely.shape(feature['geometry']))
+            elif feature['geometry']['type'] == 'Polygon':
+                plz_value[feature['properties']['plz']] = shapely.shape(feature['geometry'])
+
+
 def plz(df):
 
-    for feature in geo['features']:
-        if feature['geometry']['type'] == 'MultiPolygon':
-            plz_value[feature['properties']['plz']] = list(shapely.shape(feature['geometry']))
-        elif feature['geometry']['type'] == 'Polygon':
-            plz_value[feature['properties']['plz']] = shapely.shape(feature['geometry'])
+    plz_value_def()
 
     df['plz_start'] = df.apply(lambda x: get_plz(x['Latitude_start'], x['Longitude_start']), axis=1)
     return df
-    # df_plz = df.groupby('plz_start', as_index=False)['Capacity'].count()
-    # df_boroughs.rename({'Capacity': 'Stations'}, axis=1, inplace=True)
+
+
+def plz_end(df):
+
+    plz_value_def()
+
+    df['plz_end'] = df.apply(lambda x: get_plz(x['Latitude_end'], x['Longitude_end']), axis=1)
+    return df
 
 
 def get_plz(lat, lon):
