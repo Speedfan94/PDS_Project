@@ -7,15 +7,22 @@ from . import visualization
 
 @click.command()
 @click.option('--train/--no-train', default=False, help="Train the model.")
-def main(train):
-    cleaning()
-
-    visualize()
-
-    if train:
+@click.option('--clean/--no-clean', default=False, help="Clean the data.")
+@click.option('--viso/--no-viso', default=False, help="Visualize the data.")
+def main(train, clean, viso):
+    if clean:
+        print("Do cleaning")
+        cleaning()
+    elif viso:
+        print("Do visualizing")
+        visualize()
+    elif train:
+        print("Do training")
         model.train()
     else:
-        print("You don't do anything.")
+        print("Do all")
+        cleaning()
+        visualize()
 
 
 def cleaning():
