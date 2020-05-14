@@ -8,9 +8,9 @@ from . import visualization
 @click.command()
 @click.option('--train/--no-train', default=False, help="Train the model.")
 def main(train):
-    cleaning()
+    # cleaning()
 
-    # visualize()
+    visualize()
 
     if train:
         model.train()
@@ -35,8 +35,9 @@ def visualize():
     print("Read in trips file...")
     df = io.read_trips()
 
-    visualization.visualize_moment(df)
-    visualization.visualize_heatmap(df)
+    # visualization.visualize_moment(df)
+    # visualization.visualize_heatmap(df)
+    visualization.visualize_plz(df)
 
 
 if __name__ == '__main__':

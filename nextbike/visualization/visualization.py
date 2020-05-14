@@ -5,6 +5,9 @@ import datetime as dt
 
 import folium
 from folium import plugins
+import json
+import vincenty
+from shapely.geometry import shape, Point
 
 
 # import seaborn as sns
@@ -103,6 +106,46 @@ def visualize_heatmap(df):
     m.add_child(plugins.HeatMap(stationArr, radius=20))
 
     m.save("nextbike/data/output/One-Day-in-Nuremberg.html")
+
+
+
+def visualize_plz(df):
+    # Visualizes the number of started trip for each zip code region for the month with the most trips
+
+    # Changing format from object to DateTime
+    df["Start Time"] = pd.to_datetime(df["Start Time"])
+
+    # find the month with the most trips:
+    df["month"] = df["Start Time"].dt.month
+
+
+    # df.groupby()
+    # most_bookings_months = df.groupby(by="month").count()["Start Time"].sort_values(by="Start Time", ascending=True).tail(5).index
+    df2 = df.groupby(by="month").count().sort_values(by="Start Time", ascending=True).tail(1).reset_index()
+    # print(df2.loc[0]["month"])
+    df_biggest_month = df[df["month"] == df2.loc[0]["month"]]
+    # prints the number of trips per zip code
+    df_map = df_biggest_month.groupby(by="plz_start").count().sort_values(by="Start Time", ascending=True).reset_index()
+    print(df_biggest_month.groupby(by="plz_start").count().sort_values(by="Start Time", ascending=True).reset_index())
+
+    print("Create Heatmap for " + str(dt.date(year=2019, month=12, day=24)) + "...")
+    m = folium.Map([49.452030, 11.076750], zoom_start=12)
+
+    with open('../nextbike/data/input/postleitzahlen-nuremberg.geojson') as f:
+        geo = json.load(f)
+
+    folium.Choropleth(
+        geo_data=f"../nextbike/data/input/postleitzahlen-nuremberg.geojson",
+        name="choropleth",
+        data=df_map,
+        columns=["plz_start", "month"],
+        key_on='feature.properties.plz',
+        legend_name='Trips per zip code',
+        fill_color='BuPu',
+        line_opacity=2.2
+    ).add_to(m)
+    m.save("../nextbike/data/output/Month_Nuremberg.html")
+    print(df_map)
 
 
 def visualize_distribution(df):
