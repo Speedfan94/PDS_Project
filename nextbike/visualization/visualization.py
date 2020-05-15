@@ -1,22 +1,9 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import datetime as dt
 from .. import io
 import folium
 from folium import plugins
-import json
-import vincenty
-from shapely.geometry import shape, Point
-
-
-# import seaborn as sns
-
-def visualize_plz(df):
-    # For the summer month (i.e., June, August, or September) with most trips, visualize the number
-    # of started trips per PLZ region (you’ll have to find geo data for that yourselves!) in a map.
-
-    print()
 
 
 def visualize_moment(df):
@@ -55,7 +42,6 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
 
     # read img nuremberg
     # https://www.openstreetmap.org/export#map=12/49.4522/11.0770
-    # nuremberg_png = plt.imread("nextbike/data/input/nuremberg_v2_hum.png")
     nuremberg_png = plt.imread(io.get_path("nuremberg_v2_hum.png", "input"))
 
     fig, ax = plt.subplots(figsize=(10, 10))
@@ -109,7 +95,6 @@ def visualize_heatmap(df):
     m.save(io.get_path("One-Day-in-Nuremberg.html", "output"))
 
 
-
 def visualize_plz(df):
     # Visualizes the number of started trip for each zip code region for the month with the most trips
 
@@ -126,13 +111,11 @@ def visualize_plz(df):
     # prints the number of trips per zip code
     df_map = df_biggest_month.groupby(by="plz_start").count().sort_values(by="Start Time", ascending=True).reset_index()
 
-    print("PLZ Map " + str(month_most))
     m = folium.Map([49.452030, 11.076750], zoom_start=11)
 
     df_map["plz"] = df_map["plz_start"].astype(str)
 
     folium.Choropleth(
-        # geo_data=f"../nextbike/data/input/postleitzahlen-nuremberg.geojson",
         geo_data=f'{io.get_path("postleitzahlen-nuremberg.geojson", "input")}',
         name="choropleth",
         data=df_map,
@@ -160,7 +143,6 @@ def visualize_plz(df):
     folium.LayerControl().add_to(m)
 
     m.save(io.get_path("Month_Nuremberg.html", "output"))
-    print(df_map)
 
 
 def visualize_distribution(df):

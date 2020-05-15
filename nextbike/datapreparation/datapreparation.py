@@ -1,11 +1,8 @@
-import os
 import pandas as pd
 import numpy as np
 from .. import io
 from ..plz import plz
 from ..plz import plz_end
-
-from datetime import datetime
 
 # remove in the end, just for testing the time
 
@@ -170,7 +167,6 @@ def get_aggregate_statistics(df_trips):
     }
 
     df_aggr_stats = pd.DataFrame.from_dict(aggr_stats, orient="index")
-    print(df_aggr_stats)
     fig = df_aggr_stats.plot(kind='barh', figsize=(16, 16), fontsize=20).get_figure()
     io.save_fig(fig, 'aggr_stats_whole_df.png')
 

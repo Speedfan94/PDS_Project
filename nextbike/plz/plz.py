@@ -1,16 +1,13 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-# import folium
-import seaborn as sns
 import shapely.geometry as shapely
 import json
-import vincenty
+from .. import io
 from shapely.geometry import shape, Point
+
+# TODO: Try iterating through PLZs, find matching data points & kick them out instead of vice versa
 
 plz_value = {}
 
-with open('../nextbike/data/input/postleitzahlen-nuremberg.geojson') as f:
+with open(io.get_path("postleitzahlen-nuremberg.geojson", "input")) as f:
     geo = json.load(f)
 
 # In which state is the **center** of Germany
@@ -65,4 +62,3 @@ def get_plz(lat, lon):
                     return plz
         elif shape.contains(p):
             return plz
-

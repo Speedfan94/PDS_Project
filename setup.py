@@ -7,7 +7,7 @@ setup(
     author="team-we-hend-stroh-to-be-the-best-ulk-nudel",
     author_email="student@uni-koeln.de",
     packages=["nextbike"],
-    install_requires=['pandas', 'scikit-learn', 'click', 'vincenty', 'shapely', 'folium'],
+    install_requires=['pandas', 'scikit-learn', 'click', 'shapely', 'folium'],
     entry_points={
         'console_scripts': ['nextbike=nextbike.cli:main']
     }
