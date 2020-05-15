@@ -42,7 +42,6 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
 
     # read img nuremberg
     # https://www.openstreetmap.org/export#map=12/49.4522/11.0770
-    # nuremberg_png = plt.imread("nextbike/data/input/nuremberg_v2_hum.png")
     nuremberg_png = plt.imread(io.get_path("nuremberg_v2_hum.png", "input"))
 
     fig, ax = plt.subplots(figsize=(10, 10))
@@ -112,13 +111,11 @@ def visualize_plz(df):
     # prints the number of trips per zip code
     df_map = df_biggest_month.groupby(by="plz_start").count().sort_values(by="Start Time", ascending=True).reset_index()
 
-    print("PLZ Map " + str(month_most))
     m = folium.Map([49.452030, 11.076750], zoom_start=11)
 
     df_map["plz"] = df_map["plz_start"].astype(str)
 
     folium.Choropleth(
-        # geo_data=f"../nextbike/data/input/postleitzahlen-nuremberg.geojson",
         geo_data=f'{io.get_path("postleitzahlen-nuremberg.geojson", "input")}',
         name="choropleth",
         data=df_map,
@@ -146,7 +143,6 @@ def visualize_plz(df):
     folium.LayerControl().add_to(m)
 
     m.save(io.get_path("Month_Nuremberg.html", "output"))
-    print(df_map)
 
 
 def visualize_distribution(df):
