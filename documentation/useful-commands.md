@@ -10,7 +10,8 @@ feat/<SHORT_FEATURE_NAME>
 | Show changes of a specific commit | ```git show <COMMIT_HASH>``` |
 | Review uncommitted code changes | ```git diff``` |
 | See what files you have changed, which are already added to be committed etc. | ```git status``` |
-| List all existing branches | ```git branch -l``` |
+| List all existing local branches | ```git branch -l``` |
+| List all existing remote branches | ```git branch -r``` |
 | Add files to a commit | ```git add <PATH_TO_FILE>``` |
 | Push all commits to upstream/online repository | ```git push``` |
 | Push new branch to upstream/online repository | ```git push -u origin <BRANCH_NAME>``` |
