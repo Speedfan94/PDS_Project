@@ -2,25 +2,44 @@ import click
 from . import io
 from . import model
 from . import datapreparation
+from . import visualization
 
 
 @click.command()
 @click.option('--train/--no-train', default=False, help="Train the model.")
 def main(train):
+    print("Start cleaning process...")
+    cleaning()
+    print("DONE cleaning")
 
-    # read in nuremberg file
-    print("Reading in nuremberg file...")
+    print("Start visualizing process...")
+    visualize()
+    print("DONE visualizing")
+
+    if train:
+        model.train()
+    else:
+        print("You don't do any training.")
+
+
+def cleaning():
+    print("Read in nuremberg file...")
     df = io.read_file()
-    print("Done!")
-    print(df)
+    print("DONE reading file")
 
+    print("Build trips dataframe...")
     df_trips = datapreparation.datapreparation(df)
+    print("DONE building trips dataframe")
 
-    print("Dropping trips outside Nuremberg")
+    print("Kick out entries not from nuremberg...")
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
-    df_with_additional_columns = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
-    # print(df_trips_onlynuremberg)
+    print("DONE kicking out non-nuremberg entries")
 
+    print("Add additional features...")
+    df_with_additional_columns = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
+    print("DONE adding additional features")
+
+    print("Calculate aggregation statistics...")
     aggr_stats = datapreparation.get_aggregate_statistics(df_with_additional_columns)
     print()
     print("============ Aggregate Statistics ============")
@@ -33,16 +52,21 @@ def main(train):
     print("==============================================")
     print()
 
-    print("Saving trip dataframe")
+    print("Save trip dataframe as csv...")
     io.saveTrip(df_with_additional_columns)
+    print("DONE saving as csv")
 
 
-    if train:
-        model.train()
-    else:
-        print("You don't do anything.")
+def visualize():
+    print("Read in trips file...")
+    df = io.read_trips()
+    print("DONE reading in trips file")
+
+    print("Visualize specific moment and heatmap...")
+    visualization.visualize_moment(df)
+    visualization.visualize_heatmap(df)
+    print("DONE visualizing")
 
 
 if __name__ == '__main__':
     main()
-
