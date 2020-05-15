@@ -1,11 +1,5 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-# import folium
-import seaborn as sns
 import shapely.geometry as shapely
 import json
-import vincenty
 from shapely.geometry import shape, Point
 
 plz_value = {}

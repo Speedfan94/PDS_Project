@@ -1,22 +1,9 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import datetime as dt
 from .. import io
 import folium
 from folium import plugins
-import json
-import vincenty
-from shapely.geometry import shape, Point
-
-
-# import seaborn as sns
-
-def visualize_plz(df):
-    # For the summer month (i.e., June, August, or September) with most trips, visualize the number
-    # of started trips per PLZ region (you’ll have to find geo data for that yourselves!) in a map.
-
-    print()
 
 
 def visualize_moment(df):
@@ -107,7 +94,6 @@ def visualize_heatmap(df):
     m.add_child(plugins.HeatMap(stationArr, radius=20))
 
     m.save(io.get_path("One-Day-in-Nuremberg.html", "output"))
-
 
 
 def visualize_plz(df):
