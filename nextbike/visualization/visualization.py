@@ -2,9 +2,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime as dt
-
+from .. import io
 import folium
 from folium import plugins
+import json
+import vincenty
+from shapely.geometry import shape, Point
 
 
 # import seaborn as sns
@@ -19,7 +22,7 @@ def visualize_plz(df):
 def visualize_moment(df):
     # TODO: Motivated BEE <3: Search usefull time for this plot
     # For one moment in time, visualize the number of bikes at fixed stations meaningfully.
-    most_bookings = df.groupby(by="Start Time").count()["Bike Number"].sort_values().tail(5).index
+    most_bookings = df.groupby(by="Start Time").count()["Bike Number"].sort_values().tail(1).index
     # choose Datetime 3
 
     # ToDo: Stations with no bikes right now visualize in grey
@@ -52,7 +55,8 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
 
     # read img nuremberg
     # https://www.openstreetmap.org/export#map=12/49.4522/11.0770
-    nuremberg_png = plt.imread("nextbike/data/input/nuremberg_v2_hum.png")
+    # nuremberg_png = plt.imread("nextbike/data/input/nuremberg_v2_hum.png")
+    nuremberg_png = plt.imread(io.get_path("nuremberg_v2_hum.png", "input"))
 
     fig, ax = plt.subplots(figsize=(10, 10))
     free = ax.scatter(pDf_free["Longitude_start"],
@@ -72,7 +76,7 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
     ax.set_ylim(north, south)
     plt.legend((station, free, unused), ("Bikes at Station", "Free Bikes", "Unused Stations"), loc="upper left")
     ax.imshow(nuremberg_png, zorder=0, extent=[west, east, north, south], aspect='equal')
-    plt.savefig("nextbike/data/output/" + str(pStr_datetime).replace(":", "-") + ".png", dpi=300)
+    plt.savefig(io.get_path(str(pStr_datetime).replace(":", "-") + ".png", "output"), dpi=300)
 
 
 def visualize_heatmap(df):
@@ -102,7 +106,61 @@ def visualize_heatmap(df):
     # plot heatmap
     m.add_child(plugins.HeatMap(stationArr, radius=20))
 
-    m.save("nextbike/data/output/One-Day-in-Nuremberg.html")
+    m.save(io.get_path("One-Day-in-Nuremberg.html", "output"))
+
+
+
+def visualize_plz(df):
+    # Visualizes the number of started trip for each zip code region for the month with the most trips
+
+    # Changing format from object to DateTime
+    df["Start Time"] = pd.to_datetime(df["Start Time"])
+
+    # find the month with the most trips:
+    df["month"] = df["Start Time"].dt.month
+
+    # finding the month with most trips in the month
+    month_most = df.groupby(by="month").count().idxmax()["Start Time"]
+
+    df_biggest_month = df[df["month"] == month_most]
+    # prints the number of trips per zip code
+    df_map = df_biggest_month.groupby(by="plz_start").count().sort_values(by="Start Time", ascending=True).reset_index()
+
+    print("PLZ Map " + str(month_most))
+    m = folium.Map([49.452030, 11.076750], zoom_start=11)
+
+    df_map["plz"] = df_map["plz_start"].astype(str)
+
+    folium.Choropleth(
+        # geo_data=f"../nextbike/data/input/postleitzahlen-nuremberg.geojson",
+        geo_data=f'{io.get_path("postleitzahlen-nuremberg.geojson", "input")}',
+        name="choropleth",
+        data=df_map,
+        columns=["plz", "month"],
+        key_on='feature.properties.plz',
+        legend_name='Trips per zip code',
+        fill_color='YlGnBu',
+        # color="white",
+        fill_opacity=0.7,
+        line_opacity=0.5,
+        # smooth_factor=0
+    ).add_to(m)
+
+    df_stations = df.drop_duplicates("Start Place_id", keep="first")
+
+    for index, row in df_stations.iterrows():
+        folium.CircleMarker([row['Latitude_start'], row['Longitude_start']],
+                            radius=3,
+                            popup=[row['Place_start'], row["Latitude_start"]],
+                            fill_color="#3db7e4",
+                            color="#3db7e4",
+
+                            ).add_to(m)
+
+    folium.LayerControl().add_to(m)
+
+    m.save(io.get_path("Month_Nuremberg.html", "output"))
+    print(df_map)
 
 
 def visualize_distribution(df):

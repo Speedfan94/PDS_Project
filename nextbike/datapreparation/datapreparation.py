@@ -2,6 +2,9 @@ import os
 import pandas as pd
 import numpy as np
 from .. import io
+from ..plz import plz
+from ..plz import plz_end
+
 from datetime import datetime
 
 # remove in the end, just for testing the time
@@ -19,6 +22,8 @@ DISTANCE = 0.07 * 1
 # *2 -> 197192
 # *3 -> 197199
 # *4 -> 197202
+
+# --> only PLZ = 189112
 
 # ToDo : comment all functions in detail
 def datapreparation(df_original):
@@ -190,7 +195,8 @@ def plot_and_save_aggregate_stats(df_trips):
         io.save_fig(fig, 'stds_' + time_to_aggregate_on + '.png')
 
 
-def onlynuremberg(df):
+
+def only_nuremberg_square(df):
     # DropTrips outside of Nuremberg, depending on their Start and End Point
     # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
@@ -234,9 +240,19 @@ def onlynuremberg(df):
     return df_nuremberg
 
 
-# Todo: drop later when new method exists
-def createduration(pDf):
-    df = pDf.copy()
-    df["Duration"] = (pd.to_datetime(pDf["End Time"]) - pd.to_datetime(pDf["Start Time"])).dt.total_seconds()
+def only_nuremberg_plz(df):
+    # DropTrips outside of Nuremberg with no PLZ, depending on their Start
+    # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
+    # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
 
-    return df
+    # adding plz to df
+    print ("Start adding PLZ to every column and then dropping everything without zip code")
+    # "Start adding PLZ to every column and then dropping everything without zip code"
+    df_plz = plz(df)
+
+    df_nurem = df_plz.dropna(axis=0)
+    df_nurem = plz_end(df_nurem)
+    df_nurem = df_nurem.dropna(axis=0)
+
+    return df_nurem
+

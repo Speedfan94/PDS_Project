@@ -7,21 +7,21 @@ from . import prediction
 
 
 @click.command()
-@click.option('--train/--no-train', default=False, help="Train the model.")
-@click.option('--clean/--no-clean', default=False, help="Clean the data.")
-@click.option('--viso/--no-viso', default=False, help="Visualize the data.")
+@click.option('--train/--no-train', default=True, help="Train the model.")
+@click.option('--clean/--no-clean', default=True, help="Clean the data.")
+@click.option('--viso/--no-viso', default=True, help="Visualize the data.")
 @click.option('--show/--no-show', default=False, help="Show the dataframe.")
 def main(train, clean, viso, show):
     if clean:
         print("Do cleaning")
         cleaning()
-    elif viso:
+    if viso:
         print("Do visualizing")
         visualize()
-    elif train:
+    if train:
         print("Do training")
         predict()
-    elif show:
+    if show:
         print("Do show")
         print("Read in trips file...")
         df = io.read_trips()
@@ -29,17 +29,12 @@ def main(train, clean, viso, show):
         print(df.info())
         print(df.head())
 
-    else:
-        print("Do all")
-        cleaning()
-        visualize()
-
 
 def cleaning():
     print("Read in nuremberg file...")
     df = io.read_file()
     df_trips = datapreparation.datapreparation(df)
-    df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
+    df_trips_onlynuremberg = datapreparation.only_nuremberg_plz(df_trips)
     df_final = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
     datapreparation.get_aggregate_statistics(df_final)
 
@@ -55,6 +50,7 @@ def visualize():
     print("Visualize specific moment and heatmap...")
     visualization.visualize_moment(df)
     visualization.visualize_heatmap(df)
+    visualization.visualize_plz(df)
     print("DONE visualizing")
 
 

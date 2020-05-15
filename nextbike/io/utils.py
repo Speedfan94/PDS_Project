@@ -11,3 +11,8 @@ def get_data_path():
         return os.path.join(os.getcwd(), "nextbike/data")
     else:
         raise FileNotFoundError
+
+
+def get_path(filename, subfolder=""):
+    path = os.path.join(get_data_path(), subfolder, filename)
+    return path

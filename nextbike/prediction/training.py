@@ -18,7 +18,7 @@ def simple_split(df):
 
 
 def k_fold_split(df):
-    X = df.drop(["Place_start", "Place_end", "inside", "Duration"], axis=1)
+    X = df.drop(["Place_start", "Place_end", "Duration"], axis=1)
     y = df["Duration"]
 
     # the more folds we have, we will be reducing the error due the bias but increasing the error due to variance
