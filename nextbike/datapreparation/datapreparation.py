@@ -244,15 +244,15 @@ def only_nuremberg_plz(df):
     # DropTrips outside of Nuremberg with no PLZ, depending on their Start
     # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
-    # Borders of our Data:
 
     # adding plz to df
-    print ("Start addind PLZ to every column and then dropping everythin without plz")
+    print ("Start adding PLZ to every column and then dropping everything without zip code")
+    # "Start adding PLZ to every column and then dropping everything without zip code"
     df_plz = plz(df)
 
-    # df_nurem = df_plz[df_plz["plz_start"] is None]
     df_nurem = df_plz.dropna(axis=0)
     df_nurem = plz_end(df_nurem)
+    df_nurem = df_nurem.dropna(axis=0)
 
     return df_nurem
 
