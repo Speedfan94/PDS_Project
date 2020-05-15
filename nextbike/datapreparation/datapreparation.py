@@ -232,3 +232,11 @@ def onlynuremberg(df):
     df_nuremberg = df[df["inside"] == True]
 
     return df_nuremberg
+
+
+# Todo: drop later when new method exists
+def createduration(pDf):
+    df = pDf.copy()
+    df["Duration"] = (pd.to_datetime(pDf["End Time"]) - pd.to_datetime(pDf["Start Time"])).dt.total_seconds()
+
+    return df
