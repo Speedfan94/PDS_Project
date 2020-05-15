@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import numpy as np
+from .. import io
 from datetime import datetime
 
 # remove in the end, just for testing the time
@@ -112,6 +113,81 @@ def datapreparation(df_original):
                      axis=1, inplace=True)
 
     return df_merged
+
+
+def additional_feature_creation(df_trips):
+    # Calculating if trip was on a weekend, storing a boolean
+    print("Adding column 'Weekend'...")
+    # First convert start time string into datetime object
+    df_trips['Start Time'] = pd.to_datetime(df_trips['Start Time'])
+    # Then check which day of the week the given date is
+    # Counting from 0 to 6 (0=monday, 1=tuesday, ...) a 5 or 6 means it was a saturday or sunday
+    # So storing if dayofweek is bigger than 4 builds a weekend boolean
+    df_trips['Weekend'] = (df_trips['Start Time'].dt.dayofweek > 4)
+    print("DONE adding 'Weekend'")
+
+    # Calculation trip duration of each trip
+    print("Adding column 'Duration'...")
+    # First also convert end time string into datetime object
+    df_trips['End Time'] = pd.to_datetime(df_trips['End Time'])
+    # Calculating simply (end time - start time) for trip duration would
+    #   build the duration in the format 'X days HH:MM:SS.sssssssss'
+    # So to better calculate with this value in the future,
+    #   lets get the total seconds of the duration and
+    #   divide it be 60 to manually calculate duration in minutes
+    #   and round it to two decimals
+    df_trips['Duration'] = ((df_trips['End Time'] - df_trips['Start Time']).dt.total_seconds() / 60.0).round(2)
+    print("DONE adding 'Duration'")
+
+    return df_trips
+
+
+def get_aggregate_statistics(df_trips):
+    print("Drop trips < 1min & upper 2%...")
+    # Calculate lower and upper bounds for duration (in minutes)
+    # Hardcode lower bound because trips of about 2 minutes may be relevant
+    lower_duration_bound = 1.0
+    upper_duration_bound = df_trips["Duration"].quantile(0.98)
+    # Drop values out of duration bounds
+    df_trips = df_trips[(df_trips["Duration"] > lower_duration_bound) & (df_trips["Duration"] < upper_duration_bound)]
+
+    # Split into weekends df and weekdays df
+    df_weekends = df_trips[df_trips['Weekend'] == True]
+    df_weekdays = df_trips[df_trips['Weekend'] == False]
+
+    aggr_stats = {
+        "mean_all": df_trips['Duration'].mean(),
+        "std_all": df_trips['Duration'].std(),
+        "mean_weekends": df_weekends['Duration'].mean(),
+        "std_weekends": df_weekends['Duration'].std(),
+        "mean_weekdays": df_weekdays['Duration'].mean(),
+        "std_weekdays": df_weekdays['Duration'].std()
+    }
+
+    df_aggr_stats = pd.DataFrame.from_dict(aggr_stats, orient="index")
+    print(df_aggr_stats)
+    fig = df_aggr_stats.plot(kind='barh', figsize=(16, 16), fontsize=20).get_figure()
+    io.save_fig(fig, 'aggr_stats_whole_df.png')
+
+    df_trips["month"] = df_trips["Start Time"].dt.month
+    df_trips["day"] = df_trips["Start Time"].dt.day
+    df_trips["hour"] = df_trips["Start Time"].dt.hour
+    plot_and_save_aggregate_stats(df_trips)
+
+    print("DONE calculating aggregate statistics!")
+
+
+def plot_and_save_aggregate_stats(df_trips):
+    for time_to_aggregate_on in ["month", "day", "hour"]:
+        sr_counts = df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).count()
+        fig = sr_counts.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
+        io.save_fig(fig, 'counts_'+time_to_aggregate_on+'.png')
+        sr_means = df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).mean()
+        fig = sr_means.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
+        io.save_fig(fig, 'means_' + time_to_aggregate_on + '.png')
+        sr_stds = df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).std()
+        fig = sr_stds.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
+        io.save_fig(fig, 'stds_' + time_to_aggregate_on + '.png')
 
 
 def onlynuremberg(df):

@@ -8,35 +8,55 @@ from . import visualization
 @click.command()
 @click.option('--train/--no-train', default=False, help="Train the model.")
 def main(train):
+    print("Start cleaning process...")
     cleaning()
+    print("DONE cleaning")
 
+    print("Start visualizing process...")
     visualize()
+    print("DONE visualizing")
 
     if train:
         model.train()
     else:
-        print("You don't do anything.")
+        print("You don't do any training.")
 
 
 def cleaning():
     print("Read in nuremberg file...")
     df = io.read_file()
+    print("DONE reading file")
 
+    print("Build trips dataframe...")
     df_trips = datapreparation.datapreparation(df)
+    print("DONE building trips dataframe")
 
+    print("Kick out entries not from nuremberg...")
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
-    #print(df_trips.head())
+    print("DONE kicking out non-nuremberg entries")
 
-    print("Save trip dataframe...")
-    io.saveTrip(df_trips_onlynuremberg)
+    print("Add additional features...")
+    df_with_additional_columns = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
+    print("DONE adding additional features")
+
+    print("Calculate aggregation statistics...")
+    datapreparation.get_aggregate_statistics(df_with_additional_columns)
+    print("DONE calculating aggregate stats")
+
+    print("Save trip dataframe as csv...")
+    io.saveTrip(df_with_additional_columns)
+    print("DONE saving as csv")
 
 
 def visualize():
     print("Read in trips file...")
     df = io.read_trips()
+    print("DONE reading in trips file")
 
+    print("Visualize specific moment and heatmap...")
     visualization.visualize_moment(df)
     visualization.visualize_heatmap(df)
+    print("DONE visualizing")
 
 
 if __name__ == '__main__':
