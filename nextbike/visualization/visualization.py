@@ -146,9 +146,9 @@ def visualize_plz(df):
         # smooth_factor=0
     ).add_to(m)
 
-    df3 = df.drop_duplicates("Start Place_id", keep="first")
+    df_stations = df.drop_duplicates("Start Place_id", keep="first")
 
-    for index, row in df3.iterrows():
+    for index, row in df_stations.iterrows():
         folium.CircleMarker([row['Latitude_start'], row['Longitude_start']],
                             radius=3,
                             popup=[row['Place_start'], row["Latitude_start"]],
