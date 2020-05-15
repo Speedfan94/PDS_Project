@@ -1,61 +1,57 @@
 import pandas as pd
 import numpy as np
 from .. import io
-from ..plz import plz
-from ..plz import plz_end
-
+from . import plz
 # remove in the end, just for testing the time
 
 NUREMBERG_CITY_LONG = 49.452030
 NUREMBERG_CITY_LAT = 11.076750
 DISTANCE = 0.07 * 1
-
-
-# 05--> 191502
-# 07--> 196178
-# 09-_> 196441
-# 10--> 196486
-# *1 -> 196505
-# *2 -> 197192
-# *3 -> 197199
-# *4 -> 197202
+# TODO: Fix that bad style right here:
+pd.options.mode.chained_assignment = None
 
 # --> only PLZ = 189112
 
 # ToDo : comment all functions in detail
-def datapreparation(df_original):
-    # Prepare Columns
-    print("Prepare columns...")
+def data_preparation(df_original):
+    """clean data and create trips from it
+
+    This method drops all duplicates from the raw data.
+    It creates trip data for each bike by joining the rows with corresponding start and end .
+    Args:
+        df_original (DataFrame): DataFrame from raw csv
+    Returns:
+        df_merged (DataFrame): DataFrame of cleaned trip data
+    """
+
+    # print("Prepare columns...")
     # create new DataFrame from received DF and remove unnecessary columns.
-    df_clean = df_original.drop(["Unnamed: 0",
-                                 "p_spot",
-                                 "p_place_type",
-                                 "p_bike",
-                                 "b_bike_type",
-                                 "p_bikes",
-                                 "p_uid",
-                                 # "p_number"
-                                 ], axis=1)
+    # df_clean = df_original.drop(["Unnamed: 0",
+    #                              "p_spot",
+    #                              "p_place_type",
+    #                              "p_bike",
+    #                              "b_bike_type",
+    #                              "p_bikes",
+    #                              "p_uid",
+    #                              # "p_number"
+    #                              ], axis=1)
 
     # Renaming the columns
-    df_clean.rename({"p_lat": "Latitude",
-                     "p_lng": "Longitude",
-                     "p_name": "Place",
-                     "b_number": "Bike Number"}, axis=1, inplace=True)
+    # df_clean.rename({"p_lat": "Latitude",
+    #                  "p_lng": "Longitude",
+    #                  "p_name": "Place",
+    #                  "b_number": "Bike Number"}, axis=1, inplace=True)
 
     # Drop Duplicates and creating new df with only unique files
     print("Drop duplicates...")
-    df_clean.drop_duplicates(subset=df_clean.columns.difference(["Longitude", "Latitude"]), inplace=True)
+    df_original.drop_duplicates(subset=df_original.columns.difference(["p_lng", "p_lat"]), inplace=True)
 
     # Drop trip first/last
     print("Filter on start/end...")
 
-    # TODO: Fix that bad style right here:
-    pd.options.mode.chained_assignment = None
+    df_clean_unique_trip = df_original[(df_original["trip"] == "start") | (df_original["trip"] == "end")]
 
-    df_clean_unique_trip = df_clean[(df_clean["trip"] == "start") | (df_clean["trip"] == "end")]
-
-    df_clean_unique_trip.sort_values(["Bike Number", "datetime"], inplace=True)
+    df_clean_unique_trip.sort_values(["b_number", "datetime"], inplace=True)
 
     # We do not check, whether every bike has same amount of starts and ends because merge only returns valid entries
 
@@ -69,28 +65,24 @@ def datapreparation(df_original):
 
     # Eliminate Noise
     print("Eliminate booking errors...")
-    # create series with
     # check for multiple start entries
-    sr_noise_start = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
-    df_clean_unique_trip['valid_start'] = sr_noise_start
+    df_clean_unique_trip['valid_start'] = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
 
     # check for multiple end entries
-    sr_noise_end = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift(-1))
-    df_clean_unique_trip['valid_end'] = sr_noise_end
+    df_clean_unique_trip['valid_end'] = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift(-1))
 
     # check if entries are valid
     valid_start_entry = ((df_clean_unique_trip['trip'] == 'start') & (df_clean_unique_trip['valid_start'] == True))
     valid_end_entry = ((df_clean_unique_trip['trip'] == 'end') & (df_clean_unique_trip['valid_end'] == True))
     df_clean_unique_trip['valid_trip'] = valid_start_entry | valid_end_entry
 
+    # TODO: isnt this much easier than the code above
+    # df_clean_unique_trip[df_clean_unique_trip["valid_start"]==True | df_clean_unique_trip["valid_end"]==True]
+
     # only take valid trip entries and drop validation values
     df_final = df_clean_unique_trip[df_clean_unique_trip['valid_trip'] == True]
     df_final.drop(['valid_start', 'valid_end', 'valid_trip'], axis=1, inplace=True)
 
-    # Todo: fix that bad style right here
-    pd.options.mode.chained_assignment = "warn"
-
-    # split, reindex, merge
     print("Merge corresponding start and end...")
 
     df_start = df_final[df_final["trip"] == "start"]
@@ -98,26 +90,37 @@ def datapreparation(df_original):
 
     df_end.reset_index(drop=True, inplace=True)
     df_start.reset_index(drop=True, inplace=True)
-    # ToDo: check runtime mit itime --> Niklas
-    # df_end["index"] = range(0, len(df_end))
-    # df_start["index"] = range(0, len(df_start))
 
     df_merged = df_start.merge(df_end, left_on=df_start.index, right_on=df_end.index, suffixes=('_start', '_end'))
     df_merged.drop(["key_0",
                     "trip_start",
-                    "Bike Number_end",
+                    "b_number_end",
                     "trip_end"], axis=1, inplace=True)
     df_merged.rename({"datetime_start": "Start Time",
-                      "Bike Number_start": "Bike Number",
+                      "b_number_start": "Bike Number",
                       "datetime_end": "End Time",
                       "p_number_start": "Start Place_id",
-                      "p_number_end": "End Place_id"},
+                      "p_number_end": "End Place_id",
+                      "p_lat_start": "Latitude_start",
+                      "p_lng_start": "Longitude_start",
+                      "p_lat_end": "Latitude_end",
+                      "p_lng_end": "Longitude_end",
+                      "p_name_start": "Place_start",
+                      "p_name_end": "Place_end"
+                      },
                      axis=1, inplace=True)
 
     return df_merged
 
 
 def additional_feature_creation(df_trips):
+    """TODO:What does this method do?
+
+    Args:
+        df_trips (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        df_trips (DataFrame): DataFrame with added columns [Weekend, Duration]
+    """
     # Calculating if trip was on a weekend, storing a boolean
     print("Adding column 'Weekend'...")
     # First convert start time string into datetime object
@@ -145,6 +148,14 @@ def additional_feature_creation(df_trips):
 
 
 def get_aggregate_statistics(df_trips):
+    """TODO:What does this method do?
+
+    Args:
+        df_trips (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
+
     print("Drop trips < 1min & upper 2%...")
     # Calculate lower and upper bounds for duration (in minutes)
     # Hardcode lower bound because trips of about 2 minutes may be relevant
@@ -170,6 +181,8 @@ def get_aggregate_statistics(df_trips):
     fig = df_aggr_stats.plot(kind='barh', figsize=(16, 16), fontsize=20).get_figure()
     io.save_fig(fig, 'aggr_stats_whole_df.png')
 
+    # TODO: Fix that bad style right here:
+    pd.options.mode.chained_assignment = None
     df_trips["month"] = df_trips["Start Time"].dt.month
     df_trips["day"] = df_trips["Start Time"].dt.day
     df_trips["hour"] = df_trips["Start Time"].dt.hour
@@ -179,10 +192,18 @@ def get_aggregate_statistics(df_trips):
 
 
 def plot_and_save_aggregate_stats(df_trips):
+    """TODO:What does this method do?
+
+    Args:
+        df_trips (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
+
     for time_to_aggregate_on in ["month", "day", "hour"]:
         sr_counts = df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).count()
         fig = sr_counts.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
-        io.save_fig(fig, 'counts_'+time_to_aggregate_on+'.png')
+        io.save_fig(fig, 'counts_' + time_to_aggregate_on + '.png')
         sr_means = df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).mean()
         fig = sr_means.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
         io.save_fig(fig, 'means_' + time_to_aggregate_on + '.png')
@@ -191,21 +212,24 @@ def plot_and_save_aggregate_stats(df_trips):
         io.save_fig(fig, 'stds_' + time_to_aggregate_on + '.png')
 
 
-
 def only_nuremberg_square(df):
+    """TODO:What does this method do?
+
+    Args:
+        df (DataFrame): DataFrame with trip data
+    Returns:
+        df_nuremberg (DataFrame): DataFrame with trip data from nuremberg
+    """
     # DropTrips outside of Nuremberg, depending on their Start and End Point
     # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
     # Borders of our Data:
     # Latitude North: 49,56 --> ca. 13.6 km
-    # Constants are defined on the top
+    # Todo: Constants are defined on the top
 
     north = NUREMBERG_CITY_LONG + DISTANCE
-    # Latitude South:
     south = NUREMBERG_CITY_LONG - DISTANCE
-    # Longitude West:
     west = NUREMBERG_CITY_LAT + DISTANCE
-    # Longitude East:
     east = NUREMBERG_CITY_LAT - DISTANCE
     print("Remove bookings outside nuremberg...")
     # create column "outside" with information:
@@ -217,38 +241,36 @@ def only_nuremberg_square(df):
     bol_end = (df["Latitude_end"] < north) & (df["Latitude_end"] > south) & (df["Longitude_end"] < west) & (
             df["Longitude_end"] > east)
 
-    # method 1
-    # start = datetime.now()
     df['inside'] = np.where(bol_end & bol_start, True, False)
-    # print("Method 1: " + str(datetime.now() - start))
-    # --> Method 1: 0:00:00.001999
-    # --> Method 2: 0:00:00.005000
-
-    # method 2
-    # start = datetime.now()
-    # df['inside2'] = False
-    # df.loc[(bol_end & bol_start), 'inside2'] = True
-    # print("Method 2: " + str(datetime.now() - start))
-    # --> method 2 is slower
-
     df_nuremberg = df[df["inside"] == True]
 
     return df_nuremberg
 
 
 def only_nuremberg_plz(df):
+    """TODO:What does this method do?
+
+    Args:
+        df (DataFrame): DataFrame with trip data
+    Returns:
+        df_nuremberg (DataFrame): DataFrame with trip data from nuremberg
+    """
     # DropTrips outside of Nuremberg with no PLZ, depending on their Start
     # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
 
     # adding plz to df
-    print ("Start adding PLZ to every column and then dropping everything without zip code")
-    # "Start adding PLZ to every column and then dropping everything without zip code"
-    df_plz = plz(df)
+    print("Add PLZ to trip and drop trips without start or end PLZ")
+    # Add PLZ to trip and drop trips without start or end PLZ
 
+    # TODO: resolve names of methods or file
+    df_plz = plz.plz(df)
+
+    # add start plz
     df_nurem = df_plz.dropna(axis=0)
-    df_nurem = plz_end(df_nurem)
+    # add end plz
+    df_nurem = plz.plz_end(df_nurem)
+
     df_nurem = df_nurem.dropna(axis=0)
 
     return df_nurem
-
