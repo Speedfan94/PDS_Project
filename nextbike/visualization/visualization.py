@@ -33,7 +33,8 @@ def visualize_moment(df):
         # get stations without Start Place_id != 0.0
         df_help = pd.DataFrame(df_moment[df_moment["Start Place_id"] != 0.0]["Start Place_id"])
         # get unique long lat for stations
-        df_long_lat = df_moment.drop_duplicates("Start Place_id")[["Start Place_id", "Latitude_start", "Longitude_start"]]
+        df_long_lat = df_moment.drop_duplicates("Start Place_id")[
+            ["Start Place_id", "Latitude_start", "Longitude_start"]]
         df_long_lat = df_long_lat[df_long_lat["Start Place_id"] != 0.0]
         df_stations = df_help.merge(df_long_lat, how="left", on="Start Place_id")
         # get bikes with with Start Place_id = 0.0
@@ -76,8 +77,8 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
                          zorder=1, alpha=0.08, c="b", s=30)
 
     unused = ax.scatter(pDf_unused["Longitude_start"],
-                         pDf_unused["Latitude_start"],
-                         zorder=1, alpha=0.5, c="grey", s=30)
+                        pDf_unused["Latitude_start"],
+                        zorder=1, alpha=0.5, c="grey", s=30)
 
     ax.set_title('Bikes at ' + str(pStr_datetime))
     ax.set_xlim(west, east)
@@ -192,6 +193,35 @@ def visualize_distribution(df):
     """
     # Visualize the distribution of trip lengths per month. Compare the distributions to normal
     # distributions with mean and standard deviation as calculated before (1.d))
+
+    # TODO: Code to start on
+    """
+    # histogram of duration
+
+    #data
+    duration = df_booking_data['DURATION_MINUTES']
+    values, base = np.histogram(duration, bins=120, range=(0,120), weights=np.ones(len(duration))/len(duration))
+    quantile_25 = np.quantile(duration, 0.25)
+    quantile_50 = np.quantile(duration, 0.5)
+    quantile_75 = np.quantile(duration, 0.75)
+    quantile_95 = np.quantile(duration, 0.95)
+
+    #plotting
+    Fig_Usage = plt.figure(figsize=(20,8),dpi = 240)
+    ax = Fig_Usage.add_axes([0,0,0.5,0.5])
+    ax.set_xlabel('Duration of Booking [min]')
+    ax.set_ylabel('Percentage')
+    ax.set_title('Distribution of Duration')
+    plt.plot(base[:-1], values, c='blue')
+    plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
+    plt.vlines(quantile_25, 0, 0.07, linestyles='dashed', label='25% Quantile', colors='green')
+    plt.vlines(quantile_50, 0, 0.07, linestyles='dashed', label='50% Quantile', colors='yellow')
+    plt.vlines(quantile_75, 0, 0.07, linestyles='dashed', label='75% Quantile', colors='red')
+    plt.vlines(quantile_95, 0, 0.07, linestyles='dashed', label='95% Quantile')
+    plt.legend(loc='upper right')
+    plt.show()
+    Fig_Usage.savefig("DurationMinutes_Distribution.png", bbox_inches='tight')
+    """
 
     print()
 
