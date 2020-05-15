@@ -40,18 +40,22 @@ def cleaning():
     df = io.read_file()
     df_trips = datapreparation.datapreparation(df)
     df_trips_onlynuremberg = datapreparation.onlynuremberg(df_trips)
-    df_fin = datapreparation.createduration(df_trips_onlynuremberg)
+    df_final = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
+    datapreparation.get_aggregate_statistics(df_final)
 
     print("Save trip dataframe...")
-    io.saveTrip(df_fin)
+    io.saveTrip(df_final)
 
 
 def visualize():
     print("Read in trips file...")
     df = io.read_trips()
+    print("DONE reading in trips file")
 
+    print("Visualize specific moment and heatmap...")
     visualization.visualize_moment(df)
     visualization.visualize_heatmap(df)
+    print("DONE visualizing")
 
 
 def predict():
