@@ -6,7 +6,19 @@ import folium
 from folium import plugins
 
 
+# TODO: To think of if the visualize_moment method is not just the helper for the plotting method...
+# TODO: Visualize the number of bikes at fixed stations => trace all bikes back? Maybe just because there
 def visualize_moment(df):
+    """Visualize one moment in time with the most trip starts
+
+    Collect starts at fixed stations, starts at free bikes, unused stations.
+    Hand them over to plot_map() method.
+    Args:
+        df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
+
     # TODO: Motivated BEE <3: Search usefull time for this plot
     # For one moment in time, visualize the number of bikes at fixed stations meaningfully.
     most_bookings = df.groupby(by="Start Time").count()["Bike Number"].sort_values().tail(1).index
@@ -14,10 +26,10 @@ def visualize_moment(df):
 
     # ToDo: Stations with no bikes right now visualize in grey
 
-    for row in most_bookings:
-        print("Compute Moment at: " + row + " ...")
+    for time in most_bookings:
+        print("Compute Moment at: " + time + " ...")
 
-        df_moment = df[df["Start Time"] == row]
+        df_moment = df[df["Start Time"] == time]
         # get stations without Start Place_id != 0.0
         df_help = pd.DataFrame(df_moment[df_moment["Start Place_id"] != 0.0]["Start Place_id"])
         # get unique long lat for stations
@@ -30,10 +42,20 @@ def visualize_moment(df):
         df_helper_unused = df.drop_duplicates("Start Place_id")[["Start Place_id", "Latitude_start", "Longitude_start"]]
         df_helper_unused = df_helper_unused[df_helper_unused["Start Place_id"] != 0.0]
         df_unused = df_helper_unused.append(df_stations).drop_duplicates(keep=False)
-        plot_map(df_stations, df_free, df_unused, row)
+        plot_map(df_stations, df_free, df_unused, time)
 
 
 def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
+    """Plot starts at stations, starts of free bikes and unused stations at given time.
+
+    Args:
+        pDf_stations (DataFrame): DataFrame with all bikes at fixed stations at some time
+        pDf_free (DataFrame): DataFrame with all free bikes at some time
+        pDf_unused (DataFrame): DataFrame with all unused stations at some time
+        pStr_datetime (str): datetime of some time
+    Returns:
+        no return
+    """
     # Todo: Class with constants
     north = 49.485
     east = 11.13
@@ -66,11 +88,19 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
 
 
 def visualize_heatmap(df):
+    """Create a heatmap for the 24th of December by searching for nearby trip ends.
+
+    Args:
+        df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
+
     # Create a heatmap based on an interesting aspect of the data, e.g., end locations of trips shortly
     # before the start of a major public event.
     # https://alysivji.github.io/getting-started-with-folium.html
 
-    stations = df[pd.to_datetime(df["End Time"], format="%Y-%m-%d").dt.date == dt.date(year=2019, month=8, day=24)]
+    stations = df[pd.to_datetime(df["End Time"], format="%Y-%m-%d").dt.date == dt.date(year=2019, month=12, day=24)]
 
     # ToDo: Maybe filter out 0.0 ids and duplicated places
     # todo: variable time to plot heatmap
@@ -96,6 +126,13 @@ def visualize_heatmap(df):
 
 
 def visualize_plz(df):
+    """TODO:What does this method do?
+
+    Args:
+        df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
     # Visualizes the number of started trip for each zip code region for the month with the most trips
 
     # Changing format from object to DateTime
@@ -146,6 +183,13 @@ def visualize_plz(df):
 
 
 def visualize_distribution(df):
+    """TODO:What does this method do?
+
+    Args:
+        df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
     # Visualize the distribution of trip lengths per month. Compare the distributions to normal
     # distributions with mean and standard deviation as calculated before (1.d))
 
@@ -153,6 +197,13 @@ def visualize_distribution(df):
 
 
 def visualize_more(df):
+    """TODO:What does this method do?
+
+    Args:
+        df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
     # These visualizations are the minimum requirement. Use more visualizations wherever it makes
     # sense.
 
