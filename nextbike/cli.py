@@ -7,32 +7,27 @@ from . import prediction
 
 
 @click.command()
-@click.option('--train/--no-train', default=False, help="Train the model.")
-@click.option('--clean/--no-clean', default=False, help="Clean the data.")
-@click.option('--viso/--no-viso', default=False, help="Visualize the data.")
+@click.option('--train/--no-train', default=True, help="Train the model.")
+@click.option('--clean/--no-clean', default=True, help="Clean the data.")
+@click.option('--viso/--no-viso', default=True, help="Visualize the data.")
 @click.option('--show/--no-show', default=False, help="Show the dataframe.")
 def main(train, clean, viso, show):
     if clean:
         print("Do cleaning")
         cleaning()
-    elif viso:
+    if viso:
         print("Do visualizing")
         visualize()
-    elif train:
+    if train:
         print("Do training")
         predict()
-    elif show:
+    if show:
         print("Do show")
         print("Read in trips file...")
         df = io.read_trips()
         df.drop("Unnamed: 0", axis=1, inplace=True)
         print(df.info())
         print(df.head())
-
-    else:
-        print("Do all")
-        cleaning()
-        visualize()
 
 
 def cleaning():
