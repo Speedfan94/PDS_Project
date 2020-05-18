@@ -1,2 +1,2 @@
 from .datapreparation import *
-from ..plz import *
+from .plz import *

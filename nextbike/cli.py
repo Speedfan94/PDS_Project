@@ -1,6 +1,5 @@
 import click
 from . import io
-from . import model
 from . import datapreparation
 from . import visualization
 from . import prediction
@@ -33,7 +32,7 @@ def main(train, clean, viso, show):
 def cleaning():
     print("Read in nuremberg file...")
     df = io.read_file()
-    df_trips = datapreparation.datapreparation(df)
+    df_trips = datapreparation.data_preparation(df)
     df_trips_onlynuremberg = datapreparation.only_nuremberg_plz(df_trips)
     df_final = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
     datapreparation.get_aggregate_statistics(df_final)
@@ -56,9 +55,10 @@ def visualize():
 
 def predict():
     print("Read in trips file...")
-    df = io.read_trips()
-    df.drop("Unnamed: 0", axis=1, inplace=True)
-    prediction.k_fold_split(df)
+    df_trips = io.read_trips()
+    df_trips.drop("Unnamed: 0", axis=1, inplace=True)
+    X_train, X_test, y_train, y_test = prediction.simple_split(df_trips)
+    #prediction.train(X_train, y_train)
 
 
 if __name__ == '__main__':
