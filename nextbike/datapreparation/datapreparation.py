@@ -95,7 +95,9 @@ def data_preparation(df_original):
     df_merged.drop(["key_0",
                     "trip_start",
                     "b_number_end",
-                    "trip_end"], axis=1, inplace=True)
+                    "trip_end",
+                    "Unnamed: 0_start",
+                    "Unnamed: 0_end"], axis=1, inplace=True)
     df_merged.rename({"datetime_start": "Start Time",
                       "b_number_start": "Bike Number",
                       "datetime_end": "End Time",
@@ -147,6 +149,17 @@ def additional_feature_creation(df_trips):
     return df_trips
 
 
+def drop_noise(df_trips):
+    print("Drop trips < 1min & upper 2%...")
+    # Calculate lower and upper bounds for duration (in minutes)
+    # Hardcode lower bound because trips of about 2 minutes may be relevant
+    lower_duration_bound = 1.0
+    upper_duration_bound = df_trips["Duration"].quantile(0.90)
+    # Drop values out of duration bounds
+    df_trips = df_trips[(df_trips["Duration"] > lower_duration_bound) & (df_trips["Duration"] < upper_duration_bound)]
+    return df_trips
+
+
 def get_aggregate_statistics(df_trips):
     """TODO:What does this method do?
 
@@ -155,14 +168,6 @@ def get_aggregate_statistics(df_trips):
     Returns:
         no return
     """
-
-    print("Drop trips < 1min & upper 2%...")
-    # Calculate lower and upper bounds for duration (in minutes)
-    # Hardcode lower bound because trips of about 2 minutes may be relevant
-    lower_duration_bound = 1.0
-    upper_duration_bound = df_trips["Duration"].quantile(0.98)
-    # Drop values out of duration bounds
-    df_trips = df_trips[(df_trips["Duration"] > lower_duration_bound) & (df_trips["Duration"] < upper_duration_bound)]
 
     # Split into weekends df and weekdays df
     df_weekends = df_trips[df_trips['Weekend'] == True]
@@ -260,7 +265,7 @@ def only_nuremberg_plz(df):
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
 
     # adding plz to df
-    print("Add PLZ to trip and drop trips without start or end PLZ")
+    print("Filter on nuremberg postcodes...")
     # Add PLZ to trip and drop trips without start or end PLZ
 
     # TODO: resolve names of methods or file
