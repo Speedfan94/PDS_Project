@@ -65,7 +65,7 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
 
     # read img nuremberg
     # https://www.openstreetmap.org/export#map=12/49.4522/11.0770
-    nuremberg_png = plt.imread(io.get_path("nuremberg_v2_hum.png", "input"))
+    nuremberg_png = plt.imread(io.get_path(filename="nuremberg_v2_hum.png", io="input"))
 
     fig, ax = plt.subplots(figsize=(10, 10))
     free = ax.scatter(pDf_free["Longitude_start"],
@@ -85,7 +85,8 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
     ax.set_ylim(north, south)
     plt.legend((station, free, unused), ("Bikes at Station", "Free Bikes", "Unused Stations"), loc="upper left")
     ax.imshow(nuremberg_png, zorder=0, extent=[west, east, north, south], aspect='equal')
-    plt.savefig(io.get_path(str(pStr_datetime).replace(":", "-") + ".png", "output"), dpi=300)
+    plt.savefig(io.get_path(filename=(str(pStr_datetime).replace(":", "-") + ".png"), io="output",
+                            subfolder="data_plots"), dpi=300)
 
 
 def visualize_heatmap(df):
@@ -123,7 +124,7 @@ def visualize_heatmap(df):
     # plot heatmap
     m.add_child(plugins.HeatMap(stationArr, radius=20))
 
-    m.save(io.get_path("One-Day-in-Nuremberg.html", "output"))
+    m.save(io.get_path(filename="One-Day-in-Nuremberg.html", io="output", subfolder="data_plots"))
 
 
 def visualize_plz(df):
@@ -154,7 +155,7 @@ def visualize_plz(df):
     df_map["plz"] = df_map["plz_start"].astype(str)
 
     folium.Choropleth(
-        geo_data=f'{io.get_path("postleitzahlen-nuremberg.geojson", "input")}',
+        geo_data=f'{io.get_path(filename="postleitzahlen-nuremberg.geojson", io="input")}',
         name="choropleth",
         data=df_map,
         columns=["plz", "month"],
@@ -180,7 +181,7 @@ def visualize_plz(df):
 
     folium.LayerControl().add_to(m)
 
-    m.save(io.get_path("Month_Nuremberg.html", "output"))
+    m.save(io.get_path(filename="Month_Nuremberg.html", io="output"))
 
 
 def visualize_distribution(df):
