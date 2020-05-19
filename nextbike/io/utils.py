@@ -13,6 +13,15 @@ def get_data_path():
         raise FileNotFoundError
 
 
-def get_path(filename, subfolder=""):
-    path = os.path.join(get_data_path(), subfolder, filename)
+def get_path(filename, io, subfolder=""):
+    """ get you the path for given parameters
+
+    Args:
+        filename (str): name of file
+        io (str): input or output folder
+        subfolder (str): name of subfolder
+    Returns:
+        path (os.path)
+    """
+    path = os.path.join(get_data_path(), io, subfolder, filename)
     return path
