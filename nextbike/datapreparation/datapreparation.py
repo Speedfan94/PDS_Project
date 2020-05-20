@@ -12,12 +12,13 @@ pd.options.mode.chained_assignment = None
 
 # --> only PLZ = 189112
 
-# ToDo : comment all functions in detail
+
 def data_preparation(df_original):
     """clean data and create trips from it
 
     This method drops all duplicates from the raw data.
     It creates trip data for each bike by joining the rows with corresponding start and end .
+
     Args:
         df_original (DataFrame): DataFrame from raw csv
     Returns:
@@ -221,7 +222,7 @@ def plot_and_save_aggregate_stats(df_trips):
 
 
 def only_nuremberg_square(df):
-    """TODO:What does this method do?
+    """Filters out all data points not in nuremberg (based on a square of fixed longitude / latitude barriers)
 
     Args:
         df (DataFrame): DataFrame with trip data
@@ -233,7 +234,7 @@ def only_nuremberg_square(df):
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
     # Borders of our Data:
     # Latitude North: 49,56 --> ca. 13.6 km
-    # Todo: Constants are defined on the top
+    # Constants are defined on top of the file
 
     north = NUREMBERG_CITY_LONG + DISTANCE
     south = NUREMBERG_CITY_LONG - DISTANCE
@@ -256,7 +257,8 @@ def only_nuremberg_square(df):
 
 
 def only_nuremberg_plz(df):
-    """TODO:What does this method do?
+    """Calculates corresponding zip codes to each data point and
+    filters out all data points not in nuremberg (based on zip codes)
 
     Args:
         df (DataFrame): DataFrame with trip data
