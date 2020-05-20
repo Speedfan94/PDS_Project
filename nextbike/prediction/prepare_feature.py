@@ -55,7 +55,7 @@ def corr_analysis(df):
     # Draw the heatmap with the mask and correct aspect ratio
     sns.heatmap(corrs, mask=mask, cmap=cmap, center=0,
                 square=True, linewidths=.5, cbar_kws={"shrink": .5})
-    plt.savefig(io.get_path(filename="Correlation.png", io="output", subfolder="data_plots"))
+    plt.savefig(io.get_path(filename="Correlation.png", io_folder="output", subfolder="data_plots"))
 
 
 # TODO:remember to save the trained scaler for use on test data
