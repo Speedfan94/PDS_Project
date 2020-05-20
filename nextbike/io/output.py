@@ -9,8 +9,8 @@ def save_object(pObject, pFilename):
 
 
 # TODO: No need for save_fig and saveTrip => Create just one method
-def saveTrip(df):
-    df.to_csv(os.path.join(get_data_path(), "output/Trips.csv"))
+def save_trip(pDf, pFilename):
+    pDf.to_csv(os.path.join(get_data_path(), "output", pFilename))
     print("Saved Trips.csv")
 
 
