@@ -85,17 +85,15 @@ def data_preparation(df_original):
 
     print("Merge corresponding start and end...")
 
-    df_start = df_final[df_final["trip"] == "start"]
-    df_end = df_final[df_final["trip"] == "end"]
+    df_start = df_final[df_final["trip"] == "start"].drop("trip", axis=1)
+    df_end = df_final[df_final["trip"] == "end"].drop("trip", axis=1)
 
     df_end.reset_index(drop=True, inplace=True)
     df_start.reset_index(drop=True, inplace=True)
 
     df_merged = df_start.merge(df_end, left_on=df_start.index, right_on=df_end.index, suffixes=('_start', '_end'))
     df_merged.drop(["key_0",
-                    "trip_start",
                     "b_number_end",
-                    "trip_end",
                     "Unnamed: 0_start",
                     "Unnamed: 0_end"], axis=1, inplace=True)
     df_merged.rename({"datetime_start": "Start Time",
