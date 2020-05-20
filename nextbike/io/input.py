@@ -4,27 +4,18 @@ import os
 import pickle
 
 
-def read_file(path=os.path.join(get_data_path(), "input/nuremberg.csv")):
+def read_file(pFilename, pIo_folder, pSub_folder=""):
+    path = os.path.join(get_data_path(), pIo_folder, pSub_folder, pFilename)
     try:
+        print("Read", path)
         df = pd.read_csv(path)
         return df
     except FileNotFoundError:
         print("Data file not found. Path was " + path)
 
 
-def read_model():
-    path = os.path.join(get_data_path(), "output/model.pkl")
+def read_object(pFilename):
+    path = os.path.join(get_data_path(), "output", "models", pFilename)
     with open(path, "rb") as f:
-        model = pickle.load(f)
-    return model
-
-
-def read_trips():
-    path = os.path.join(get_data_path(), "output/Trips.csv")
-    try:
-        df = pd.read_csv(path)
-        return df
-    except FileNotFoundError:
-        print("Data file not found. Path was " + path)
-
-
+        my_object = pickle.load(f)
+    return my_object
