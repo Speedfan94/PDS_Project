@@ -14,9 +14,18 @@ def predict_by_regression(pX_test, py_test):
     show_errors_metrics(py_test, y_predictions, "Linear_Regression_Prediction.png")
 
 
-def show_errors_metrics(py_true, py_predictions, pFilename):
-    print(py_true.max())
-    print(py_predictions.max())
+def predict_by_svm(pX_test, py_test):
+    scaler = io.read_object("Standard_Scaler.pkl")
+    pca = io.read_object("PCA.pkl")
+    X_test_scaled = scaler.transform(pX_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    for i in range(4):
+        model = io.read_object("SVM_Regression_Model_"+str(i)+".pkl")
+        y_predictions = model.predict(X_test_transformed)
+        show_errors_metrics(py_test, y_predictions, "SVM_Regression_Prediction_"+str(i))
 
+
+def show_errors_metrics(py_true, py_predictions, pFilename):
+    print(pFilename)
     print("RMSE:", np.sqrt(metrics.mean_squared_error(py_true, py_predictions)))
     print("MAE", metrics.mean_absolute_error(py_true, py_predictions))
