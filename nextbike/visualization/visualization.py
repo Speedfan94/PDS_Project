@@ -6,6 +6,16 @@ import folium
 from folium import plugins
 
 
+# TODO: Approach for new moment in time method
+def test(df):
+    time = 0
+    a = df[df["End Time"] <= time]
+    # - 0 places
+    b=a.sort_by(by=["place_id", "datetime_end"])
+    c = b.drop_duplicates(["place_id"], keep="last")
+    print(c["p_bikes_end"])
+
+
 # TODO: To think of if the visualize_moment method is not just the helper for the plotting method...
 # TODO: Visualize the number of bikes at fixed stations => trace all bikes back? Maybe just because there
 def visualize_moment(df):
@@ -65,7 +75,7 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
 
     # read img nuremberg
     # https://www.openstreetmap.org/export#map=12/49.4522/11.0770
-    nuremberg_png = plt.imread(io.get_path(filename="nuremberg_v2_hum.png", io="input"))
+    nuremberg_png = plt.imread(io.get_path(filename="nuremberg_v2_hum.png", io_folder="input"))
 
     fig, ax = plt.subplots(figsize=(10, 10))
     free = ax.scatter(pDf_free["Longitude_start"],
@@ -85,7 +95,7 @@ def plot_map(pDf_stations, pDf_free, pDf_unused, pStr_datetime):
     ax.set_ylim(north, south)
     plt.legend((station, free, unused), ("Bikes at Station", "Free Bikes", "Unused Stations"), loc="upper left")
     ax.imshow(nuremberg_png, zorder=0, extent=[west, east, north, south], aspect='equal')
-    plt.savefig(io.get_path(filename=(str(pStr_datetime).replace(":", "-") + ".png"), io="output",
+    plt.savefig(io.get_path(filename=(str(pStr_datetime).replace(":", "-") + ".png"), io_folder="output",
                             subfolder="data_plots"), dpi=300)
 
 
@@ -124,7 +134,7 @@ def visualize_heatmap(df):
     # plot heatmap
     m.add_child(plugins.HeatMap(stationArr, radius=20))
 
-    m.save(io.get_path(filename="One-Day-in-Nuremberg.html", io="output", subfolder="data_plots"))
+    m.save(io.get_path(filename="One-Day-in-Nuremberg.html", io_folder="output", subfolder="data_plots"))
 
 
 def visualize_plz(df):
@@ -155,7 +165,7 @@ def visualize_plz(df):
     df_map["plz"] = df_map["plz_start"].astype(str)
 
     folium.Choropleth(
-        geo_data=f'{io.get_path(filename="postleitzahlen-nuremberg.geojson", io="input")}',
+        geo_data=f'{io.get_path(filename="postleitzahlen-nuremberg.geojson", io_folder="input")}',
         name="choropleth",
         data=df_map,
         columns=["plz", "month"],
@@ -181,7 +191,7 @@ def visualize_plz(df):
 
     folium.LayerControl().add_to(m)
 
-    m.save(io.get_path(filename="Month_Nuremberg.html", io="output"))
+    m.save(io.get_path(filename="Month_Nuremberg.html", io_folder="output"))
 
 
 def visualize_distribution(df):
