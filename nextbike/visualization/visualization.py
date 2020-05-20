@@ -37,7 +37,7 @@ def visualize_moment(df):
     # ToDo: Stations with no bikes right now visualize in grey
 
     for time in most_bookings:
-        print("Compute Moment at: " + time + " ...")
+        print("Compute Moment at: " + str(time) + " ...")
 
         df_moment = df[df["Start Time"] == time]
         # get stations without Start Place_id != 0.0
@@ -112,7 +112,7 @@ def visualize_heatmap(df):
     # before the start of a major public event.
     # https://alysivji.github.io/getting-started-with-folium.html
 
-    stations = df[pd.to_datetime(df["End Time"], format="%Y-%m-%d").dt.date == dt.date(year=2019, month=12, day=24)]
+    stations = df[df["End Time"].dt.date == dt.date(year=2019, month=12, day=24)]
 
     # ToDo: Maybe filter out 0.0 ids and duplicated places
     # todo: variable time to plot heatmap
@@ -146,9 +146,6 @@ def visualize_plz(df):
         no return
     """
     # Visualizes the number of started trip for each zip code region for the month with the most trips
-
-    # Changing format from object to DateTime
-    df["Start Time"] = pd.to_datetime(df["Start Time"])
 
     # find the month with the most trips:
     df["month"] = df["Start Time"].dt.month
