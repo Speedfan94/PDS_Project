@@ -35,7 +35,7 @@ def cleaning():
     df_trips = datapreparation.data_preparation(df)
     df_trips_onlynuremberg = datapreparation.only_nuremberg_plz(df_trips)
     df_final = datapreparation.additional_feature_creation(df_trips_onlynuremberg)
-    datapreparation.get_aggregate_statistics(df_final)
+    datapreparation.calculate_aggregate_statistics(df_final)
 
     print("Save trip dataframe...")
     io.saveTrip(df_final)

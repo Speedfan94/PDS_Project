@@ -114,7 +114,9 @@ def data_preparation(df_original):
 
 
 def additional_feature_creation(df_trips):
-    """TODO:What does this method do?
+    """Adds the following additional features to the df:
+        - Weekend: boolean whether it was a weekend day (True if it was a saturday or sunday)
+        - Duration: describes the trip duration in minutes
 
     Args:
         df_trips (DataFrame): DataFrame with trip data from nuremberg
@@ -147,8 +149,10 @@ def additional_feature_creation(df_trips):
     return df_trips
 
 
-def get_aggregate_statistics(df_trips):
-    """TODO:What does this method do?
+def calculate_aggregate_statistics(df_trips):
+    """Calculates the following aggregate statistics and saves them as png file:
+        - aggr_stats_whole_df: mean and standard deviation of the whole df, of all weekdays and of all weekends
+        - calls plot_and_save_aggregate_stats method to do the same on months, days and hours
 
     Args:
         df_trips (DataFrame): DataFrame with trip data from nuremberg
@@ -192,10 +196,13 @@ def get_aggregate_statistics(df_trips):
 
 
 def plot_and_save_aggregate_stats(df_trips):
-    """TODO:What does this method do?
+    """Aggregates on different time slots.
+        - Calculates count, mean and standard deviation
+        - Plots them as horizontal bar chart
+        - Saves plot as png file
 
     Args:
-        df_trips (DataFrame): DataFrame with trip data from nuremberg
+        df_trips (DataFrame): Modified DataFrame with trip data from nuremberg (with additional columns month, day and hour)
     Returns:
         no return
     """
