@@ -8,14 +8,14 @@ from sklearn import metrics
 
 
 def simple_split(df):
-    X = df.drop(["Place_start", "Place_end", "Duration"], axis=1)
+    X = df.drop(["Duration"], axis=1)
     y = df["Duration"]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
     return X_train, X_test, y_train, y_test
 
 
 def k_fold_split(df):
-    X = df.drop(["Place_start", "Place_end", "Duration"], axis=1)
+    X = df.drop(["Duration"], axis=1)
     y = df["Duration"]
 
     # the more folds we have, we will be reducing the error due the bias but increasing the error due to variance

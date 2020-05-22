@@ -3,6 +3,8 @@ from .. import io
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 
 
 def create_dummies(df):
@@ -18,8 +20,9 @@ def create_dummies(df):
     p_bike_start = df["p_bike_start"].astype(int)
     p_spot_end = df["p_spot_end"].astype(int)
     p_bike_end = df["p_bike_end"].astype(int)
-    df.drop(["p_spot_start", "p_bike_start", "p_spot_end", "p_bike_end"], axis=1, inplace=True)
-    df_dummies = pd.concat([df, p_spot_start, p_bike_start, p_spot_end, p_bike_end], axis=1)
+    weekend = df["Weekend"].astype(int)
+    df.drop(["p_spot_start", "p_bike_start", "p_spot_end", "p_bike_end", "Weekend"], axis=1, inplace=True)
+    df_dummies = pd.concat([df, p_spot_start, p_bike_start, p_spot_end, p_bike_end, weekend], axis=1)
     return df_dummies
 
 
@@ -45,22 +48,31 @@ def corr_analysis(df):
     # Draw the heatmap with the mask and correct aspect ratio
     sns.heatmap(corrs, mask=mask, cmap=cmap, center=0,
                 square=True, linewidths=.5, cbar_kws={"shrink": .5})
-    plt.savefig(io.get_path("Correlation.png", "output"))
+    plt.savefig(io.get_path(filename="Correlation.png", io_folder="output", subfolder="data_plots"))
 
 
 # TODO:remember to save the trained scaler for use on test data
-def scale(df):
-    """Scale all features in DataFrame
+def scale(pX_train):
+    """Scale all independent variables in DataFrame
 
     Args:
-        df (DataFrame): DataFrame of trips in nuremberg
+        pX_train (DataFrame): DataFrame of independent variables
+
     Returns:
-        df (DataFrame): DataFrame with scaled values
+        X_train_scaled (DataFrame): DataFrame with scaled values
     """
-    print()
+
+    st_scaler = StandardScaler()
+
+    # fit scaler on training set not on test set
+    st_scaler.fit(pX_train)
+    io.save_object(st_scaler, "Standard_Scaler.pkl")
+    X_train_scaled = st_scaler.transform(pX_train)
+
+    return X_train_scaled
 
 
-def do_pca(df):
+def do_pca(pX_scaled_train):
     """Do a PCA to analyse which features to take for further predictions.
 
     Args:
@@ -68,4 +80,13 @@ def do_pca(df):
     Returns:
         df (DataFrame): DataFrame with PCAs
     """
-    print("Start PCA...")
+    # df = df[["Duration", "month", "day", "hour"]]
+    pca = PCA(n_components=7)
+    pca.fit(pX_scaled_train)
+    print("Var explained:",pca.explained_variance_ratio_)
+    print("Sum var explained", sum(pca.explained_variance_ratio_))
+
+    io.save_object(pca, "PCA.pkl")
+    X_train_scaled_pca = pca.transform(pX_scaled_train)
+
+    return X_train_scaled_pca

@@ -8,7 +8,7 @@ import pandas as pd
 
 plz_value = {}
 
-with open(io.get_path("postleitzahlen-nuremberg.geojson", "input")) as f:
+with open(io.get_path(filename="postleitzahlen-nuremberg.geojson", io_folder="input")) as f:
     geo = json.load(f)
 
 

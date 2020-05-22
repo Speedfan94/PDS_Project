@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 from .. import io
 from . import plz
-# remove in the end, just for testing the time
 
 NUREMBERG_CITY_LONG = 49.452030
 NUREMBERG_CITY_LAT = 11.076750
 DISTANCE = 0.07 * 1
+
 # TODO: Fix that bad style right here:
 pd.options.mode.chained_assignment = None
 
@@ -87,17 +87,17 @@ def data_preparation(df_original):
 
     print("Merge corresponding start and end...")
 
-    df_start = df_final[df_final["trip"] == "start"]
-    df_end = df_final[df_final["trip"] == "end"]
+    df_start = df_final[df_final["trip"] == "start"].drop("trip", axis=1)
+    df_end = df_final[df_final["trip"] == "end"].drop("trip", axis=1)
 
     df_end.reset_index(drop=True, inplace=True)
     df_start.reset_index(drop=True, inplace=True)
 
     df_merged = df_start.merge(df_end, left_on=df_start.index, right_on=df_end.index, suffixes=('_start', '_end'))
     df_merged.drop(["key_0",
-                    "trip_start",
                     "b_number_end",
-                    "trip_end"], axis=1, inplace=True)
+                    "Unnamed: 0_start",
+                    "Unnamed: 0_end"], axis=1, inplace=True)
     df_merged.rename({"datetime_start": "Start Time",
                       "b_number_start": "Bike Number",
                       "datetime_end": "End Time",
@@ -127,9 +127,7 @@ def additional_feature_creation(df_trips):
     """
     # Calculating if trip was on a weekend, storing a boolean
     print("Adding column 'Weekend'...")
-    # First convert start time string into datetime object
-    df_trips['Start Time'] = pd.to_datetime(df_trips['Start Time'])
-    # Then check which day of the week the given date is
+    # Check which day of the week the given date is
     # Counting from 0 to 6 (0=monday, 1=tuesday, ...) a 5 or 6 means it was a saturday or sunday
     # So storing if dayofweek is bigger than 4 builds a weekend boolean
     df_trips['Weekend'] = (df_trips['Start Time'].dt.dayofweek > 4)
@@ -137,8 +135,6 @@ def additional_feature_creation(df_trips):
 
     # Calculation trip duration of each trip
     print("Adding column 'Duration'...")
-    # First also convert end time string into datetime object
-    df_trips['End Time'] = pd.to_datetime(df_trips['End Time'])
     # Calculating simply (end time - start time) for trip duration would
     #   build the duration in the format 'X days HH:MM:SS.sssssssss'
     # So to better calculate with this value in the future,
@@ -148,6 +144,17 @@ def additional_feature_creation(df_trips):
     df_trips['Duration'] = ((df_trips['End Time'] - df_trips['Start Time']).dt.total_seconds() / 60.0).round(2)
     print("DONE adding 'Duration'")
 
+    return df_trips
+
+
+def drop_noise(df_trips):
+    print("Drop trips < 1min & upper 2%...")
+    # Calculate lower and upper bounds for duration (in minutes)
+    # Hardcode lower bound because trips of about 2 minutes may be relevant
+    lower_duration_bound = 1.0
+    upper_duration_bound = df_trips["Duration"].quantile(0.90)
+    # Drop values out of duration bounds
+    df_trips = df_trips[(df_trips["Duration"] > lower_duration_bound) & (df_trips["Duration"] < upper_duration_bound)]
     return df_trips
 
 
@@ -161,14 +168,6 @@ def calculate_aggregate_statistics(df_trips):
     Returns:
         no return
     """
-
-    print("Drop trips < 1min & upper 2%...")
-    # Calculate lower and upper bounds for duration (in minutes)
-    # Hardcode lower bound because trips of about 2 minutes may be relevant
-    lower_duration_bound = 1.0
-    upper_duration_bound = df_trips["Duration"].quantile(0.98)
-    # Drop values out of duration bounds
-    df_trips = df_trips[(df_trips["Duration"] > lower_duration_bound) & (df_trips["Duration"] < upper_duration_bound)]
 
     # Split into weekends df and weekdays df
     df_weekends = df_trips[df_trips['Weekend'] == True]
@@ -270,7 +269,7 @@ def only_nuremberg_plz(df):
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
 
     # adding plz to df
-    print("Add PLZ to trip and drop trips without start or end PLZ")
+    print("Filter on nuremberg postcodes...")
     # Add PLZ to trip and drop trips without start or end PLZ
 
     # TODO: resolve names of methods or file
