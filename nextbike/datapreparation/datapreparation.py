@@ -12,12 +12,13 @@ pd.options.mode.chained_assignment = None
 
 # --> only PLZ = 189112
 
-# ToDo : comment all functions in detail
+
 def data_preparation(df_original):
     """clean data and create trips from it
 
     This method drops all duplicates from the raw data.
     It creates trip data for each bike by joining the rows with corresponding start and end .
+
     Args:
         df_original (DataFrame): DataFrame from raw csv
     Returns:
@@ -65,23 +66,24 @@ def data_preparation(df_original):
 
     # Eliminate Noise
     print("Eliminate booking errors...")
-    # check for multiple start entries
-    df_clean_unique_trip['valid_start'] = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
+    # compare the trip value of each row with the row above (to check for multiple start entries)
+    sr_previous_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
 
-    # check for multiple end entries
-    df_clean_unique_trip['valid_end'] = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift(-1))
+    # compare the trip value of each row with the row below (to check for multiple end entries)
+    sr_next_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift(-1))
 
     # check if entries are valid
-    valid_start_entry = ((df_clean_unique_trip['trip'] == 'start') & (df_clean_unique_trip['valid_start'] == True))
-    valid_end_entry = ((df_clean_unique_trip['trip'] == 'end') & (df_clean_unique_trip['valid_end'] == True))
-    df_clean_unique_trip['valid_trip'] = valid_start_entry | valid_end_entry
+    #   just checking if previous or next entry differs does not work!
+    #   because otherwise we would pick
+    #       either the first start and first end
+    #       or the last start and the last end of each trip
+    #   but we want to have the first start and the last end of each trip
+    #   so for starts only the previous entry is relevant, for ends only next entry is relevant
+    sr_valid_start = ((df_clean_unique_trip['trip'] == 'start') & (sr_previous_entry_differs == True))
+    sr_valid_end = ((df_clean_unique_trip['trip'] == 'end') & (sr_next_entry_differs == True))
 
-    # TODO: isnt this much easier than the code above
-    # df_clean_unique_trip[df_clean_unique_trip["valid_start"]==True | df_clean_unique_trip["valid_end"]==True]
-
-    # only take valid trip entries and drop validation values
-    df_final = df_clean_unique_trip[df_clean_unique_trip['valid_trip'] == True]
-    df_final.drop(['valid_start', 'valid_end', 'valid_trip'], axis=1, inplace=True)
+    # only take valid trip entries (valid starts and valid ends)
+    df_final = df_clean_unique_trip[(sr_valid_start == True) | (sr_valid_end == True)]
 
     print("Merge corresponding start and end...")
 
@@ -114,7 +116,9 @@ def data_preparation(df_original):
 
 
 def additional_feature_creation(df_trips):
-    """TODO:What does this method do?
+    """Adds the following additional features to the df:
+        - Weekend: boolean whether it was a weekend day (True if it was a saturday or sunday)
+        - Duration: describes the trip duration in minutes
 
     Args:
         df_trips (DataFrame): DataFrame with trip data from nuremberg
@@ -154,8 +158,10 @@ def drop_noise(df_trips):
     return df_trips
 
 
-def get_aggregate_statistics(df_trips):
-    """TODO:What does this method do?
+def calculate_aggregate_statistics(df_trips):
+    """Calculates the following aggregate statistics and saves them as png file:
+        - aggr_stats_whole_df: mean and standard deviation of the whole df, of all weekdays and of all weekends
+        - calls plot_and_save_aggregate_stats method to do the same on months, days and hours
 
     Args:
         df_trips (DataFrame): DataFrame with trip data from nuremberg
@@ -191,10 +197,13 @@ def get_aggregate_statistics(df_trips):
 
 
 def plot_and_save_aggregate_stats(df_trips):
-    """TODO:What does this method do?
+    """Aggregates on different time slots.
+        - Calculates count, mean and standard deviation
+        - Plots them as horizontal bar chart
+        - Saves plot as png file
 
     Args:
-        df_trips (DataFrame): DataFrame with trip data from nuremberg
+        df_trips (DataFrame): Modified DataFrame with trip data from nuremberg (with additional columns month, day and hour)
     Returns:
         no return
     """
@@ -212,7 +221,7 @@ def plot_and_save_aggregate_stats(df_trips):
 
 
 def only_nuremberg_square(df):
-    """TODO:What does this method do?
+    """Filters out all data points not in nuremberg (based on a square of fixed longitude / latitude barriers)
 
     Args:
         df (DataFrame): DataFrame with trip data
@@ -224,7 +233,7 @@ def only_nuremberg_square(df):
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
     # Borders of our Data:
     # Latitude North: 49,56 --> ca. 13.6 km
-    # Todo: Constants are defined on the top
+    # Constants are defined on top of the file
 
     north = NUREMBERG_CITY_LONG + DISTANCE
     south = NUREMBERG_CITY_LONG - DISTANCE
@@ -247,7 +256,8 @@ def only_nuremberg_square(df):
 
 
 def only_nuremberg_plz(df):
-    """TODO:What does this method do?
+    """Calculates corresponding zip codes to each data point and
+    filters out all data points not in nuremberg (based on zip codes)
 
     Args:
         df (DataFrame): DataFrame with trip data

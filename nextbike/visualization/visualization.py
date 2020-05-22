@@ -138,7 +138,8 @@ def visualize_heatmap(df):
 
 
 def visualize_plz(df):
-    """TODO:What does this method do?
+    """Plots a choropleth graph on a map based on the number of started trips in each zip code region.
+    This is be done for the month with the most trips
 
     Args:
         df (DataFrame): DataFrame with trip data from nuremberg
@@ -192,7 +193,7 @@ def visualize_plz(df):
 
 
 def visualize_distribution(df):
-    """TODO:What does this method do?
+    """Plots the distribution of trip lengths per month including quantile lines
 
     Args:
         df (DataFrame): DataFrame with trip data from nuremberg
@@ -235,14 +236,14 @@ def visualize_distribution(df):
 
 
 def visualize_more(df):
-    """TODO:What does this method do?
+    """TODO: What else can we visualize?
 
     Args:
         df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
         no return
     """
-    # These visualizations are the minimum requirement. Use more visualizations wherever it makes
-    # sense.
+    # These visualizations are the minimum requirement.
+    # Use more visualizations wherever it makes sense.
 
     print()

@@ -43,7 +43,7 @@ def cleaning():
     df_trips_add_feat = datapreparation.additional_feature_creation(df_trips)
     df_trips_filter_duration = datapreparation.drop_noise(df_trips_add_feat)
     df_trips_onlynuremberg = datapreparation.only_nuremberg_plz(df_trips_filter_duration)
-    datapreparation.get_aggregate_statistics(df_trips_onlynuremberg)
+    datapreparation.calculate_aggregate_statistics(df_trips_onlynuremberg)
     print("Save trip dataframe...")
     io.save_trip(df_trips_onlynuremberg, "Trips.csv")
 
