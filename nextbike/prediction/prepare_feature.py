@@ -26,13 +26,6 @@ def create_dummies(df):
     return df_dummies
 
 
-def cast_datetime(pDf):
-    pDf["Start Time"] = pd.to_datetime(pDf["Start Time"], format="%Y-%m-%d %H:%M:%S").values.astype(int)
-    pDf["End Time"] = pd.to_datetime(pDf["End Time"], format="%Y-%m-%d %H:%M:%S").values.astype(int)
-
-    return pDf
-
-
 def corr_analysis(df):
     """Plot correlation between features
 

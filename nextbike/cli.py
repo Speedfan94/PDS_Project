@@ -3,6 +3,7 @@ from . import io
 from . import datapreparation
 from . import visualization
 from . import prediction
+from . import utils
 
 
 @click.command()
@@ -29,6 +30,7 @@ def main(train, clean, viso, pred, show):
         print("Do show")
         print("Read in trips file...")
         df = io.read_file(pFilename="Trips.csv", pIo_folder="output")
+        utils.cast_datetime(df, ["Start Time", "End Time"])
         df.drop("Unnamed: 0", axis=1, inplace=True)
         print(df.info())
         print(df.head())
@@ -36,6 +38,7 @@ def main(train, clean, viso, pred, show):
 
 def cleaning():
     df = io.read_file(pFilename="nuremberg.csv", pIo_folder="input")
+    utils.cast_datetime(df, ["datetime"])
     df_trips = datapreparation.data_preparation(df)
     df_trips_add_feat = datapreparation.additional_feature_creation(df_trips)
     df_trips_filter_duration = datapreparation.drop_noise(df_trips_add_feat)
@@ -47,6 +50,7 @@ def cleaning():
 
 def visualize():
     df = io.read_file(pFilename="Trips.csv", pIo_folder="output")
+    utils.cast_datetime(df, ["Start Time", "End Time"])
     print("Visualize moment, heatmap and plz...")
     visualization.visualize_moment(df)
     visualization.visualize_heatmap(df)
@@ -56,14 +60,14 @@ def visualize():
 
 def features():
     df_trips = io.read_file(pFilename="Trips.csv", pIo_folder="output")
+    # For calculations, cast datetime into a number (total seconds)
+    utils.cast_datetime(df_trips, ["Start Time", "End Time"], as_numeric_value=True)
     df_trips.drop(["Unnamed: 0", "Place_start", "Place_end"], axis=1, inplace=True)
     print("Create dummie variables...")
     df = prediction.create_dummies(df_trips)
-    print("Cast datetime...")
-    df_fin = prediction.cast_datetime(df)
     print("Analyse correlations...")
-    prediction.corr_analysis(df_fin)
-    io.save_trip(df_fin, "Features.csv")
+    prediction.corr_analysis(df)
+    io.save_trip(df, "Features.csv")
 
 
 def training():

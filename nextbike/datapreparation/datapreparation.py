@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 from .. import io
 from . import plz
-# remove in the end, just for testing the time
 
 NUREMBERG_CITY_LONG = 49.452030
 NUREMBERG_CITY_LAT = 11.076750
 DISTANCE = 0.07 * 1
+
 # TODO: Fix that bad style right here:
 pd.options.mode.chained_assignment = None
 
@@ -123,9 +123,7 @@ def additional_feature_creation(df_trips):
     """
     # Calculating if trip was on a weekend, storing a boolean
     print("Adding column 'Weekend'...")
-    # First convert start time string into datetime object
-    df_trips['Start Time'] = pd.to_datetime(df_trips['Start Time'])
-    # Then check which day of the week the given date is
+    # Check which day of the week the given date is
     # Counting from 0 to 6 (0=monday, 1=tuesday, ...) a 5 or 6 means it was a saturday or sunday
     # So storing if dayofweek is bigger than 4 builds a weekend boolean
     df_trips['Weekend'] = (df_trips['Start Time'].dt.dayofweek > 4)
@@ -133,8 +131,6 @@ def additional_feature_creation(df_trips):
 
     # Calculation trip duration of each trip
     print("Adding column 'Duration'...")
-    # First also convert end time string into datetime object
-    df_trips['End Time'] = pd.to_datetime(df_trips['End Time'])
     # Calculating simply (end time - start time) for trip duration would
     #   build the duration in the format 'X days HH:MM:SS.sssssssss'
     # So to better calculate with this value in the future,
