@@ -14,6 +14,6 @@ def save_trip(pDf, pFilename):
     print("Saved Trips.csv")
 
 
-def save_fig(fig, file_name):
-    fig.savefig(os.path.join(get_data_path(), "output/", file_name))
-    print("Saved", file_name)
+def save_fig(pFig, pFile_name, pIo_folder="output", pSub_folder="data_plots"):
+    pFig.savefig(os.path.join(get_data_path(), pIo_folder, pSub_folder, pFile_name))
+    print("Saved", pFile_name)

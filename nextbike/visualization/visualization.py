@@ -189,7 +189,7 @@ def visualize_plz(df):
 
     folium.LayerControl().add_to(m)
 
-    m.save(io.get_path(filename="Month_Nuremberg.html", io_folder="output"))
+    m.save(io.get_path(filename="Month_Nuremberg.html", io_folder="output", subfolder="data_plots"))
 
 
 def visualize_distribution(df):
