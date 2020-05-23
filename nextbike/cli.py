@@ -25,7 +25,8 @@ def main(train, clean, viso, pred, show):
         training()
     if pred:
         print("Start Predicting")
-        predict()
+        #predict()
+        predict_geo()
     if show:
         print("Start Show")
         print("Read in trips file...")
@@ -97,6 +98,11 @@ def predict():
     prediction.predict_by_svm(X_test, y_test)
     print("Predict with NN")
     prediction.predict_by_nn(X_test, y_test)
+
+
+def predict_geo():
+    df_features = io.read_file(pFilename="Features.csv", pIo_folder="output")
+    prediction.predict_direction.train_pred(df_features)
 
 
 if __name__ == '__main__':
