@@ -51,10 +51,10 @@ def cleaning():
 def visualize():
     df = io.read_file(pFilename="Trips.csv", pIo_folder="output")
     utils.cast_datetime(df, ["Start Time", "End Time"])
-    visualization.folium_maps.visualize_stations_moment(df)
-    visualization.folium_maps.visualize_heatmap(df)
-    visualization.folium_maps.visualize_plz(df)
-    #visualization.visualize_plz(df)
+    visualization.geographical.visualize_stations_moment(df)
+    visualization.geographical.visualize_heatmap(df)
+    visualization.geographical.visualize_plz(df)
+    visualization.mathematical.plot_distribution(df)
     print("Visualizing Complete")
 
 
@@ -77,14 +77,14 @@ def training():
     print("Scale data...")
     X_scaled_train = prediction.scale(X_train)
     print("Do PCA...")
-    #X_train_transformed = prediction.do_pca(X_scaled_train)
+    X_train_transformed = prediction.do_pca(X_scaled_train)
     # ____________________________________________________________________________________
     print("Train linear regression...")
-    prediction.train_linear_regression(X_scaled_train, y_train)
+    prediction.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM regression...")
-    prediction.train_svm(X_scaled_train, y_train)
+    prediction.train_svm(X_train_transformed, y_train)
     print("Train NN...")
-    prediction.train_neural_network(X_scaled_train, y_train)
+    prediction.train_neural_network(X_train_transformed, y_train)
 
 
 def predict():
