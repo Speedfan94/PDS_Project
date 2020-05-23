@@ -1,2 +1,2 @@
-from .visualization import *
-from .folium_maps import *
+from .mathematical import *
+from .geographical import *
