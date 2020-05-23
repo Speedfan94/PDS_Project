@@ -14,20 +14,20 @@ from . import utils
 @click.option('--show/--no-show', default=False, help="Show the dataframe.")
 def main(train, clean, viso, pred, show):
     if clean:
-        print("Do cleaning")
+        print("Start Cleaning")
         cleaning()
     if viso:
-        print("Do visualizing")
+        print("Start Visualizing")
         visualize()
     if train:
-        print("Do training")
+        print("Start Training")
         features()
         training()
     if pred:
-        print("Do predicting")
+        print("Start Predicting")
         predict()
     if show:
-        print("Do show")
+        print("Start Show")
         print("Read in trips file...")
         df = io.read_file(pFilename="Trips.csv", pIo_folder="output")
         utils.cast_datetime(df, ["Start Time", "End Time"])
@@ -51,11 +51,11 @@ def cleaning():
 def visualize():
     df = io.read_file(pFilename="Trips.csv", pIo_folder="output")
     utils.cast_datetime(df, ["Start Time", "End Time"])
-    print("Visualize moment, heatmap and plz...")
-    visualization.visualize_moment(df)
-    visualization.visualize_heatmap(df)
-    visualization.visualize_plz(df)
-    print("DONE visualizing")
+    visualization.folium_maps.visualize_stations_moment(df)
+    visualization.folium_maps.visualize_heatmap(df)
+    visualization.folium_maps.visualize_plz(df)
+    #visualization.visualize_plz(df)
+    print("Visualizing Complete")
 
 
 def features():
