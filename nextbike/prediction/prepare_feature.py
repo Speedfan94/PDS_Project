@@ -15,7 +15,6 @@ def create_dummies(df):
     Returns:
         df_dummies (DataFrame): DataFrame with dummies instead of booleans
     """
-    print("Start dummie creation...")
     p_spot_start = df["p_spot_start"].astype(int)
     p_bike_start = df["p_bike_start"].astype(int)
     p_spot_end = df["p_spot_end"].astype(int)
@@ -76,12 +75,12 @@ def do_pca(pX_scaled_train):
     """Do a PCA to analyse which features to take for further predictions.
 
     Args:
-        df (DataFrame): DataFrame of scaled data
+        pX_scaled_train (DataFrame): DataFrame of scaled data
     Returns:
-        df (DataFrame): DataFrame with PCAs
+        X_train_scaled_pca (DataFrame): DataFrame with PCAs
     """
     # df = df[["Duration", "month", "day", "hour"]]
-    pca = PCA(n_components=7)
+    pca = PCA(n_components=15)
     pca.fit(pX_scaled_train)
     print("Var explained:",pca.explained_variance_ratio_)
     print("Sum var explained", sum(pca.explained_variance_ratio_))
