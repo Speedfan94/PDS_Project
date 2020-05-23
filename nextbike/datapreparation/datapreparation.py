@@ -114,6 +114,7 @@ def data_preparation(df_original):
 
     return df_merged
 
+
 #Todo: 30 lines for 2 lines of logic?
 def additional_feature_creation(df_trips):
     """Adds the following additional features to the df:
