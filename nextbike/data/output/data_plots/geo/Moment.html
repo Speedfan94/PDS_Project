@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4fdf0c6402424637b757bb02b927421e {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_4fdf0c6402424637b757bb02b927421e" ></div>
+        
+</body>
+<script>    
+    
+            var map_4fdf0c6402424637b757bb02b927421e = L.map(
+                "map_4fdf0c6402424637b757bb02b927421e",
+                {
+                    center: [49.45203, 11.07675],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 13,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_aaab86cf0f9847e1b6e785875a77641b = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+            var marker_a8c4853eae6b4494ac7f45de8efd792a = L.marker(
+                [49.452632522439, 11.095933914185],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_79f7ab99f2014163960c0910f891c53e = L.popup({"maxWidth": 400});
+
+        
+            var html_19d766d091624a9e8de0a2825d13df54 = $(`<div id="html_19d766d091624a9e8de0a2825d13df54" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Ohm-Hochschule (Wassertorstr.)<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_79f7ab99f2014163960c0910f891c53e.setContent(html_19d766d091624a9e8de0a2825d13df54);
+        
+
+        marker_a8c4853eae6b4494ac7f45de8efd792a.bindPopup(popup_79f7ab99f2014163960c0910f891c53e)
+        ;
+
+        
+    
+    
+            marker_a8c4853eae6b4494ac7f45de8efd792a.bindTooltip(
+                `<div>
+                     Ohm-Hochschule (Wassertorstr.)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9d4eba7fdf274e7d9d1e47266df5e547 = L.marker(
+                [49.453322999397, 11.07882142067],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_b0a4bf344b0f4da5a1f6f7985f9cf7b7 = L.popup({"maxWidth": 400});
+
+        
+            var html_d35be0aad3d747058f390de98674f6f6 = $(`<div id="html_d35be0aad3d747058f390de98674f6f6" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Heilig-Geist-Spital (Spitalgasse)<br><b>Bikes at Station: </b>3</div>`)[0];
+            popup_b0a4bf344b0f4da5a1f6f7985f9cf7b7.setContent(html_d35be0aad3d747058f390de98674f6f6);
+        
+
+        marker_9d4eba7fdf274e7d9d1e47266df5e547.bindPopup(popup_b0a4bf344b0f4da5a1f6f7985f9cf7b7)
+        ;
+
+        
+    
+    
+            marker_9d4eba7fdf274e7d9d1e47266df5e547.bindTooltip(
+                `<div>
+                     Heilig-Geist-Spital (Spitalgasse)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1abfc6f875ae422f98833925bc1210b9 = L.marker(
+                [49.451031833901, 11.069653630257001],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_a5f4658a8008466990510d9ffce94ba2 = L.popup({"maxWidth": 400});
+
+        
+            var html_a6b285fd6a4546b2922ecfd7ffc3e243 = $(`<div id="html_a6b285fd6a4546b2922ecfd7ffc3e243" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Vordere Ledergasse / Schlotfegergasse<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_a5f4658a8008466990510d9ffce94ba2.setContent(html_a6b285fd6a4546b2922ecfd7ffc3e243);
+        
+
+        marker_1abfc6f875ae422f98833925bc1210b9.bindPopup(popup_a5f4658a8008466990510d9ffce94ba2)
+        ;
+
+        
+    
+    
+            marker_1abfc6f875ae422f98833925bc1210b9.bindTooltip(
+                `<div>
+                     Vordere Ledergasse / Schlotfegergasse
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9e115e8d7ef94116b6d096e063e9980d = L.marker(
+                [49.463333822297, 11.078065037727],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_57e324450aa547059767da0fb2e35806 = L.popup({"maxWidth": 400});
+
+        
+            var html_74c7badd17044aeca954d63d85992e31 = $(`<div id="html_74c7badd17044aeca954d63d85992e31" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Kaulbachplatz<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_57e324450aa547059767da0fb2e35806.setContent(html_74c7badd17044aeca954d63d85992e31);
+        
+
+        marker_9e115e8d7ef94116b6d096e063e9980d.bindPopup(popup_57e324450aa547059767da0fb2e35806)
+        ;
+
+        
+    
+    
+            marker_9e115e8d7ef94116b6d096e063e9980d.bindTooltip(
+                `<div>
+                     U-Bhf Kaulbachplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c349b686c8c24383baea1cfe4dbcf75b = L.marker(
+                [49.459501, 11.060263],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_764f887802de45549c396b849dfee147 = L.popup({"maxWidth": 400});
+
+        
+            var html_aaf210376e5e46d7aa064251d1d8f041 = $(`<div id="html_aaf210376e5e46d7aa064251d1d8f041" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>St. Johannis<br><b>Bikes at Station: </b>8</div>`)[0];
+            popup_764f887802de45549c396b849dfee147.setContent(html_aaf210376e5e46d7aa064251d1d8f041);
+        
+
+        marker_c349b686c8c24383baea1cfe4dbcf75b.bindPopup(popup_764f887802de45549c396b849dfee147)
+        ;
+
+        
+    
+    
+            marker_c349b686c8c24383baea1cfe4dbcf75b.bindTooltip(
+                `<div>
+                     St. Johannis
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_81e460add0b6427b86a6be3b1b111225 = L.marker(
+                [49.45879764913, 11.081235408783],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_0ffb9f17a06a40e6869c56a0b7bed856 = L.popup({"maxWidth": 400});
+
+        
+            var html_23c404fc16484a778d125265349d1adb = $(`<div id="html_23c404fc16484a778d125265349d1adb" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Maxtor<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_0ffb9f17a06a40e6869c56a0b7bed856.setContent(html_23c404fc16484a778d125265349d1adb);
+        
+
+        marker_81e460add0b6427b86a6be3b1b111225.bindPopup(popup_0ffb9f17a06a40e6869c56a0b7bed856)
+        ;
+
+        
+    
+    
+            marker_81e460add0b6427b86a6be3b1b111225.bindTooltip(
+                `<div>
+                     Maxtor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d9e716ed94d14220a8cee83c8674be8b = L.marker(
+                [49.447680331969, 11.066080927848999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_5a314340771d48a4bbfd33ee4593eeef = L.popup({"maxWidth": 400});
+
+        
+            var html_aca11c7d3d014ee29198b8e58a9e69de = $(`<div id="html_aca11c7d3d014ee29198b8e58a9e69de" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Plärrer<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_5a314340771d48a4bbfd33ee4593eeef.setContent(html_aca11c7d3d014ee29198b8e58a9e69de);
+        
+
+        marker_d9e716ed94d14220a8cee83c8674be8b.bindPopup(popup_5a314340771d48a4bbfd33ee4593eeef)
+        ;
+
+        
+    
+    
+            marker_d9e716ed94d14220a8cee83c8674be8b.bindTooltip(
+                `<div>
+                     Plärrer
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_44705d26cbfc41358267c3d9f69f5d43 = L.marker(
+                [49.457127, 11.089604],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_c21a64067a5e49dd9a6f5966fa63f432 = L.popup({"maxWidth": 400});
+
+        
+            var html_73c4e572e9de45928d37530a570387e9 = $(`<div id="html_73c4e572e9de45928d37530a570387e9" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Rathenauplatz<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_c21a64067a5e49dd9a6f5966fa63f432.setContent(html_73c4e572e9de45928d37530a570387e9);
+        
+
+        marker_44705d26cbfc41358267c3d9f69f5d43.bindPopup(popup_c21a64067a5e49dd9a6f5966fa63f432)
+        ;
+
+        
+    
+    
+            marker_44705d26cbfc41358267c3d9f69f5d43.bindTooltip(
+                `<div>
+                     Rathenauplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6d53a6bc100a4132bb2b75be7011f8b6 = L.marker(
+                [49.42877100000001, 11.086338],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_1a31676107734be6b7eb151330719e45 = L.popup({"maxWidth": 400});
+
+        
+            var html_8e24e409b3644a76aa6170f277928694 = $(`<div id="html_8e24e409b3644a76aa6170f277928694" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Frankenstraße<br><b>Bikes at Station: </b>6</div>`)[0];
+            popup_1a31676107734be6b7eb151330719e45.setContent(html_8e24e409b3644a76aa6170f277928694);
+        
+
+        marker_6d53a6bc100a4132bb2b75be7011f8b6.bindPopup(popup_1a31676107734be6b7eb151330719e45)
+        ;
+
+        
+    
+    
+            marker_6d53a6bc100a4132bb2b75be7011f8b6.bindTooltip(
+                `<div>
+                     Frankenstraße
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_59dd8f69119f4d2fa1d419a6d554ff4b = L.marker(
+                [49.447097893592996, 11.074706912040998],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_c7b22489cc2e42c7a774abc5bb4d5fc4 = L.popup({"maxWidth": 400});
+
+        
+            var html_21872a34fa984b3681bda9a5d82ff361 = $(`<div id="html_21872a34fa984b3681bda9a5d82ff361" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Opernhaus (Germanisches Nationalmuseum)  <br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_c7b22489cc2e42c7a774abc5bb4d5fc4.setContent(html_21872a34fa984b3681bda9a5d82ff361);
+        
+
+        marker_59dd8f69119f4d2fa1d419a6d554ff4b.bindPopup(popup_c7b22489cc2e42c7a774abc5bb4d5fc4)
+        ;
+
+        
+    
+    
+            marker_59dd8f69119f4d2fa1d419a6d554ff4b.bindTooltip(
+                `<div>
+                     U-Bhf Opernhaus (Germanisches Nationalmuseum)  
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_de2f3fadeda54e57bdcd25f550568efa = L.marker(
+                [49.455837229762004, 11.07890188694],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_c1fa0ecd3f734c5db45a2c9937670e93 = L.popup({"maxWidth": 400});
+
+        
+            var html_a6e60715304c4840a0cd5106561d156b = $(`<div id="html_a6e60715304c4840a0cd5106561d156b" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Theresienstr. / Rathaus<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_c1fa0ecd3f734c5db45a2c9937670e93.setContent(html_a6e60715304c4840a0cd5106561d156b);
+        
+
+        marker_de2f3fadeda54e57bdcd25f550568efa.bindPopup(popup_c1fa0ecd3f734c5db45a2c9937670e93)
+        ;
+
+        
+    
+    
+            marker_de2f3fadeda54e57bdcd25f550568efa.bindTooltip(
+                `<div>
+                     Theresienstr. / Rathaus
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c799e769b2f94c258f9464a75170073d = L.marker(
+                [49.464268200890004, 11.085940003394999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_3432ece69a644d699f38835af119e261 = L.popup({"maxWidth": 400});
+
+        
+            var html_057e1af9072b448f8876de22020364aa = $(`<div id="html_057e1af9072b448f8876de22020364aa" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Schillerplatz<br><b>Bikes at Station: </b>4</div>`)[0];
+            popup_3432ece69a644d699f38835af119e261.setContent(html_057e1af9072b448f8876de22020364aa);
+        
+
+        marker_c799e769b2f94c258f9464a75170073d.bindPopup(popup_3432ece69a644d699f38835af119e261)
+        ;
+
+        
+    
+    
+            marker_c799e769b2f94c258f9464a75170073d.bindTooltip(
+                `<div>
+                     Schillerplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_590fec5aa09d482893b109c5e69d70c2 = L.marker(
+                [49.45298, 11.087437],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_1097c652732a40dc9a7175eda98bc4a4 = L.popup({"maxWidth": 400});
+
+        
+            var html_f12872193f774dacaf991283e2a97049 = $(`<div id="html_f12872193f774dacaf991283e2a97049" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Wöhrder Wiese<br><b>Bikes at Station: </b>6</div>`)[0];
+            popup_1097c652732a40dc9a7175eda98bc4a4.setContent(html_f12872193f774dacaf991283e2a97049);
+        
+
+        marker_590fec5aa09d482893b109c5e69d70c2.bindPopup(popup_1097c652732a40dc9a7175eda98bc4a4)
+        ;
+
+        
+    
+    
+            marker_590fec5aa09d482893b109c5e69d70c2.bindTooltip(
+                `<div>
+                     Wöhrder Wiese
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3ce9aee53e574fa3818db35a95104c6c = L.marker(
+                [49.460736295655, 11.092527508736],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_16d98759082641289740861cb82581b7 = L.popup({"maxWidth": 400});
+
+        
+            var html_919f415ce5ff46d19e84e5279b6172ff = $(`<div id="html_919f415ce5ff46d19e84e5279b6172ff" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Rennweg<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_16d98759082641289740861cb82581b7.setContent(html_919f415ce5ff46d19e84e5279b6172ff);
+        
+
+        marker_3ce9aee53e574fa3818db35a95104c6c.bindPopup(popup_16d98759082641289740861cb82581b7)
+        ;
+
+        
+    
+    
+            marker_3ce9aee53e574fa3818db35a95104c6c.bindTooltip(
+                `<div>
+                     U-Bhf Rennweg
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ca4f99a958a04642a55e9c502cfb8312 = L.marker(
+                [49.449957704225, 11.082774996758001],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_a271a8eebc154730a8fc5936cdc22933 = L.popup({"maxWidth": 400});
+
+        
+            var html_f1741997c5694b6f83e316afe3ec9236 = $(`<div id="html_f1741997c5694b6f83e316afe3ec9236" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Lorenzer Str. / Marientormauer<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_a271a8eebc154730a8fc5936cdc22933.setContent(html_f1741997c5694b6f83e316afe3ec9236);
+        
+
+        marker_ca4f99a958a04642a55e9c502cfb8312.bindPopup(popup_a271a8eebc154730a8fc5936cdc22933)
+        ;
+
+        
+    
+    
+            marker_ca4f99a958a04642a55e9c502cfb8312.bindTooltip(
+                `<div>
+                     Lorenzer Str. / Marientormauer
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7d822b909da247bc8adfc8e02b1aeabf = L.marker(
+                [49.44809, 11.081892],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_8568a93671564ad3b9f3d8714e297357 = L.popup({"maxWidth": 400});
+
+        
+            var html_7416c24606c74633ae8e75d2d238a370 = $(`<div id="html_7416c24606c74633ae8e75d2d238a370" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Königstor<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_8568a93671564ad3b9f3d8714e297357.setContent(html_7416c24606c74633ae8e75d2d238a370);
+        
+
+        marker_7d822b909da247bc8adfc8e02b1aeabf.bindPopup(popup_8568a93671564ad3b9f3d8714e297357)
+        ;
+
+        
+    
+    
+            marker_7d822b909da247bc8adfc8e02b1aeabf.bindTooltip(
+                `<div>
+                     Königstor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a9b3b662205a41f692e77506411a52ae = L.marker(
+                [49.462407, 11.072183],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_80263d49e83945bc8f3b30e83cd9affa = L.popup({"maxWidth": 400});
+
+        
+            var html_e0a29ce0ea8241f2877b9892621ea152 = $(`<div id="html_e0a29ce0ea8241f2877b9892621ea152" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Friedrich-Ebert-Platz<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_80263d49e83945bc8f3b30e83cd9affa.setContent(html_e0a29ce0ea8241f2877b9892621ea152);
+        
+
+        marker_a9b3b662205a41f692e77506411a52ae.bindPopup(popup_80263d49e83945bc8f3b30e83cd9affa)
+        ;
+
+        
+    
+    
+            marker_a9b3b662205a41f692e77506411a52ae.bindTooltip(
+                `<div>
+                     Friedrich-Ebert-Platz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_29f6d2abbf1d4247b52eea56a8582bae = L.marker(
+                [49.46073978236, 11.105536222458],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_13e8dd8b082c4d1095e8598608b45efa = L.popup({"maxWidth": 400});
+
+        
+            var html_25f57705cfd84f678a7032cfffe00d1e = $(`<div id="html_25f57705cfd84f678a7032cfffe00d1e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Äußere Sulzbacher Str. / B4R<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_13e8dd8b082c4d1095e8598608b45efa.setContent(html_25f57705cfd84f678a7032cfffe00d1e);
+        
+
+        marker_29f6d2abbf1d4247b52eea56a8582bae.bindPopup(popup_13e8dd8b082c4d1095e8598608b45efa)
+        ;
+
+        
+    
+    
+            marker_29f6d2abbf1d4247b52eea56a8582bae.bindTooltip(
+                `<div>
+                     Äußere Sulzbacher Str. / B4R
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_97f5cb7cac304bf284907aa073f3c5cf = L.marker(
+                [49.464245, 11.100174],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_8ab410eb88094133b872d021b579c4a8 = L.popup({"maxWidth": 400});
+
+        
+            var html_91c544a979c3445385e04f1bb1cb6e4b = $(`<div id="html_91c544a979c3445385e04f1bb1cb6e4b" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Schoppershof<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_8ab410eb88094133b872d021b579c4a8.setContent(html_91c544a979c3445385e04f1bb1cb6e4b);
+        
+
+        marker_97f5cb7cac304bf284907aa073f3c5cf.bindPopup(popup_8ab410eb88094133b872d021b579c4a8)
+        ;
+
+        
+    
+    
+            marker_97f5cb7cac304bf284907aa073f3c5cf.bindTooltip(
+                `<div>
+                     Schoppershof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c6b2e8a1bfbd4a9a800d5c790e151400 = L.marker(
+                [49.443982, 11.054495],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_296151185c2d4642bf85e4bb7996b68a = L.popup({"maxWidth": 400});
+
+        
+            var html_82157e978fb84988be5c9a90b6fc746e = $(`<div id="html_82157e978fb84988be5c9a90b6fc746e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>St. Leonhard<br><b>Bikes at Station: </b>9</div>`)[0];
+            popup_296151185c2d4642bf85e4bb7996b68a.setContent(html_82157e978fb84988be5c9a90b6fc746e);
+        
+
+        marker_c6b2e8a1bfbd4a9a800d5c790e151400.bindPopup(popup_296151185c2d4642bf85e4bb7996b68a)
+        ;
+
+        
+    
+    
+            marker_c6b2e8a1bfbd4a9a800d5c790e151400.bindTooltip(
+                `<div>
+                     St. Leonhard
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_977e6f5e47b84a11a6d1f9209a1b6d97 = L.marker(
+                [49.448755, 11.097747],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_576d1b3653c24e5ea2fecb8e14f515a0 = L.popup({"maxWidth": 400});
+
+        
+            var html_6e01329426fa4dda824239bd4c3eafb0 = $(`<div id="html_6e01329426fa4dda824239bd4c3eafb0" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Dürrenhof<br><b>Bikes at Station: </b>6</div>`)[0];
+            popup_576d1b3653c24e5ea2fecb8e14f515a0.setContent(html_6e01329426fa4dda824239bd4c3eafb0);
+        
+
+        marker_977e6f5e47b84a11a6d1f9209a1b6d97.bindPopup(popup_576d1b3653c24e5ea2fecb8e14f515a0)
+        ;
+
+        
+    
+    
+            marker_977e6f5e47b84a11a6d1f9209a1b6d97.bindTooltip(
+                `<div>
+                     Dürrenhof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bdecc875d95349c983f09d459173fa52 = L.marker(
+                [49.451257, 11.103913],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_34793f9ebe6749f180ea2f8e70ba9ff0 = L.popup({"maxWidth": 400});
+
+        
+            var html_2c440b1bf2014f54b5bb56c50e0917d8 = $(`<div id="html_2c440b1bf2014f54b5bb56c50e0917d8" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Wöhrder See<br><b>Bikes at Station: </b>15</div>`)[0];
+            popup_34793f9ebe6749f180ea2f8e70ba9ff0.setContent(html_2c440b1bf2014f54b5bb56c50e0917d8);
+        
+
+        marker_bdecc875d95349c983f09d459173fa52.bindPopup(popup_34793f9ebe6749f180ea2f8e70ba9ff0)
+        ;
+
+        
+    
+    
+            marker_bdecc875d95349c983f09d459173fa52.bindTooltip(
+                `<div>
+                     Wöhrder See
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_38a0ff9b673a4d1eae497d567cf6450c = L.marker(
+                [49.450868, 11.055621],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_8423d60cb0c448599d2459dab5124b0d = L.popup({"maxWidth": 400});
+
+        
+            var html_3e6a6389e63e4f61aca270fc48b48c37 = $(`<div id="html_3e6a6389e63e4f61aca270fc48b48c37" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Gostenhof<br><b>Bikes at Station: </b>4</div>`)[0];
+            popup_8423d60cb0c448599d2459dab5124b0d.setContent(html_3e6a6389e63e4f61aca270fc48b48c37);
+        
+
+        marker_38a0ff9b673a4d1eae497d567cf6450c.bindPopup(popup_8423d60cb0c448599d2459dab5124b0d)
+        ;
+
+        
+    
+    
+            marker_38a0ff9b673a4d1eae497d567cf6450c.bindTooltip(
+                `<div>
+                     Gostenhof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_280cb670d9cb4012a2467481be884b17 = L.marker(
+                [49.453567, 11.048017],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_2c6a2fa0d44a4330b1b3d3dfadca0478 = L.popup({"maxWidth": 400});
+
+        
+            var html_1b760f1035734089aca51913cfbec153 = $(`<div id="html_1b760f1035734089aca51913cfbec153" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Bärenschanze<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_2c6a2fa0d44a4330b1b3d3dfadca0478.setContent(html_1b760f1035734089aca51913cfbec153);
+        
+
+        marker_280cb670d9cb4012a2467481be884b17.bindPopup(popup_2c6a2fa0d44a4330b1b3d3dfadca0478)
+        ;
+
+        
+    
+    
+            marker_280cb670d9cb4012a2467481be884b17.bindTooltip(
+                `<div>
+                     Bärenschanze
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d6eb9e4d7cd246dd880cb05de9bc784e = L.marker(
+                [49.433846, 11.111491000000001],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_5aaa9aa0581c42d78bf805a5bfb1c059 = L.popup({"maxWidth": 400});
+
+        
+            var html_e1796e5cbf094acfa2080f4cfca98b00 = $(`<div id="html_e1796e5cbf094acfa2080f4cfca98b00" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Doku-Zentrum<br><b>Bikes at Station: </b>7</div>`)[0];
+            popup_5aaa9aa0581c42d78bf805a5bfb1c059.setContent(html_e1796e5cbf094acfa2080f4cfca98b00);
+        
+
+        marker_d6eb9e4d7cd246dd880cb05de9bc784e.bindPopup(popup_5aaa9aa0581c42d78bf805a5bfb1c059)
+        ;
+
+        
+    
+    
+            marker_d6eb9e4d7cd246dd880cb05de9bc784e.bindTooltip(
+                `<div>
+                     Doku-Zentrum
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9fc20f76e58645da96ffffb8270ec48a = L.marker(
+                [49.435604999999995, 11.116642],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_0471ae52b12444c7a374f395c7e3f96e = L.popup({"maxWidth": 400});
+
+        
+            var html_2f3affbbb8ee4bc3ae67bd1fb21c37c2 = $(`<div id="html_2f3affbbb8ee4bc3ae67bd1fb21c37c2" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Dutzendteich<br><b>Bikes at Station: </b>8</div>`)[0];
+            popup_0471ae52b12444c7a374f395c7e3f96e.setContent(html_2f3affbbb8ee4bc3ae67bd1fb21c37c2);
+        
+
+        marker_9fc20f76e58645da96ffffb8270ec48a.bindPopup(popup_0471ae52b12444c7a374f395c7e3f96e)
+        ;
+
+        
+    
+    
+            marker_9fc20f76e58645da96ffffb8270ec48a.bindTooltip(
+                `<div>
+                     Dutzendteich
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cb00d4f90ccb442da46a0ea720a7fbe2 = L.marker(
+                [49.438548, 11.102160000000001],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_4a6ed138ef7e4b499688202ecf2df2a4 = L.popup({"maxWidth": 400});
+
+        
+            var html_a3463cb6b50340de91db332a866a7cdd = $(`<div id="html_a3463cb6b50340de91db332a866a7cdd" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Platz der Opfer des Faschismus<br><b>Bikes at Station: </b>10</div>`)[0];
+            popup_4a6ed138ef7e4b499688202ecf2df2a4.setContent(html_a3463cb6b50340de91db332a866a7cdd);
+        
+
+        marker_cb00d4f90ccb442da46a0ea720a7fbe2.bindPopup(popup_4a6ed138ef7e4b499688202ecf2df2a4)
+        ;
+
+        
+    
+    
+            marker_cb00d4f90ccb442da46a0ea720a7fbe2.bindTooltip(
+                `<div>
+                     Platz der Opfer des Faschismus
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0a24e265cea84f40acc36c5205841225 = L.marker(
+                [49.443170613507995, 11.099774837494],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_9b2c5edfb2094fe48f863fd809a10978 = L.popup({"maxWidth": 400});
+
+        
+            var html_cfc66e184be845abb6561bda9e711a7a = $(`<div id="html_cfc66e184be845abb6561bda9e711a7a" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Peterskirche / Regensburger Str.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_9b2c5edfb2094fe48f863fd809a10978.setContent(html_cfc66e184be845abb6561bda9e711a7a);
+        
+
+        marker_0a24e265cea84f40acc36c5205841225.bindPopup(popup_9b2c5edfb2094fe48f863fd809a10978)
+        ;
+
+        
+    
+    
+            marker_0a24e265cea84f40acc36c5205841225.bindTooltip(
+                `<div>
+                     Peterskirche / Regensburger Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d174537513ad4daab8226a2fb87d59d6 = L.marker(
+                [49.443941445511996, 11.054402589798],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_f19ef5cbafb8441ab0dadb157bfda2c0 = L.popup({"maxWidth": 400});
+
+        
+            var html_b355ac93474a4ddca936babae229cda5 = $(`<div id="html_b355ac93474a4ddca936babae229cda5" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Rothenburger Str. (Villa Leon)<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_f19ef5cbafb8441ab0dadb157bfda2c0.setContent(html_b355ac93474a4ddca936babae229cda5);
+        
+
+        marker_d174537513ad4daab8226a2fb87d59d6.bindPopup(popup_f19ef5cbafb8441ab0dadb157bfda2c0)
+        ;
+
+        
+    
+    
+            marker_d174537513ad4daab8226a2fb87d59d6.bindTooltip(
+                `<div>
+                     U-Bhf Rothenburger Str. (Villa Leon)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bc7354a19ff54878a119849f9288094e = L.marker(
+                [49.438658000000004, 11.035631],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_25f9c9ee87d847b2b792b62a00f3f754 = L.popup({"maxWidth": 400});
+
+        
+            var html_065048fba8344990ac741f202b150061 = $(`<div id="html_065048fba8344990ac741f202b150061" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Gustav-Adolf-Str.<br><b>Bikes at Station: </b>10</div>`)[0];
+            popup_25f9c9ee87d847b2b792b62a00f3f754.setContent(html_065048fba8344990ac741f202b150061);
+        
+
+        marker_bc7354a19ff54878a119849f9288094e.bindPopup(popup_25f9c9ee87d847b2b792b62a00f3f754)
+        ;
+
+        
+    
+    
+            marker_bc7354a19ff54878a119849f9288094e.bindTooltip(
+                `<div>
+                     Gustav-Adolf-Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2c982aecab5f4a8f84d632a235cbe3e0 = L.marker(
+                [49.436354675701, 11.091309785843],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_efa7f8f35c72457e80b54b61b317eead = L.popup({"maxWidth": 400});
+
+        
+            var html_166e78978cbe4cf192a75f2eead55559 = $(`<div id="html_166e78978cbe4cf192a75f2eead55559" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Allersberger Str. / Gudrunstr.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_efa7f8f35c72457e80b54b61b317eead.setContent(html_166e78978cbe4cf192a75f2eead55559);
+        
+
+        marker_2c982aecab5f4a8f84d632a235cbe3e0.bindPopup(popup_efa7f8f35c72457e80b54b61b317eead)
+        ;
+
+        
+    
+    
+            marker_2c982aecab5f4a8f84d632a235cbe3e0.bindTooltip(
+                `<div>
+                     Allersberger Str. / Gudrunstr.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_67a40f372e044bf1a8cd3b6976a86df3 = L.marker(
+                [49.440019, 11.080525999999999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_561635b235bc46c0990b46685e6bda64 = L.popup({"maxWidth": 400});
+
+        
+            var html_5571df9717274fd981becaea5eca9d4c = $(`<div id="html_5571df9717274fd981becaea5eca9d4c" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Aufseßplatz<br><b>Bikes at Station: </b>6</div>`)[0];
+            popup_561635b235bc46c0990b46685e6bda64.setContent(html_5571df9717274fd981becaea5eca9d4c);
+        
+
+        marker_67a40f372e044bf1a8cd3b6976a86df3.bindPopup(popup_561635b235bc46c0990b46685e6bda64)
+        ;
+
+        
+    
+    
+            marker_67a40f372e044bf1a8cd3b6976a86df3.bindTooltip(
+                `<div>
+                     Aufseßplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a29942954fe9409083b18cec533d79f4 = L.marker(
+                [49.429569190849, 11.017650961875999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_fe283eb135044a26932192b34145b303 = L.popup({"maxWidth": 400});
+
+        
+            var html_f7190bc8a441499887ab3dea8ac110fe = $(`<div id="html_f7190bc8a441499887ab3dea8ac110fe" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Südwestpark (Fitnessstudio)<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_fe283eb135044a26932192b34145b303.setContent(html_f7190bc8a441499887ab3dea8ac110fe);
+        
+
+        marker_a29942954fe9409083b18cec533d79f4.bindPopup(popup_fe283eb135044a26932192b34145b303)
+        ;
+
+        
+    
+    
+            marker_a29942954fe9409083b18cec533d79f4.bindTooltip(
+                `<div>
+                     Südwestpark (Fitnessstudio)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_be1c56262fe64c94992ad0b678f3be5c = L.marker(
+                [49.42806195319199, 11.022795438766],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_fd765f90ce1446d0b72bdcc66759a8cc = L.popup({"maxWidth": 400});
+
+        
+            var html_67e0707a47f44725a7109c413dd34096 = $(`<div id="html_67e0707a47f44725a7109c413dd34096" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Südwestpark (Nordost)<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_fd765f90ce1446d0b72bdcc66759a8cc.setContent(html_67e0707a47f44725a7109c413dd34096);
+        
+
+        marker_be1c56262fe64c94992ad0b678f3be5c.bindPopup(popup_fd765f90ce1446d0b72bdcc66759a8cc)
+        ;
+
+        
+    
+    
+            marker_be1c56262fe64c94992ad0b678f3be5c.bindTooltip(
+                `<div>
+                     Südwestpark (Nordost)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d4df7c1fdf754260973152c12bd8ab8b = L.marker(
+                [49.426313918194, 11.018208861350999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_02217c7eab73446b98a173ed90d277e8 = L.popup({"maxWidth": 400});
+
+        
+            var html_d2f03fc9cc994b83af48b6fd1db49ca6 = $(`<div id="html_d2f03fc9cc994b83af48b6fd1db49ca6" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>S-Bhf Stein (Südwestpark)<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_02217c7eab73446b98a173ed90d277e8.setContent(html_d2f03fc9cc994b83af48b6fd1db49ca6);
+        
+
+        marker_d4df7c1fdf754260973152c12bd8ab8b.bindPopup(popup_02217c7eab73446b98a173ed90d277e8)
+        ;
+
+        
+    
+    
+            marker_d4df7c1fdf754260973152c12bd8ab8b.bindTooltip(
+                `<div>
+                     S-Bhf Stein (Südwestpark)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_067fe0704f6c4c66b08ad8f352f37cef = L.marker(
+                [49.428084631878995, 11.019732356072],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_01f37cc00b3e4df4b4dccf750ba80ff1 = L.popup({"maxWidth": 400});
+
+        
+            var html_b885c1d09f3b4ff18ff7f972f1a1b978 = $(`<div id="html_b885c1d09f3b4ff18ff7f972f1a1b978" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Südwestpark (Zentral)<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_01f37cc00b3e4df4b4dccf750ba80ff1.setContent(html_b885c1d09f3b4ff18ff7f972f1a1b978);
+        
+
+        marker_067fe0704f6c4c66b08ad8f352f37cef.bindPopup(popup_01f37cc00b3e4df4b4dccf750ba80ff1)
+        ;
+
+        
+    
+    
+            marker_067fe0704f6c4c66b08ad8f352f37cef.bindTooltip(
+                `<div>
+                     Südwestpark (Zentral)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_eb7f5454f4f14452b105aa8d422f3d03 = L.marker(
+                [49.472538, 11.104286],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_dac8518709a948c893c5cd7173df4153 = L.popup({"maxWidth": 400});
+
+        
+            var html_f676eddd54f4410ea35b5fd982dba3ab = $(`<div id="html_f676eddd54f4410ea35b5fd982dba3ab" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Nordostbahnhof<br><b>Bikes at Station: </b>8</div>`)[0];
+            popup_dac8518709a948c893c5cd7173df4153.setContent(html_f676eddd54f4410ea35b5fd982dba3ab);
+        
+
+        marker_eb7f5454f4f14452b105aa8d422f3d03.bindPopup(popup_dac8518709a948c893c5cd7173df4153)
+        ;
+
+        
+    
+    
+            marker_eb7f5454f4f14452b105aa8d422f3d03.bindTooltip(
+                `<div>
+                     Nordostbahnhof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_61e09980707243e38363beb526c3141d = L.marker(
+                [49.44831507729, 11.087028980255],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_aa1cdded11a4447c9d2552f362472581 = L.popup({"maxWidth": 400});
+
+        
+            var html_58f9c52f7632497682100dca9a2b677e = $(`<div id="html_58f9c52f7632497682100dca9a2b677e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Willy-Brandt-Platz<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_aa1cdded11a4447c9d2552f362472581.setContent(html_58f9c52f7632497682100dca9a2b677e);
+        
+
+        marker_61e09980707243e38363beb526c3141d.bindPopup(popup_aa1cdded11a4447c9d2552f362472581)
+        ;
+
+        
+    
+    
+            marker_61e09980707243e38363beb526c3141d.bindTooltip(
+                `<div>
+                     Willy-Brandt-Platz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fc947a2240f44c2da1d5406657e0747f = L.marker(
+                [49.458187447755, 11.07345700264],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_93d55422ed7346c2a712fe35bb243b1a = L.popup({"maxWidth": 400});
+
+        
+            var html_f282c17470a24f30aba8b0c283bc716e = $(`<div id="html_f282c17470a24f30aba8b0c283bc716e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Hst. Tiergärtnertor<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_93d55422ed7346c2a712fe35bb243b1a.setContent(html_f282c17470a24f30aba8b0c283bc716e);
+        
+
+        marker_fc947a2240f44c2da1d5406657e0747f.bindPopup(popup_93d55422ed7346c2a712fe35bb243b1a)
+        ;
+
+        
+    
+    
+            marker_fc947a2240f44c2da1d5406657e0747f.bindTooltip(
+                `<div>
+                     Hst. Tiergärtnertor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d8322f367a924c33b2f1915051c25ddb = L.marker(
+                [49.440969664486, 11.090059876442002],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_fd29fc637686495d84603bb933286ba2 = L.popup({"maxWidth": 400});
+
+        
+            var html_0ed840ee51bb411facaf32d625bca760 = $(`<div id="html_0ed840ee51bb411facaf32d625bca760" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Allersberger Str. / Paulstr.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_fd29fc637686495d84603bb933286ba2.setContent(html_0ed840ee51bb411facaf32d625bca760);
+        
+
+        marker_d8322f367a924c33b2f1915051c25ddb.bindPopup(popup_fd29fc637686495d84603bb933286ba2)
+        ;
+
+        
+    
+    
+            marker_d8322f367a924c33b2f1915051c25ddb.bindTooltip(
+                `<div>
+                     Allersberger Str. / Paulstr.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c2c4eca98e1f40ed96fa93d5e6b1e429 = L.marker(
+                [49.446614848133, 11.007606089114999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_fb87ce6af9b848489f14e17b3656bd2f = L.popup({"maxWidth": 400});
+
+        
+            var html_0f86282393024d4788bbbd3a40d80be3 = $(`<div id="html_0f86282393024d4788bbbd3a40d80be3" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Virnsberger Str. / Sigmundstr. (DATEV)<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_fb87ce6af9b848489f14e17b3656bd2f.setContent(html_0f86282393024d4788bbbd3a40d80be3);
+        
+
+        marker_c2c4eca98e1f40ed96fa93d5e6b1e429.bindPopup(popup_fb87ce6af9b848489f14e17b3656bd2f)
+        ;
+
+        
+    
+    
+            marker_c2c4eca98e1f40ed96fa93d5e6b1e429.bindTooltip(
+                `<div>
+                     Virnsberger Str. / Sigmundstr. (DATEV)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_95f1b0be998c46238323c6f85b78b823 = L.marker(
+                [49.457364535583, 11.08494758606],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_9345a4e1a35a4cfab48cb5e8d54a751a = L.popup({"maxWidth": 400});
+
+        
+            var html_7783c219ef254796a31898889386f8a9 = $(`<div id="html_7783c219ef254796a31898889386f8a9" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Hirschelgasse - FAU <br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_9345a4e1a35a4cfab48cb5e8d54a751a.setContent(html_7783c219ef254796a31898889386f8a9);
+        
+
+        marker_95f1b0be998c46238323c6f85b78b823.bindPopup(popup_9345a4e1a35a4cfab48cb5e8d54a751a)
+        ;
+
+        
+    
+    
+            marker_95f1b0be998c46238323c6f85b78b823.bindTooltip(
+                `<div>
+                     Hirschelgasse - FAU 
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dbfa1d082d444d1c94860e21e8966b98 = L.marker(
+                [49.46492713627301, 11.119349598885],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_3b7b00ced9a4447f8cb32abc0e3dbbc0 = L.popup({"maxWidth": 400});
+
+        
+            var html_7eb2f35c6232437c972087f7abe17d98 = $(`<div id="html_7eb2f35c6232437c972087f7abe17d98" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Äußere Sulzbacher Str. / Bismarckstr. (CNO)<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_3b7b00ced9a4447f8cb32abc0e3dbbc0.setContent(html_7eb2f35c6232437c972087f7abe17d98);
+        
+
+        marker_dbfa1d082d444d1c94860e21e8966b98.bindPopup(popup_3b7b00ced9a4447f8cb32abc0e3dbbc0)
+        ;
+
+        
+    
+    
+            marker_dbfa1d082d444d1c94860e21e8966b98.bindTooltip(
+                `<div>
+                     Äußere Sulzbacher Str. / Bismarckstr. (CNO)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dfff9b0107864320bdb18a8517307941 = L.marker(
+                [49.42875975415999, 11.130899190903001],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_a18bdb1660ce4f3aa8f56364654e7f34 = L.popup({"maxWidth": 400});
+
+        
+            var html_3f89e1d0c6824592a778cd7c48bb7e54 = $(`<div id="html_3f89e1d0c6824592a778cd7c48bb7e54" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>easyCredit-Haus / Beuthener Str.<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_a18bdb1660ce4f3aa8f56364654e7f34.setContent(html_3f89e1d0c6824592a778cd7c48bb7e54);
+        
+
+        marker_dfff9b0107864320bdb18a8517307941.bindPopup(popup_a18bdb1660ce4f3aa8f56364654e7f34)
+        ;
+
+        
+    
+    
+            marker_dfff9b0107864320bdb18a8517307941.bindTooltip(
+                `<div>
+                     easyCredit-Haus / Beuthener Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d71ba11e515440a8a4e120ed11c9c1f9 = L.marker(
+                [49.470676, 11.11205],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_930a0bdd28c34db98d55195fa72662d7 = L.popup({"maxWidth": 400});
+
+        
+            var html_2107885855b3440e825e4a28ec5e3814 = $(`<div id="html_2107885855b3440e825e4a28ec5e3814" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>WBG / Plauener Str.<br><b>Bikes at Station: </b>4</div>`)[0];
+            popup_930a0bdd28c34db98d55195fa72662d7.setContent(html_2107885855b3440e825e4a28ec5e3814);
+        
+
+        marker_d71ba11e515440a8a4e120ed11c9c1f9.bindPopup(popup_930a0bdd28c34db98d55195fa72662d7)
+        ;
+
+        
+    
+    
+            marker_d71ba11e515440a8a4e120ed11c9c1f9.bindTooltip(
+                `<div>
+                     WBG / Plauener Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cff9b4d65ac244cead28889dcd2e9045 = L.marker(
+                [49.451750232172, 11.083359718322999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_d682685c4484478796d381ab4631cd7e = L.popup({"maxWidth": 400});
+
+        
+            var html_6059af356b5c44a699bd2d0db5be304f = $(`<div id="html_6059af356b5c44a699bd2d0db5be304f" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Cinecittà<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_d682685c4484478796d381ab4631cd7e.setContent(html_6059af356b5c44a699bd2d0db5be304f);
+        
+
+        marker_cff9b4d65ac244cead28889dcd2e9045.bindPopup(popup_d682685c4484478796d381ab4631cd7e)
+        ;
+
+        
+    
+    
+            marker_cff9b4d65ac244cead28889dcd2e9045.bindTooltip(
+                `<div>
+                     Cinecittà
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d748d9f13988413196136716b3fa9b1d = L.marker(
+                [49.44898, 11.07519],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_17cd90bb825b4b148e5403d5071c950e = L.popup({"maxWidth": 400});
+
+        
+            var html_0101e2eafc1e4ce58cea074bcda1b9cc = $(`<div id="html_0101e2eafc1e4ce58cea074bcda1b9cc" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Kornmarkt<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_17cd90bb825b4b148e5403d5071c950e.setContent(html_0101e2eafc1e4ce58cea074bcda1b9cc);
+        
+
+        marker_d748d9f13988413196136716b3fa9b1d.bindPopup(popup_17cd90bb825b4b148e5403d5071c950e)
+        ;
+
+        
+    
+    
+            marker_d748d9f13988413196136716b3fa9b1d.bindTooltip(
+                `<div>
+                     Kornmarkt
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_da50343cfa9f401cba5d99bb83a93002 = L.marker(
+                [49.449922829490006, 11.070694327354],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_e2f145bc528b4fa0802a86884eed2c01 = L.popup({"maxWidth": 400});
+
+        
+            var html_8b6fe37e76594ec887fe610eb732aac6 = $(`<div id="html_8b6fe37e76594ec887fe610eb732aac6" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Jakobsplatz/ Dr. Kurt Schumacherstr.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_e2f145bc528b4fa0802a86884eed2c01.setContent(html_8b6fe37e76594ec887fe610eb732aac6);
+        
+
+        marker_da50343cfa9f401cba5d99bb83a93002.bindPopup(popup_e2f145bc528b4fa0802a86884eed2c01)
+        ;
+
+        
+    
+    
+            marker_da50343cfa9f401cba5d99bb83a93002.bindTooltip(
+                `<div>
+                     Jakobsplatz/ Dr. Kurt Schumacherstr.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c1827d47b1ef44fc96571c99f7d348ce = L.marker(
+                [49.45127246362001, 11.072287559509],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_d105fae5b0c44aebbbbbacbe50aeacc0 = L.popup({"maxWidth": 400});
+
+        
+            var html_29238d9e870a4666a0ae305e306503b6 = $(`<div id="html_29238d9e870a4666a0ae305e306503b6" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Josephsplatz<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_d105fae5b0c44aebbbbbacbe50aeacc0.setContent(html_29238d9e870a4666a0ae305e306503b6);
+        
+
+        marker_c1827d47b1ef44fc96571c99f7d348ce.bindPopup(popup_d105fae5b0c44aebbbbbacbe50aeacc0)
+        ;
+
+        
+    
+    
+            marker_c1827d47b1ef44fc96571c99f7d348ce.bindTooltip(
+                `<div>
+                     Josephsplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3b1a74f558854e6c8f0d8ab35e74a8e0 = L.marker(
+                [49.456168498765, 11.083804965018999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_b6d46167ee024317aee564360202d5aa = L.popup({"maxWidth": 400});
+
+        
+            var html_6847acacdda24f1b997472cf76d10922 = $(`<div id="html_6847acacdda24f1b997472cf76d10922" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Innerer Laufer Platz<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_b6d46167ee024317aee564360202d5aa.setContent(html_6847acacdda24f1b997472cf76d10922);
+        
+
+        marker_3b1a74f558854e6c8f0d8ab35e74a8e0.bindPopup(popup_b6d46167ee024317aee564360202d5aa)
+        ;
+
+        
+    
+    
+            marker_3b1a74f558854e6c8f0d8ab35e74a8e0.bindTooltip(
+                `<div>
+                     Innerer Laufer Platz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c0e4c7cddd954bc6a7bd2d11dd697e8c = L.marker(
+                [49.45094, 11.07953],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_3d54cb563dd942e18858064718cd0cc3 = L.popup({"maxWidth": 400});
+
+        
+            var html_09c41f0e02774964ab4038004bb5ece1 = $(`<div id="html_09c41f0e02774964ab4038004bb5ece1" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Lorenzkirche<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_3d54cb563dd942e18858064718cd0cc3.setContent(html_09c41f0e02774964ab4038004bb5ece1);
+        
+
+        marker_c0e4c7cddd954bc6a7bd2d11dd697e8c.bindPopup(popup_3d54cb563dd942e18858064718cd0cc3)
+        ;
+
+        
+    
+    
+            marker_c0e4c7cddd954bc6a7bd2d11dd697e8c.bindTooltip(
+                `<div>
+                     Lorenzkirche
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4899e0ca31e746d1ae1172dbf7ca5775 = L.marker(
+                [49.454201774186004, 11.073215603828],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_124d98eae9ce4f758a26bbbbddb74b55 = L.popup({"maxWidth": 400});
+
+        
+            var html_8af367aa95ee46b2b4b493b10d13eb1c = $(`<div id="html_8af367aa95ee46b2b4b493b10d13eb1c" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Maxplatz<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_124d98eae9ce4f758a26bbbbddb74b55.setContent(html_8af367aa95ee46b2b4b493b10d13eb1c);
+        
+
+        marker_4899e0ca31e746d1ae1172dbf7ca5775.bindPopup(popup_124d98eae9ce4f758a26bbbbddb74b55)
+        ;
+
+        
+    
+    
+            marker_4899e0ca31e746d1ae1172dbf7ca5775.bindTooltip(
+                `<div>
+                     Maxplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b45d3c3b96e64f01b323504a196221bd = L.marker(
+                [49.458051458985004, 11.077582240105],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_9e552371b7d94dd8bd485c091e21cdc4 = L.popup({"maxWidth": 400});
+
+        
+            var html_0b9537ca0b124c69be047ef02798d157 = $(`<div id="html_0b9537ca0b124c69be047ef02798d157" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Burg/ Jugendherberge<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_9e552371b7d94dd8bd485c091e21cdc4.setContent(html_0b9537ca0b124c69be047ef02798d157);
+        
+
+        marker_b45d3c3b96e64f01b323504a196221bd.bindPopup(popup_9e552371b7d94dd8bd485c091e21cdc4)
+        ;
+
+        
+    
+    
+            marker_b45d3c3b96e64f01b323504a196221bd.bindTooltip(
+                `<div>
+                     Burg/ Jugendherberge
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_018f0e30730b45a089ac7d9a0169e32a = L.marker(
+                [49.45867, 11.084439999999999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_00f912770a5b498ba1a43fc31df1648c = L.popup({"maxWidth": 400});
+
+        
+            var html_3d59a2e101564a1fa5f44de3250b2c1e = $(`<div id="html_3d59a2e101564a1fa5f44de3250b2c1e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>FAU/ Lange Gasse<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_00f912770a5b498ba1a43fc31df1648c.setContent(html_3d59a2e101564a1fa5f44de3250b2c1e);
+        
+
+        marker_018f0e30730b45a089ac7d9a0169e32a.bindPopup(popup_00f912770a5b498ba1a43fc31df1648c)
+        ;
+
+        
+    
+    
+            marker_018f0e30730b45a089ac7d9a0169e32a.bindTooltip(
+                `<div>
+                     FAU/ Lange Gasse
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ff05c68d0c0d4a8fb0a8404384157de9 = L.marker(
+                [49.45745, 11.08799],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_3c475a17186440fa837dbde9bb564a08 = L.popup({"maxWidth": 400});
+
+        
+            var html_4814ff6218ca4185ae3c5784bb784d68 = $(`<div id="html_4814ff6218ca4185ae3c5784bb784d68" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>FAU/ Laufer Tor<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_3c475a17186440fa837dbde9bb564a08.setContent(html_4814ff6218ca4185ae3c5784bb784d68);
+        
+
+        marker_ff05c68d0c0d4a8fb0a8404384157de9.bindPopup(popup_3c475a17186440fa837dbde9bb564a08)
+        ;
+
+        
+    
+    
+            marker_ff05c68d0c0d4a8fb0a8404384157de9.bindTooltip(
+                `<div>
+                     FAU/ Laufer Tor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7109345eac3a4b479bdae16360534fe3 = L.marker(
+                [49.453563617869996, 11.079765558243],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_60312483e58d4d0f9ce2e2462f3d37ae = L.popup({"maxWidth": 400});
+
+        
+            var html_6ad4ec4dd18d4ee69589680e245d0f9a = $(`<div id="html_6ad4ec4dd18d4ee69589680e245d0f9a" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Neue Gasse<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_60312483e58d4d0f9ce2e2462f3d37ae.setContent(html_6ad4ec4dd18d4ee69589680e245d0f9a);
+        
+
+        marker_7109345eac3a4b479bdae16360534fe3.bindPopup(popup_60312483e58d4d0f9ce2e2462f3d37ae)
+        ;
+
+        
+    
+    
+            marker_7109345eac3a4b479bdae16360534fe3.bindTooltip(
+                `<div>
+                     Neue Gasse
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6a6db14e197e4400b66712b4cf34916a = L.marker(
+                [49.45179208029001, 11.077319383620999],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_1139f82033374aa79caa18cb7f02274b = L.popup({"maxWidth": 400});
+
+        
+            var html_5373503d3a334c22853683b871056cd8 = $(`<div id="html_5373503d3a334c22853683b871056cd8" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Adler Parkhaus<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_1139f82033374aa79caa18cb7f02274b.setContent(html_5373503d3a334c22853683b871056cd8);
+        
+
+        marker_6a6db14e197e4400b66712b4cf34916a.bindPopup(popup_1139f82033374aa79caa18cb7f02274b)
+        ;
+
+        
+    
+    
+            marker_6a6db14e197e4400b66712b4cf34916a.bindTooltip(
+                `<div>
+                     Adler Parkhaus
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2512c75642a14630991734d12aa51657 = L.marker(
+                [49.4346732188675, 11.10543966293335],
+                {"color": "red", "fillColor": "red", "radius": 5}
+            ).addTo(map_4fdf0c6402424637b757bb02b927421e);
+        
+    
+        var popup_25d9d82a9778466f8673f2e9c704ec56 = L.popup({"maxWidth": 400});
+
+        
+            var html_7ca84bb0a4674902a520a749934c5f0f = $(`<div id="html_7ca84bb0a4674902a520a749934c5f0f" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Lager alte Räder Norisbike<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_25d9d82a9778466f8673f2e9c704ec56.setContent(html_7ca84bb0a4674902a520a749934c5f0f);
+        
+
+        marker_2512c75642a14630991734d12aa51657.bindPopup(popup_25d9d82a9778466f8673f2e9c704ec56)
+        ;
+
+        
+    
+    
+            marker_2512c75642a14630991734d12aa51657.bindTooltip(
+                `<div>
+                     Lager alte Räder Norisbike
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
