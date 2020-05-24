@@ -1,2 +1,2 @@
-from .mathematical import *
-from .geographical import *
+from .math import *
+from .geo import *
