@@ -1,6 +1,7 @@
 import os
 
 
+# TODO: Add docstring
 def get_data_path():
 
     if os.path.isdir(os.path.join(os.getcwd(), 'data')):
@@ -13,15 +14,17 @@ def get_data_path():
         raise FileNotFoundError
 
 
-def get_path(filename, io_folder, subfolder=""):
+# TODO: Add docstring
+def get_path(p_filename, p_io_folder, p_sub_folder1="", p_sub_folder2=""):
     """ get you the path for given parameters
 
     Args:
-        filename (str): name of file
-        io_folder (str): input or output folder
-        subfolder (str): name of subfolder
+        p_filename (str): name of file
+        p_io_folder (str): input or output folder
+        p_sub_folder1 (str): name of subfolder
+        p_sub_folder2 (str): name of second subfolder
     Returns:
         path (os.path)
     """
-    path = os.path.join(get_data_path(), io_folder, subfolder, filename)
+    path = os.path.join(get_data_path(), p_io_folder, p_sub_folder1, p_sub_folder2, p_filename)
     return path
