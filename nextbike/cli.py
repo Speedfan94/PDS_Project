@@ -7,7 +7,6 @@ from . import prediction
 from . import utils
 
 
-
 @click.command()
 @click.option('--clean/--no-clean', default=True, help="Clean the data.")
 @click.option('--viso/--no-viso', default=True, help="Visualize the data.")
@@ -15,21 +14,27 @@ from . import utils
 @click.option('--pred/--no-pred', default=True, help="Predict with model.")
 def main(clean, viso, train, pred):
     start_time = datetime.now().replace(microsecond=0)
+    start_time_step = start_time
     if clean:
         print("START CLEAN")
         cleaning()
+        start_time_step = print_time_for_step(start_time_step)
     if viso:
         print("START VISUALIZE")
         visualize()
+        start_time_step = print_time_for_step(start_time_step)
     if train:
         print("START TRAIN")
         features()
         training()
+        start_time_step = print_time_for_step(start_time_step)
     if pred:
         print("START PREDICT")
         predict()
+        start_time_step = print_time_for_step(start_time_step)
         print("START GEO PREDICT")
         predict_geo()
+        start_time_step = print_time_for_step(start_time_step)
     print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
 
 
@@ -118,6 +123,17 @@ def predict_geo():
     df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
     print("Predict Trip Direction")
     prediction.geo_predict.train_pred(df_features)
+
+
+def print_time_for_step(p_start_time_step):
+    """Calculates time needed for current step and prints it out.
+    Returns start time for next step
+
+    :param p_start_time_step: start time of current step
+    :return: start time of next step
+    """
+    print("TIME FOR STEP:", (datetime.now().replace(microsecond=0) - p_start_time_step))
+    return datetime.now().replace(microsecond=0)
 
 
 if __name__ == '__main__':
