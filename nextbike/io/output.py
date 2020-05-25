@@ -3,17 +3,23 @@ import os
 import pickle
 
 
-def save_object(pObject, pFilename):
-    pickle.dump(pObject, open(os.path.join(get_data_path(), "output", "models", pFilename), 'wb'))
-    print("Saved", pFilename)
+# TODO: Add docstring
+def save_object(p_object, p_filename):
+    path = os.path.join(get_data_path(), "output", "models", p_filename)
+    pickle.dump(p_object, open(path, 'wb'))
+    print("Saved:", path)
 
 
-# TODO: No need for save_fig and saveTrip => Create just one method
-def save_trip(pDf, pFilename):
-    pDf.to_csv(os.path.join(get_data_path(), "output", pFilename))
-    print("Saved Trips.csv")
+# TODO: Add docstring
+def save_csv(p_df, p_filename):
+    path = os.path.join(get_data_path(), "output", p_filename)
+    p_df.to_csv(path)
+    print("Saved:", path)
+    print("______________________________________________________")
 
 
-def save_fig(fig, file_name):
-    fig.savefig(os.path.join(get_data_path(), "output/", file_name))
-    print("Saved", file_name)
+# TODO: Add docstring
+def save_fig(p_fig, p_filename, p_io_folder="output", p_sub_folder1="data_plots", p_sub_folder2=""):
+    path = os.path.join(get_data_path(), p_io_folder, p_sub_folder1, p_sub_folder2, p_filename)
+    p_fig.savefig(path)
+    print("Saved:", path)

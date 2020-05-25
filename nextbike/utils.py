@@ -1,11 +1,12 @@
 import pandas as pd
 
+
 # TODO: add docstring
-def cast_datetime(pDf, datetime_columns, as_numeric_value=False):
-    for column in datetime_columns:
-        pDf[column] = pd.to_datetime(pDf[column], format="%Y-%m-%d %H:%M:%S")
+def cast_datetime(p_df, p_datetime_columns, p_as_numeric_value=False):
+    for column in p_datetime_columns:
+        p_df[column] = pd.to_datetime(p_df[column], format="%Y-%m-%d %H:%M:%S")
 
-        if as_numeric_value:
-            pDf[column] = pDf[column].values.astype(int)
+        if p_as_numeric_value:
+            p_df[column] = p_df[column].values.astype(int)
 
-    return pDf
+    return p_df
