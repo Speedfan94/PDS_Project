@@ -174,7 +174,20 @@ def plot_mean_duration(p_df):
 
 # TODO: add docstring
 def plot_features_influence(p_df):
-    print()
+    fig, ax = plt.subplots(figsize=(10, 5))
+    i = 0
+    for col in p_df.drop("Duration", axis=1).columns:
+        i = i+1
+        x = p_df[col]
+        y = p_df["Duration"]
+        ax.set_xlabel(col)
+        ax.set_ylabel("Duration")
+        ax.set_title("Duration for each "+col)
+        ax.scatter(x, y, s=1, c="blue")
+        ax.xaxis.set_ticks(np.arange(min(x), max(x) + 1, max(x) * 0.2))
+
+        io.save_fig(fig, str(i)+col+"_Duration.png", p_sub_folder2="features")
+    print("DONE")
 
 
 def visualize_more(p_df):
