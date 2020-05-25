@@ -84,7 +84,9 @@ def features():
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     visualization.math.corr_analysis(df_features_2)
+    df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
+    # visualization.math.plot_features_influence(df_features_2)
 
 
 # TODO: Add docstring

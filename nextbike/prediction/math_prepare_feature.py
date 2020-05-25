@@ -57,6 +57,19 @@ def drop_end_information(p_df):
     return df
 
 
+# TODO: Add docstring
+def drop_features(p_df):
+    df = p_df
+    do_it = False
+    if do_it:
+        df = p_df.drop(
+            ["NAME OF FEATURE TO DROP"],
+            axis=1
+        )
+
+    return df
+
+
 def scale(p_X_train):
     """Scale all independent variables in DataFrame
 
