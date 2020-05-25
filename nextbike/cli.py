@@ -75,7 +75,7 @@ def visualize():
 # TODO: Add docstring
 def features():
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_trips.drop(["Unnamed: 0", "Place_start", "Start Time"], axis=1, inplace=True)
+    df_trips.drop(["Place_start", "Start Time"], axis=1, inplace=True)
     print("Drop End Information")
     df_only_start = prediction.math_prepare_feature.drop_end_information(df_trips)
     print("Create Dummie Variables...")
