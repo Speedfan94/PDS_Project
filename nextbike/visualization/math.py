@@ -173,8 +173,51 @@ def plot_mean_duration(p_df):
 
 
 # TODO: add docstring
-def plot_features_influence(p_df):
-    print()
+def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
+    # true vs predicted value
+    fig_scatter, ax_scatter = plt.subplots(figsize=(10, 5))
+    ax_scatter.set_xlabel('True Y')
+    ax_scatter.set_ylabel('Predicted Y')
+    ax_scatter.set_title(p_model_name)
+    ax_scatter.scatter(p_y_true, p_y_predict)
+    io.save_fig(
+        fig_scatter,
+        p_filename=p_model_name+"_pred_vs_true.png",
+        p_io_folder="output",
+        p_sub_folder1="data_plots",
+        p_sub_folder2="math"
+    )
+
+    # distribution of true vs distribution of predicted value
+    p_y_predict = p_y_predict.flatten()  # NN gives 2-d array as predicted values
+
+    fig_distr, ax_distr = plt.subplots(figsize=(10, 5))
+    ax_distr.set_xlabel('Duration of Booking [min]')
+    ax_distr.set_ylabel('Percentage [%]')
+    ax_distr.set_title("Distribution of Predicted and True Durations")
+    pred_values, pred_base = np.histogram(
+        p_y_predict,
+        bins=120,
+        range=(0, 120),
+        weights=np.ones(len(p_y_predict)) / len(p_y_predict)
+    )
+    true_values, true_base = np.histogram(
+        p_y_true,
+        bins=120,
+        range=(0, 120),
+        weights=np.ones(len(p_y_true)) / len(p_y_true)
+    )
+    ax_distr.plot(pred_base[:-1], pred_values, c='red', label=p_model_name)
+    ax_distr.plot(true_base[:-1], true_values, c='green', label="True")
+    ax_distr.set_xlim(0, 40)
+    plt.legend(loc='upper right')
+    io.save_fig(
+        fig_distr,
+        p_filename=p_model_name+"_distribution.png",
+        p_io_folder="output",
+        p_sub_folder1="data_plots",
+        p_sub_folder2="math"
+    )
 
 
 def visualize_more(p_df):
