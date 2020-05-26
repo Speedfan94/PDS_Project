@@ -50,9 +50,30 @@ def drop_end_information(p_df):
          "month_end",
          "day_end",
          "hour_end",
-         "dayofyear_end"],
+         "dayofyear_end",
+         "Dist_end",
+         "Direction"],
         axis=1
     )
+
+    return df
+
+
+# TODO: Add docstring
+def drop_features(p_df):
+    df = p_df
+    do_it = True
+    if do_it:
+        df = p_df.drop(
+            ["p_uid_start",
+             "p_place_type_start",
+             "p_bikes_start",
+             "month_start",
+             "day_start",
+             "Start Place_id",
+             "p_spot_start"],
+            axis=1
+        )
 
     return df
 
