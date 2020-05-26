@@ -1,5 +1,5 @@
 import pandas as pd
-
+import geopy.distance as geodis
 
 # Todo: 30 lines for 2 lines of logic?
 def additional_feature_creation(p_df_trips):
@@ -39,3 +39,15 @@ def additional_feature_creation(p_df_trips):
     p_df_trips["dayofyear_end"] = p_df_trips["End Time"].dt.dayofyear
 
     return p_df_trips
+
+
+# TODO: Find another place for feature creation
+# TODO: Add docstring
+def quick_create_dist(p_df):
+    uni = (49.452210, 11.079575)
+    p_df['Dist_start'] = p_df.apply(lambda row: geodis.distance((row['Latitude_start'],
+                                                                 row['Longitude_start']), uni).km, axis=1)
+    p_df['Dist_end'] = p_df.apply(lambda row: geodis.distance((row['Latitude_end'],
+                                                               row['Longitude_end']), uni).km, axis=1)
+    p_df['Direction'] = p_df['Dist_start'] > p_df['Dist_end']  # to uni: True, away: False
+    return p_df
