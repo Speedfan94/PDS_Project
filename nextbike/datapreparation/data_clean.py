@@ -72,9 +72,7 @@ def data_cleaning(p_df_original):
     )
     df_merged.drop(
         ["key_0",
-         "b_number_end",
-         "Unnamed: 0_start",
-         "Unnamed: 0_end"], axis=1, inplace=True
+         "b_number_end"], axis=1, inplace=True
     )
     df_merged.rename(
         {"datetime_start": "Start Time",
