@@ -50,6 +50,16 @@ def data_cleaning(p_df_original):
     sr_valid_end = ((df_clean_unique_trip['trip'] == 'end') & sr_next_entry_differs)
     # only take valid trip entries (valid starts and valid ends)
     df_final = df_clean_unique_trip[sr_valid_start | sr_valid_end]
+
+    # drop first entry if dataframe does not start with a start entry
+    if df_final.iloc[0]["trip"] != "start":
+        df_final.drop(0, inplace=True)
+    # drop last entry if dataframe does not end with an end entry
+    index_last = len(df_final) - 1
+    if df_final.iloc[index_last]["trip"] != "end":
+        df_final.drop(index_last, inplace=True)
+
+    # split dataframe into start and end entries and merge them into trip dataframe
     df_start = df_final[df_final["trip"] == "start"].drop("trip", axis=1)
     df_end = df_final[df_final["trip"] == "end"].drop("trip", axis=1)
     df_end.reset_index(drop=True, inplace=True)
@@ -62,9 +72,7 @@ def data_cleaning(p_df_original):
     )
     df_merged.drop(
         ["key_0",
-         "b_number_end",
-         "Unnamed: 0_start",
-         "Unnamed: 0_end"], axis=1, inplace=True
+         "b_number_end"], axis=1, inplace=True
     )
     df_merged.rename(
         {"datetime_start": "Start Time",

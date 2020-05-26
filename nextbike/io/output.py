@@ -13,7 +13,7 @@ def save_object(p_object, p_filename):
 # TODO: Add docstring
 def save_csv(p_df, p_filename):
     path = os.path.join(get_data_path(), "output", p_filename)
-    p_df.to_csv(path)
+    p_df.to_csv(path, index_label="index")
     print("Saved:", path)
     print("______________________________________________________")
 
