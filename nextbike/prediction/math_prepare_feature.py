@@ -107,7 +107,7 @@ def do_pca(p_X_scaled_train):
         X_train_scaled_pca (DataFrame): DataFrame with PCAs
     """
     # df = df[["Duration", "month", "day", "hour"]]
-    pca = PCA(n_components=10)
+    pca = PCA(n_components=12)
     pca.fit(p_X_scaled_train)
     print("Var explained:", pca.explained_variance_ratio_)
     print("Sum var explained", sum(pca.explained_variance_ratio_))
