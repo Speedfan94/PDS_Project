@@ -42,6 +42,14 @@ def main(clean, viso, train, pred):
 
 # TODO: Add docstring
 def cleaning():
+    """Clean the data for further analysis
+
+
+    Args:
+        no Arg
+    Returns:
+        no Return
+    """
     df = io.input.read_csv(p_filename="nuremberg.csv", p_io_folder="input")
     utils.cast_datetime(df, ["datetime"])
     print("Clean Data...")
