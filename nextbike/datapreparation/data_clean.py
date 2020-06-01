@@ -99,6 +99,7 @@ def drop_noise(p_df_trips):
     # Hardcode lower bound because trips of about 2 minutes may be relevant
     lower_duration_bound = 1.0
     upper_duration_bound = p_df_trips["Duration"].quantile(0.90)
+    # upper_duration_bound = 5.0
     # Drop values out of duration bounds
     p_df_trips = p_df_trips[
         (p_df_trips["Duration"] > lower_duration_bound) & (p_df_trips["Duration"] < upper_duration_bound)

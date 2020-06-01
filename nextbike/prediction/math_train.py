@@ -32,15 +32,19 @@ def train_neural_network(p_X_train_scaled, p_y_train):
         [layers.Dense(36, activation="relu", input_shape=[p_X_train_scaled.shape[1]]),
          # layers.Dropout(0.2),
          layers.Dense(36, activation="relu"),
-         #layers.Dense(36, activation="softmax"),
-         #layers.Dense(36, activation="softmax"),
+         layers.Dense(36, activation="relu"),
+         layers.Dense(36, activation="relu"),
+         layers.Dense(36, activation="relu"),
+         layers.Dense(36, activation="relu"),
+         # layers.Dense(36, activation="softmax"),
+         # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
          layers.Dense(1)])
     optimizer = keras.optimizers.RMSprop(0.001)
     neural_network.compile(loss="mse",
                            optimizer=optimizer,
                            metrics=["mae", "mse"])
-    epochs = 10
+    epochs = 1000
     # batch_size = 200  # right now not used but should be tried
     history = neural_network.fit(p_X_train_scaled, p_y_train.values, epochs=epochs, validation_split=0.2)
     neural_network.save(io.get_path("Neural_Network_Model", "output", "models"))

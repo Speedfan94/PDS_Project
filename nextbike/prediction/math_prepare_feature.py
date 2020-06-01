@@ -24,11 +24,16 @@ def create_dummies(p_df):
 # TODO: Add docstring
 def create_new_features(p_X):
     X = p_X
+    X["minute_squared"] = np.square(p_X["minute_start"])
+    # X["minute_squared"] = np.power(p_X["minute_start"], 3)
     X["hour_squared"] = np.square(p_X["hour_start"])
     X["day_squared"] = np.square(p_X["day_start"])
     X["month_squared"] = np.square(p_X["month_start"])
     X["weekend_squared"] = np.square(p_X["Weekend"])
     # X["day_squared"] = p_X["day_start"]/p_X["p_bikes_start"]
+    X["lat_squared"] = np.square(p_X["Latitude_start"])
+    X["long_squared"] = np.square(p_X["Longitude_start"])
+
     return X
 
 
@@ -50,6 +55,7 @@ def drop_end_information(p_df):
          "month_end",
          "day_end",
          "hour_end",
+         "minute_end",
          "dayofyear_end",
          "Dist_end",
          "Direction"],
@@ -70,8 +76,27 @@ def drop_features(p_df):
              "p_bikes_start",
              "month_start",
              "day_start",
-             "Start Place_id",
-             "p_spot_start"],
+             # "Start Place_id",
+             "p_spot_start",
+             "Latitude_start",
+             "Longitude_start",
+             # "Bike Number",
+             "b_bike_type_start",
+             "hour_start",
+             "dayofyear_start",
+             # "Season",
+             "plz_start",
+             "Dist_start",
+             "p_bike_start",
+             # "Weekend",
+             # "hour_squared",
+             "day_squared",
+             "month_squared",
+             "weekend_squared",
+             "minute_squared"
+             # "lat_squared",
+             # "long_squared"
+             ],
             axis=1
         )
 
@@ -107,7 +132,7 @@ def do_pca(p_X_scaled_train):
         X_train_scaled_pca (DataFrame): DataFrame with PCAs
     """
     # df = df[["Duration", "month", "day", "hour"]]
-    pca = PCA(n_components=12)
+    pca = PCA(n_components=8)
     pca.fit(p_X_scaled_train)
     print("Var explained:", pca.explained_variance_ratio_)
     print("Sum var explained", sum(pca.explained_variance_ratio_))
