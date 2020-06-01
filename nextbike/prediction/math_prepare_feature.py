@@ -50,7 +50,9 @@ def drop_end_information(p_df):
          "month_end",
          "day_end",
          "hour_end",
-         "dayofyear_end"],
+         "dayofyear_end",
+         "Dist_end",
+         "Direction"],
         axis=1
     )
 
@@ -60,10 +62,16 @@ def drop_end_information(p_df):
 # TODO: Add docstring
 def drop_features(p_df):
     df = p_df
-    do_it = False
+    do_it = True
     if do_it:
         df = p_df.drop(
-            ["NAME OF FEATURE TO DROP"],
+            ["p_uid_start",
+             "p_place_type_start",
+             "p_bikes_start",
+             "month_start",
+             "day_start",
+             "Start Place_id",
+             "p_spot_start"],
             axis=1
         )
 
@@ -99,7 +107,7 @@ def do_pca(p_X_scaled_train):
         X_train_scaled_pca (DataFrame): DataFrame with PCAs
     """
     # df = df[["Duration", "month", "day", "hour"]]
-    pca = PCA(n_components=10)
+    pca = PCA(n_components=12)
     pca.fit(p_X_scaled_train)
     print("Var explained:", pca.explained_variance_ratio_)
     print("Sum var explained", sum(pca.explained_variance_ratio_))

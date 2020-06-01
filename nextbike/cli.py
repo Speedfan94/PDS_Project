@@ -21,6 +21,7 @@ def main(clean, viso, train, pred):
         start_time_step = print_time_for_step(start_time_step)
     if viso:
         print("START VISUALIZE")
+        # TODO Rename visualization.math / geo to math_plot and geo_plot
         visualize()
         start_time_step = print_time_for_step(start_time_step)
     if train:
@@ -35,23 +36,34 @@ def main(clean, viso, train, pred):
         print("START GEO PREDICT")
         predict_geo()
         start_time_step = print_time_for_step(start_time_step)
+
     print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
 
 
 # TODO: Add docstring
 def cleaning():
+    """Clean the data for further analysis
+
+
+    Args:
+        no Arg
+    Returns:
+        no Return
+    """
     df = io.input.read_csv(p_filename="nuremberg.csv", p_io_folder="input")
     utils.cast_datetime(df, ["datetime"])
     print("Clean Data...")
     df_trips = datapreparation.data_clean.data_cleaning(df)
     print("Add Features...")
     df_trips_add_feat = datapreparation.feature_add.additional_feature_creation(df_trips)
-    print("Clean Noise")
+    print("Clean Noise...")
     df_trips_filter_duration = datapreparation.data_clean.drop_noise(df_trips_add_feat)
-    print("Clean Postalcodes")
-    df_trips_onlynuremberg = datapreparation.geo_clean.only_nuremberg(df_trips_filter_duration)
+    print("Clean Postalcodes...")
+    df_trips_only_nuremberg = datapreparation.geo_clean.only_nuremberg(df_trips_filter_duration)
+    print("Add Distances to University...")
+    df_trips_only_nuremberg_dist = datapreparation.feature_add.quick_create_dist(df_trips_only_nuremberg)
     print("Save trip dataframe...")
-    io.output.save_csv(df_trips_onlynuremberg, "Trips.csv")
+    io.output.save_csv(df_trips_only_nuremberg_dist, "Trips.csv")
 
 
 # TODO: Add docstring
@@ -83,8 +95,8 @@ def features():
     print("Do Feature Engineering...")
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
-    visualization.math.corr_analysis(df_features_2)
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
+    visualization.math.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
 
@@ -112,18 +124,18 @@ def predict():
     df_features = io.input.read_csv(p_filename="Features.csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.math_split.simple_split(df_features)
-    print("Predict by Linear Regression")
+    print("Predict by Linear Regression...")
     prediction.math_predict.predict_by_regression(X_test, y_test)
-    print("Predict by SVM Regression")
+    print("Predict by SVM Regression...")
     prediction.math_predict.predict_by_svm(X_test, y_test)
-    print("Predict by NN")
+    print("Predict by NN...")
     prediction.math_predict.predict_by_nn(X_test, y_test)
 
 
 # TODO: Add docstring
 def predict_geo():
     df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    print("Predict Trip Direction")
+    print("Predict Trip Direction...")
     prediction.geo_predict.train_pred(df_features)
 
 
