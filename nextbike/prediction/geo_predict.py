@@ -1,10 +1,8 @@
+from .. import visualization
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.gaussian_process.kernels import RBF
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
@@ -22,7 +20,7 @@ def train_pred(p_df):
         no Return
     """
     # data
-    X = p_df[["Duration", "Dist_start", "Bike_Number"]]
+    X = p_df[["Duration", "Dist_start"]]
     y = p_df["Direction"]
     X = StandardScaler().fit_transform(X)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -48,5 +46,7 @@ def train_pred(p_df):
     print("RF: Test score (mean accuracy)", np.round(rf.score(X_test, y_test) * 100, 2), "%")
     print("NN: Test score (mean accuracy)", np.round(nn.score(X_test, y_test) * 100, 2), "%")
     print("GNB: Test score (mean accuracy)", np.round(gnb.score(X_test, y_test) * 100, 2), "%")
+    visualization.math_predictive.plot_direction_classification(X_train, y_train)
+
 
 # TODO: add additional methods for prediction
