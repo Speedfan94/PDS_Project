@@ -59,7 +59,39 @@ def plot_and_save_aggregate_stats(p_df_trips):
 
 
 def plot_distribution(p_df):
-    """Plots the distribution of trip lengths per month including quantile lines
+    """Plot the distribution of trip duration including quantile lines.
+
+    Args:
+        p_df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
+    # data
+    duration = p_df['Duration']
+    values, base = np.histogram(duration, bins=int(duration.max()), range=(0, int(duration.max())), weights=np.ones(len(duration)) / len(duration))
+    quantile_25 = np.quantile(duration, 0.25)
+    quantile_50 = np.quantile(duration, 0.5)
+    quantile_75 = np.quantile(duration, 0.75)
+    quantile_95 = np.quantile(duration, 0.95)
+
+    # plotting
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.set_xlabel('Duration of Booking [min]')
+    ax.set_ylabel('Percentage')
+    ax.set_title('Distribution of Duration')
+    plt.plot(base[:-1], values, c='blue')
+    plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
+    plt.vlines(quantile_25, 0, 0.07, linestyles='dashed', label='25% Quantile', colors='green')
+    plt.vlines(quantile_50, 0, 0.07, linestyles='dashed', label='50% Quantile', colors='yellow')
+    plt.vlines(quantile_75, 0, 0.07, linestyles='dashed', label='75% Quantile', colors='red')
+    plt.vlines(quantile_95, 0, 0.07, linestyles='dashed', label='95% Quantile')
+    plt.legend(loc='upper right')
+    io.save_fig(fig, p_filename="DurationMinutes_Distribution.png", p_sub_folder2="math")
+
+
+# TODO
+def plot_distribution_monthly(p_df):
+    """Plot the distribution of trip lengths per month including quantile lines
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
@@ -84,7 +116,7 @@ def plot_distribution(p_df):
     fig, ax = plt.subplots(figsize=(10, 8))
     ax.set_xlabel('Duration of Booking [min]')
     ax.set_ylabel('Percentage')
-    ax.set_title('Distribution of Duration')
+    ax.set_title('Distribution of Duration Monthly')
     plt.plot(base[:-1], values, c='blue')
     plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
     plt.vlines(quantile_25, 0, 0.07, linestyles='dashed', label='25% Quantile', colors='green')
@@ -92,11 +124,11 @@ def plot_distribution(p_df):
     plt.vlines(quantile_75, 0, 0.07, linestyles='dashed', label='75% Quantile', colors='red')
     plt.vlines(quantile_95, 0, 0.07, linestyles='dashed', label='95% Quantile')
     plt.legend(loc='upper right')
-    io.save_fig(fig, p_filename="DurationMinutes_Distribution.png", p_sub_folder2="math")
+    io.save_fig(fig, p_filename="DurationMinutes_Distribution_Monthly.png", p_sub_folder2="math")
 
 
 def corr_analysis(p_df):
-    """Plot correlation between features
+    """Plot correlation between features.
 
     Args:
         p_df (DataFrame): DataFrame of trips in nuremberg
@@ -127,8 +159,14 @@ def corr_analysis(p_df):
     )
 
 
-# todo: add docstring
 def plot_mean_duration(p_df):
+    """Plot the mean duration for each day of year and visualize the seasons.
+
+    Args:
+        p_df (DataFrame): Dataframe of trips in nuremberg
+    Returns:
+        no return
+    """
     # calculate mean duration of trips for each day of year
     df_day_mean = p_df.groupby(by="dayofyear_start").mean()[["Duration", "Season"]]
     # create series of days of year
@@ -172,8 +210,17 @@ def plot_mean_duration(p_df):
     )
 
 
-# TODO: add docstring
 def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
+    """Plot the true duration of trips against the predicted duration.
+
+    Plot model predictions against the real duration values of trips.
+    Args:
+        p_y_true (Series): Series of true durations of trips
+        p_y_predict (Series): Series of predicted durations of trips by model
+        p_model_name (str): String of models name
+    Returns:
+        no return
+    """
     # true vs predicted value
     fig_scatter, ax_scatter = plt.subplots(figsize=(10, 5))
     ax_scatter.set_xlabel('True Y')
@@ -221,6 +268,13 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
 
 # TODO: add docstring
 def plot_train_loss(p_history):
+    """Plot the train and validation loss of Neural Network.
+
+    Args:
+        p_history (Object): History of loss during training of neural network
+    Returns:
+        no return
+    """
     # Plotting the training and validation loss
     loss = p_history.history['loss']
     val_loss = p_history.history['val_loss']
@@ -252,17 +306,3 @@ def plot_features_influence(p_df):
 
         io.save_fig(fig, str(i)+col+"_Duration.png", p_sub_folder2="features")
     print("DONE")
-
-
-def visualize_more(p_df):
-    """TODO: What else can we visualize?
-
-    Args:
-        p_df (DataFrame): DataFrame with trip data from nuremberg
-    Returns:
-        no return
-    """
-    # These visualizations are the minimum requirement.
-    # Use more visualizations wherever it makes sense.
-
-    print()
