@@ -46,7 +46,7 @@ def plot_and_save_aggregate_stats(p_df_trips):
     day and hour) Returns: no return
     """
 
-    for time_to_aggregate_on in ["month_start", "day_start", "hour_start"]:
+    for time_to_aggregate_on in ["Month_start", "Day_start", "Hour_start"]:
         sr_counts = p_df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).count()
         fig = sr_counts.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
         io.save_fig(p_fig=fig, p_filename='counts_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
@@ -73,7 +73,6 @@ def plot_distribution(p_df):
     quantile_50 = np.quantile(duration, 0.5)
     quantile_75 = np.quantile(duration, 0.75)
     quantile_95 = np.quantile(duration, 0.95)
-
     # plotting
     fig, ax = plt.subplots(figsize=(10, 8))
     ax.set_xlabel('Duration of Booking [min]')
@@ -91,7 +90,7 @@ def plot_distribution(p_df):
 
 # TODO
 def plot_distribution_monthly(p_df):
-    """Plot the distribution of trip lengths per month including quantile lines
+    """Plot the distribution of trip lengths per month
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
@@ -100,29 +99,15 @@ def plot_distribution_monthly(p_df):
     """
     # Visualize the distribution of trip lengths per month. Compare the distributions to normal
     # distributions with mean and standard deviation as calculated before (1.d))
-
-    # TODO: Code to start on
-    # histogram of duration
-
     # data
     duration = p_df['Duration']
     values, base = np.histogram(duration, bins=int(duration.max()), range=(0, int(duration.max())), weights=np.ones(len(duration)) / len(duration))
-    quantile_25 = np.quantile(duration, 0.25)
-    quantile_50 = np.quantile(duration, 0.5)
-    quantile_75 = np.quantile(duration, 0.75)
-    quantile_95 = np.quantile(duration, 0.95)
-
     # plotting
     fig, ax = plt.subplots(figsize=(10, 8))
     ax.set_xlabel('Duration of Booking [min]')
     ax.set_ylabel('Percentage')
     ax.set_title('Distribution of Duration Monthly')
     plt.plot(base[:-1], values, c='blue')
-    plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
-    plt.vlines(quantile_25, 0, 0.07, linestyles='dashed', label='25% Quantile', colors='green')
-    plt.vlines(quantile_50, 0, 0.07, linestyles='dashed', label='50% Quantile', colors='yellow')
-    plt.vlines(quantile_75, 0, 0.07, linestyles='dashed', label='75% Quantile', colors='red')
-    plt.vlines(quantile_95, 0, 0.07, linestyles='dashed', label='95% Quantile')
     plt.legend(loc='upper right')
     io.save_fig(fig, p_filename="DurationMinutes_Distribution_Monthly.png", p_sub_folder2="math")
 
@@ -168,7 +153,7 @@ def plot_mean_duration(p_df):
         no return
     """
     # calculate mean duration of trips for each day of year
-    df_day_mean = p_df.groupby(by="dayofyear_start").mean()[["Duration", "Season"]]
+    df_day_mean = p_df.groupby(by="Day_of_year_start").mean()[["Duration", "Season"]]
     # create series of days of year
     df_days = pd.DataFrame(columns=["Duration"], index=np.arange(1, 366), data=0)
     # add column mean duration per day to 1 - 365

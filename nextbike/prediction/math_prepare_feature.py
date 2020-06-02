@@ -31,11 +31,11 @@ def create_new_features(p_X):
     Returns:
         p_X (DataFrame): Dataframe with existing and new added features (matrix)
     """
-    p_X["hour_squared"] = np.square(p_X["hour_start"])
-    p_X["day_squared"] = np.square(p_X["day_start"])
-    p_X["month_squared"] = np.square(p_X["month_start"])
-    p_X["weekend_squared"] = np.square(p_X["Weekend"])
-    # X["day_squared"] = p_X["day_start"]/p_X["p_bikes_start"]
+    p_X["Hour_squared"] = np.square(p_X["Hour_start"])
+    p_X["Day_squared"] = np.square(p_X["Day_start"])
+    p_X["Month_squared"] = np.square(p_X["Month_start"])
+    p_X["Minute_squared"] = np.square(p_X["Minute_start"])
+    p_X["Weekend_squared"] = np.square(p_X["Weekend"])
     return p_X
 
 
@@ -52,20 +52,20 @@ def drop_end_information(p_df):
     df = p_df.drop(
         ["p_spot_end",
          "p_place_type_end",
-         "End Time",
+         "End_Time",
          "p_uid_end",
          "p_bikes_end",
          "Latitude_end",
          "b_bike_type_end",
          "Place_end",
-         "End Place_id",
+         "End_Place_id",
          "Longitude_end",
          "p_bike_end",
-         "plz_end",
+         "Postalcode_end",
          "Month_end",
          "Day_end",
          "Hour_end",
-         "Minute_end"
+         "Minute_end",
          "Day_of_year_end",
          "Dist_end",
          "Direction"],
@@ -91,9 +91,9 @@ def drop_features(p_df):
             ["p_uid_start",
              "p_place_type_start",
              "p_bikes_start",
-             "month_start",
-             "day_start",
-             "Start Place_id",
+             "Month_start",
+             "Day_start",
+             "Start_Place_id",
              "p_spot_start"],
             axis=1
         )

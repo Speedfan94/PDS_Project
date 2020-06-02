@@ -14,7 +14,7 @@ def train_pred(p_df):
     Returns:
         no Return
     """
-    X = p_df[["Duration", "Dist_start", "Bike Number"]]
+    X = p_df[["Duration", "Dist_start", "Bike_Number"]]
     y = p_df["Direction"]
     X = StandardScaler().fit_transform(X)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
