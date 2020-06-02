@@ -49,8 +49,8 @@ def train_neural_network(p_X_train_scaled, p_y_train):
         [layers.Dense(36, activation="relu", input_shape=[p_X_train_scaled.shape[1]]),
          # layers.Dropout(0.2),
          layers.Dense(36, activation="relu"),
-         #layers.Dense(36, activation="softmax"),
-         #layers.Dense(36, activation="softmax"),
+         # layers.Dense(36, activation="softmax"),
+         # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
          layers.Dense(1)])
     optimizer = keras.optimizers.RMSprop(0.001)
@@ -63,7 +63,7 @@ def train_neural_network(p_X_train_scaled, p_y_train):
     neural_network.save(io.get_path("Neural_Network_Model", "output", "models"))
     y_prediction = neural_network.predict(p_X_train_scaled)
     show_error_metrics(p_y_train, y_prediction, "Neural_Network_Model")
-    visualization.math.plot_train_loss(history)
+    visualization.math_predictive.plot_train_loss(history)
 
 
 def train_svm(p_X_train_scaled, p_y_train):
