@@ -1,5 +1,6 @@
 from .. import io
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 
@@ -82,7 +83,14 @@ def plot_train_loss(p_history):
     io.save_fig(fig, "NN_error_per_epoch.png", p_sub_folder2="math")
 
 
+# TODO: add docstring
 def plot_direction_classification(p_X_train, p_y_train):
+    p_X_train["Direction"] = p_y_train
+    x1 = p_X_train[p_X_train["Direction"]==True]["Duration"]
+    y1 = p_X_train[p_X_train["Direction"] == True]["Dist_start"]
+    x2 = p_X_train[p_X_train["Direction"]==False]["Duration"]
+    y2 = p_X_train[p_X_train["Direction"]==False]["Dist_start"]
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.scatter(p_X_train["Duration"], p_X_train["Dist_start"], c=p_y_train)
-    plt.show()
+    ax.scatter(x2, y2, c="green")
+    ax.scatter(x1, y1, c="red")
+    # plt.show()
