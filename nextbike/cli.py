@@ -84,6 +84,8 @@ def visualize():
     visualization.geo.visualize_heatmap(df)
     print("Visualize Postalcode Zones...")
     visualization.geo.visualize_plz(df)
+    print("Visualize Monthly Distribution...")
+    visualization.math_descriptive.plot_distribution_monthly(df)
     print("Visualize Distribution Function...")
     visualization.math_descriptive.plot_distribution(df)
     print("Visualize Mean Duration...")
