@@ -28,6 +28,7 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
     )
+    plt.close(fig_scatter)
 
     # distribution of true vs distribution of predicted value
     p_y_predict = p_y_predict.flatten()  # NN gives 2-d array as predicted values
@@ -58,6 +59,7 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
     )
+    plt.close(fig_distr)
 
 
 def plot_train_loss(p_history):
@@ -81,6 +83,7 @@ def plot_train_loss(p_history):
     ax.set_ylabel('Loss')
     plt.legend()
     io.save_fig(fig, "NN_error_per_epoch.png", p_sub_folder2="math")
+    plt.close(fig)
 
 
 # TODO: add docstring
@@ -93,4 +96,5 @@ def plot_direction_classification(p_X_train, p_y_train):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.scatter(x2, y2, c="green")
     ax.scatter(x1, y1, c="red")
-    # plt.show()
+    io.save_fig(fig, p_filename="Classification_Data.png", p_sub_folder2="math")
+    plt.close(fig)
