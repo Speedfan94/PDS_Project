@@ -86,30 +86,63 @@ def plot_distribution(p_df):
     plt.vlines(quantile_95, 0, 0.07, linestyles='dashed', label='95% Quantile')
     plt.legend(loc='upper right')
     io.save_fig(fig, p_filename="DurationMinutes_Distribution.png", p_sub_folder2="math")
+    plt.close(fig)
 
 
-# TODO
 def plot_distribution_monthly(p_df):
-    """Plot the distribution of trip lengths per month
+    """Plot the distribution of trip lengths per month in violinplots
+    and the normal distribution over all months beside.
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
         no return
     """
-    # Visualize the distribution of trip lengths per month. Compare the distributions to normal
-    # distributions with mean and standard deviation as calculated before (1.d))
     # data
-    duration = p_df['Duration']
-    values, base = np.histogram(duration, bins=int(duration.max()), range=(0, int(duration.max())), weights=np.ones(len(duration)) / len(duration))
+    data = p_df[["Duration", "Month_start"]]
+    data["Normals"] = None
+    months = data["Month_start"].unique()
+    for month in months:
+        mean = data[data["Month_start"] == month]["Duration"].mean()
+        std = data[data["Month_start"] == month]["Duration"].std()
+        size = len(data[data["Month_start"] == month])
+        normal_distr = np.random.normal(mean, std, size)
+        data.loc[data["Month_start"] == month, "Normals"] = normal_distr.astype(np.float64)
     # plotting
-    fig, ax = plt.subplots(figsize=(10, 8))
-    ax.set_xlabel('Duration of Booking [min]')
-    ax.set_ylabel('Percentage')
-    ax.set_title('Distribution of Duration Monthly')
-    plt.plot(base[:-1], values, c='blue')
-    plt.legend(loc='upper right')
-    io.save_fig(fig, p_filename="DurationMinutes_Distribution_Monthly.png", p_sub_folder2="math")
+    sns.set_style(style="whitegrid")
+    #
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 5), dpi=300, gridspec_kw={'width_ratios': [3, 1]})
+    # bw=1 is the scale factor for kernel for nicer visualization
+    # cut=0 sets the lower bound of violins to the real lowest duration
+    ax1 = sns.violinplot(
+        x="Month_start",
+        y="Duration",
+        data=data,
+        ax=ax1,
+        bw=1,
+        cut=0,
+        palette="muted"
+    )
+    ax1.set_xlabel('Month')
+    ax1.set_ylabel('Duration [min]')
+    ax1.set_title('Distributions of Durations per Month')
+    ax2 = sns.distplot(
+        data["Normals"]
+    )
+    ax2.set_xlim(left=0)
+    ax2.set_xlabel('Normalized Duration [min]')
+    ax2.set_ylabel('Percentage [%]')
+    ax2.set_title("Normal Distribution over all months")
+    fig.add_axes(ax1)
+    fig.add_axes(ax2)
+    io.save_fig(
+        fig,
+        p_filename="distribution_monthly.png",
+        p_io_folder="output",
+        p_sub_folder1="data_plots",
+        p_sub_folder2="math"
+    )
+    plt.close(fig)
 
 
 def corr_analysis(p_df):
@@ -121,7 +154,6 @@ def corr_analysis(p_df):
         no return
     """
     corrs = p_df.corr()
-    # corrs.to_csv(io.get_path("feature_correlations.csv", "output"), sep=";")
     # Generate a mask for the upper triangle
     mask = np.triu(np.ones_like(corrs, dtype=np.bool))
 
@@ -132,16 +164,26 @@ def corr_analysis(p_df):
     cmap = sns.diverging_palette(240, 10, as_cmap=True)
 
     # Draw the heatmap with the mask and correct aspect ratio
-    sns.heatmap(corrs, mask=mask, cmap=cmap, center=0,
-                square=True, linewidths=.5, cbar_kws={"shrink": .5})
-    plt.savefig(
-        io.get_path(
-            p_filename="Correlation.png",
-            p_io_folder="output",
-            p_sub_folder1="data_plots",
-            p_sub_folder2="math"
-        )
+    ax1 = sns.heatmap(
+        corrs,
+        mask=mask,
+        cmap=cmap,
+        center=0,
+        ax=ax,
+        square=True,
+        linewidths=.5,
+        cbar_kws={"shrink": .5}
     )
+
+    fig.add_axes(ax1)
+    io.save_fig(
+        fig,
+        p_filename="Correlation.png",
+        p_io_folder="output",
+        p_sub_folder1="data_plots",
+        p_sub_folder2="math"
+    )
+    plt.close(fig)
 
 
 def plot_mean_duration(p_df):
@@ -193,6 +235,7 @@ def plot_mean_duration(p_df):
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
     )
+    plt.close(fig)
 
 
 # TODO: add docstring
