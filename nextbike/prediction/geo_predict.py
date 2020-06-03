@@ -22,8 +22,8 @@ def train_pred(p_df):
     # data
     X = p_df[["Duration", "Dist_start"]]
     y = p_df["Direction"]
-    X = StandardScaler().fit_transform(X)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    X_scaled = StandardScaler().fit_transform(X)
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42)
     # train
     # KNN
     clf = KNeighborsClassifier(n_neighbors=20, weights="distance")
@@ -46,7 +46,7 @@ def train_pred(p_df):
     print("RF: Test score (mean accuracy)", np.round(rf.score(X_test, y_test) * 100, 2), "%")
     print("NN: Test score (mean accuracy)", np.round(nn.score(X_test, y_test) * 100, 2), "%")
     print("GNB: Test score (mean accuracy)", np.round(gnb.score(X_test, y_test) * 100, 2), "%")
-    visualization.math_predictive.plot_direction_classification(X_train, y_train)
+    visualization.math_predictive.plot_direction_classification(X, y)
 
 
 # TODO: add additional methods for prediction
