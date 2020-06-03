@@ -47,15 +47,30 @@ def plot_and_save_aggregate_stats(p_df_trips):
     """
 
     for time_to_aggregate_on in ["Month_start", "Day_start", "Hour_start"]:
-        sr_counts = p_df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).count()
-        fig = sr_counts.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
-        io.save_fig(p_fig=fig, p_filename='counts_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
-        sr_means = p_df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).mean()
-        fig = sr_means.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
-        io.save_fig(p_fig=fig, p_filename='means_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
-        sr_stds = p_df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).std()
-        fig = sr_stds.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
-        io.save_fig(p_fig=fig, p_filename='stds_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
+        # data
+        x = pd.Series(p_df_trips[time_to_aggregate_on].unique()).sort_values()
+        sr_counts = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].count()
+        sr_means = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].mean()
+        sr_stds = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].std()
+        # plotting
+        # subplot 1
+        width = 0.35
+        fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), gridspec_kw={'width_ratios': [2, 1]})
+        ax1.bar(x.subtract(width/2), height=sr_means.values, width=width, color="green", label="Mean")
+        ax1.bar(x.add(width/2), height=sr_stds.values, width=width, color="red", label="Standard Deviation")
+        ax1.set_xticks(x)
+        ax1.set_xlabel(time_to_aggregate_on)
+        ax1.set_ylabel("Duration [min]")
+        ax1.set_title("Mean and Std of Trip Duration per "+time_to_aggregate_on)
+        ax1.legend(loc="upper left")
+        # subplot 2
+        ax2.bar(x, height=sr_counts.values, label="Count")
+        if time_to_aggregate_on == "Month_start":
+            ax2.set_xticks(x)
+        ax2.set_xlabel(time_to_aggregate_on)
+        ax2.set_ylabel("Number of Trips")
+        ax2.set_title("Count of Trips per "+time_to_aggregate_on)
+        io.save_fig(p_fig=fig, p_filename='Aggregate_Statistics_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
 
 
 def plot_distribution(p_df):
