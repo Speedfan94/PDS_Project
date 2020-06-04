@@ -26,6 +26,7 @@ def predict_by_regression(p_X_test, p_y_test):
     y_predictions = model.predict(X_test_transformed)
     # Evaluate prediction
     show_errors_metrics(p_y_test, y_predictions, "01_Linear_Regression_Prediction")
+    visualization.plot_regression_with_each_var(p_X_test, p_y_test, y_predictions)
 
 
 def predict_by_nn(p_X_test, p_y_test):
