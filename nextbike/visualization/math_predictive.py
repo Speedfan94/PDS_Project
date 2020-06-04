@@ -89,12 +89,24 @@ def plot_train_loss(p_history):
 # TODO: add docstring
 def plot_direction_classification(p_X_train, p_y_train):
     p_X_train["Direction"] = p_y_train
-    x1 = p_X_train[p_X_train["Direction"]==True]["Duration"]
+    # x1 = p_X_train[p_X_train["Direction"]==True]["Duration"]
     y1 = p_X_train[p_X_train["Direction"] == True]["Dist_start"]
-    x2 = p_X_train[p_X_train["Direction"]==False]["Duration"]
+    # x2 = p_X_train[p_X_train["Direction"]==False]["Duration"]
     y2 = p_X_train[p_X_train["Direction"]==False]["Dist_start"]
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.scatter(x2, y2, c="green")
-    ax.scatter(x1, y1, c="red")
+    ax.scatter(0, y2, c="green")
+    ax.scatter(0, y1, c="red")
     io.save_fig(fig, p_filename="Classification_Data.png", p_sub_folder2="math")
     plt.close(fig)
+
+
+def plot_regression_with_each_var(p_X, p_y_true, p_y_predicted):
+    p_y_predicted=pd.Series(p_y_predicted).sort_values()
+    print(p_y_predicted)
+    for col in p_X.columns:
+        print(col)
+        fig, ax = plt.subplots()
+        ax.scatter(p_X[col], p_y_true, c="red")
+        ax.plot(p_X[col], p_y_predicted)
+        plt.show()
+        plt.close()
