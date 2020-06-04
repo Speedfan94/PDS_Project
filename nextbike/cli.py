@@ -1,43 +1,51 @@
 import click
 from datetime import datetime
+import pandas as pd
+import numpy as np
 from . import io
 from . import datapreparation
 from . import visualization
 from . import prediction
 from . import utils
+from . import testing
 
 
 @click.command()
+@click.option('--test/--no-test', default=False, help="Testing mode")
 @click.option('--clean/--no-clean', default=True, help="Clean the data.")
 @click.option('--viso/--no-viso', default=True, help="Visualize the data.")
 @click.option('--train/--no-train', default=True, help="Train the model.")
 @click.option('--pred/--no-pred', default=True, help="Predict with model.")
-def main(clean, viso, train, pred):
-    start_time = datetime.now().replace(microsecond=0)
-    start_time_step = start_time
-    if clean:
-        print("START CLEAN")
-        cleaning()
-        start_time_step = print_time_for_step(start_time_step)
-    if viso:
-        print("START VISUALIZE")
-        # TODO Rename visualization.math / geo to math_plot and geo_plot
-        visualize()
-        start_time_step = print_time_for_step(start_time_step)
-    if train:
-        print("START TRAIN")
-        features()
-        training()
-        start_time_step = print_time_for_step(start_time_step)
-    if pred:
-        print("START PREDICT")
-        predict()
-        start_time_step = print_time_for_step(start_time_step)
-        print("START GEO PREDICT")
-        predict_geo()
-        start_time_step = print_time_for_step(start_time_step)
+def main(test, clean, viso, train, pred):
+    if test:
+        testing_models()
+    else:
+        start_time = datetime.now().replace(microsecond=0)
+        start_time_step = start_time
 
-    print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
+        if clean:
+            print("START CLEAN")
+            cleaning()
+            start_time_step = print_time_for_step(start_time_step)
+        if viso:
+            print("START VISUALIZE")
+            # TODO Rename visualization.math / geo to math_plot and geo_plot
+            visualize()
+            start_time_step = print_time_for_step(start_time_step)
+        if train:
+            print("START TRAIN")
+            features()
+            training()
+            start_time_step = print_time_for_step(start_time_step)
+        if pred:
+            print("START PREDICT")
+            predict()
+            start_time_step = print_time_for_step(start_time_step)
+            print("START GEO PREDICT")
+            predict_geo()
+            start_time_step = print_time_for_step(start_time_step)
+
+        print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
 
 
 def cleaning():
@@ -103,6 +111,8 @@ def features():
     """
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
     df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
+    # TODO: Add corr analysis before feature selection be aware of non numerical features
+    # visualization.math_descriptive.corr_analysis(df_features_2)
     print("Drop End Information")
     df_only_start = prediction.math_prepare_feature.drop_end_information(df_trips)
     print("Create Dummie Variables...")
@@ -114,6 +124,13 @@ def features():
     visualization.math_descriptive.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
+
+
+def testing_models():
+    # TODO: add docstring
+    df_components = io.input.read_csv("Components.csv", p_io_folder="output").reset_index(drop=True)
+    y_true = io.input.read_csv("y_train.csv", p_io_folder="output")
+    testing.test_model("Linear_Regression_Model", df_components, y_true)
 
 
 def training():
@@ -132,12 +149,15 @@ def training():
     X_scaled_train = prediction.math_prepare_feature.scale(X_train)
     print("Do PCA...")
     X_train_transformed = prediction.math_prepare_feature.do_pca(X_scaled_train)
+    df_components = pd.DataFrame(X_train_transformed)
+    io.output.save_csv(y_train, p_filename="y_train.csv")
+    io.output.save_csv(df_components, p_filename="Components.csv")
     print("Train Linear Regression...")
     prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")
-    prediction.math_train.train_svm(X_train_transformed, y_train)
+    #prediction.math_train.train_svm(X_train_transformed, y_train)
     print("Train NN...")
-    prediction.math_train.train_neural_network(X_train_transformed, y_train)
+    #prediction.math_train.train_neural_network(X_train_transformed, y_train)
 
 
 def predict():
@@ -169,7 +189,17 @@ def predict_geo():
     Returns:
         no Return
     """
+    # TODO: Feature selection etc...
     df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
+    df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)
+    print("Drop End Information")
+    df_features = prediction.math_prepare_feature.drop_end_information(df_features, direction_needed=True)
+    print("Create Dummie Variables...")
+    df_features = prediction.math_prepare_feature.create_dummies(df_features)
+    print("Do Feature Engineering...")
+    df_features = prediction.math_prepare_feature.create_new_features(df_features)
+    print("Drop Unneeded Features...")
+    df_features = prediction.math_prepare_feature.drop_features(df_features)
     print("Predict Trip Direction...")
     prediction.geo_predict.train_pred(df_features)
 
