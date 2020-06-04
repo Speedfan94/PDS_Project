@@ -14,9 +14,8 @@ def get_data_path():
         raise FileNotFoundError
 
 
-# TODO: Add docstring
 def get_path(p_filename, p_io_folder, p_sub_folder1="", p_sub_folder2=""):
-    """ get you the path for given parameters
+    """ Return the path for given parameters
 
     Args:
         p_filename (str): name of file
@@ -24,7 +23,7 @@ def get_path(p_filename, p_io_folder, p_sub_folder1="", p_sub_folder2=""):
         p_sub_folder1 (str): name of subfolder
         p_sub_folder2 (str): name of second subfolder
     Returns:
-        path (os.path)
+        path (os.path): Path for given parameters
     """
     path = os.path.join(get_data_path(), p_io_folder, p_sub_folder1, p_sub_folder2, p_filename)
     return path
