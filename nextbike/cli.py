@@ -60,11 +60,10 @@ def cleaning():
     df_trips_filter_duration = datapreparation.data_clean.drop_noise(df_trips_add_feat)
     print("Clean Postalcodes...")
     df_trips_only_nuremberg = datapreparation.geo_clean.only_nuremberg(df_trips_filter_duration)
-    print(df_trips_only_nuremberg.head())
-    # print("Add Distances to University...")
-    # df_trips_only_nuremberg_dist = datapreparation.feature_add.quick_create_dist(df_trips_only_nuremberg)
-    # print("Save trip dataframe...")
-    # io.output.save_csv(df_trips_only_nuremberg_dist, "Trips.csv")
+    print("Add Distances to University...")
+    df_trips_only_nuremberg_dist = datapreparation.feature_add.quick_create_dist(df_trips_only_nuremberg)
+    print("Save trip dataframe...")
+    io.output.save_csv(df_trips_only_nuremberg_dist, "Trips.csv")
 
 
 # TODO: Add docstring
