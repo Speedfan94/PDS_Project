@@ -70,6 +70,10 @@ def data_cleaning(p_df_original):
         right_on=df_end.index,
         suffixes=('_start', '_end')
     )
+
+    # Only keep trips, which where merged correctly
+    df_merged = df_merged[df_merged["b_number_start"] == df_merged["b_number_end"]]
+
     df_merged.drop(
         ["key_0",
          "b_number_end"], axis=1, inplace=True
