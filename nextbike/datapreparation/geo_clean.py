@@ -3,6 +3,8 @@ import json
 from nextbike import io
 from shapely.geometry import shape, Point
 import pandas as pd
+from datetime import datetime
+
 
 # TODO: Try iterating through PLZs, find matching data points & kick them out instead of vice versa
 
@@ -34,12 +36,12 @@ def only_nuremberg(p_df):
     # Add PLZ to trip and drop trips without start or end PLZ
 
     # TODO: resolve names of methods or file
-    df_plz = plz(p_df)
     # add start plz
+    df_plz = plz(p_df)
     df_nurem = df_plz.dropna(axis=0)
     # add end plz
-    df_nurem = plz_end(df_nurem)
-    df_nurem = df_nurem.dropna(axis=0)
+    # df_nurem = plz_end(df_nurem)
+    # df_nurem = df_nurem.dropna(axis=0)
 
     return df_nurem
 
@@ -90,8 +92,9 @@ def plz(p_df):
     """
     plz_value_def()
 
-    p_df['plz_start'] = p_df.apply(lambda x: get_plz(x['Latitude_start'], x['Longitude_start']), axis=1)
-    return p_df
+    p_df_new = get_plz(p_df)
+    # p_df['plz_start'] = p_df.apply(lambda x: get_plz(x['Latitude_start'], x['Longitude_start']), axis=1)
+    return p_df_new
 
 
 # TODO: no concise way of workflow in program structure
@@ -111,13 +114,13 @@ def plz_end(p_df):
 
     # TODO: Fix that bad style right here:
     pd.options.mode.chained_assignment = None
-    p_df['plz_end'] = p_df.apply(lambda x: get_plz(x['Latitude_end'], x['Longitude_end']), axis=1)
+    # p_df['plz_end'] = p_df.apply(lambda x: get_plz(x['Latitude_end'], x['Longitude_end']), axis=1)
     # Todo: fix that bad style right here
     pd.options.mode.chained_assignment = "warn"
     return p_df
 
 
-def get_plz(p_lat, p_lon):
+def get_plz(p_df):
     """return the plz for given longitude and latitude
 
     Args:
@@ -125,12 +128,42 @@ def get_plz(p_lat, p_lon):
         p_lon (int): longitude of trip
     Returns:
         i_plz (int): plz for given long and lat
-        """
-    p = shapely.Point(p_lon, p_lat)
+    """
+
+    print("Calculating starting points for df...")
+    # p_df["Point_start"] = p_df.apply(lambda row: shapely.Point(row["Longitude_start"], row["Latitude_start"]), axis=1)
+    p_df["plz_start"] = None
+    print("DONE Calculating starting points for df")
     for iter_plz, iter_shape in plz_value.items():
+        print("Checking PLZ", iter_plz)
+        start_time = datetime.now().replace(microsecond=0)
         if type(iter_shape) == list:
             for poly in iter_shape:
-                if poly.contains(p):
-                    return iter_plz
-        elif iter_shape.contains(p):
-            return iter_plz
+                p_df["plz_start"] = p_df.apply(lambda row: set_plz(row["Longitude_start"], row["Latitude_start"], poly, iter_plz) if (row["plz_start"] is None) else None, axis=1)
+                """
+                for index, row in p_df.iterrows():
+                    if row["plz_start"] == 0:
+                        starting_point = shapely.Point(row['Longitude_start'], row['Latitude_start'])
+                        if poly.contains(starting_point):
+                            row["plz_start"] = iter_plz
+                """
+                print("PLZ Start (Poly):", p_df["plz_start"])
+        else:
+            p_df["plz_start"] = p_df.apply(lambda row: set_plz(row["Longitude_start"], row["Latitude_start"], iter_shape, iter_plz) if (row["plz_start"] is None) else None, axis=1)
+            """
+            for index, row in p_df.iterrows():
+                if row["plz_start"] == 0:
+                    starting_point = shapely.Point(row['Longitude_start'], row['Latitude_start'])
+                    if iter_shape.contains(starting_point):
+                        row["plz_start"] = iter_plz
+            """
+            print("PLZ Start (Shape):", p_df["plz_start"])
+        print("TIME FOR PLZ:", (datetime.now().replace(microsecond=0) - start_time))
+
+    return p_df
+
+
+def set_plz(p_lng, p_lat, p_poly, p_iter_plz):
+    point = shapely.Point(p_lng, p_lat)
+    if p_poly.contains(point):
+        return p_iter_plz
