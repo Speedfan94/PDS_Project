@@ -22,9 +22,12 @@ def train_linear_regression(p_X_train_scaled, p_y_train):
     """
     lin = LinearRegression()
     lin.fit(p_X_train_scaled, p_y_train)
+    print("Coefficients: ", lin.coef_)
     io.save_object(lin, "Linear_Regression_Model.pkl")
     y_prediction = lin.predict(p_X_train_scaled)
-    show_error_metrics(p_y_train, y_prediction, "Linear_Regression_Model", lin.score(p_X_train_scaled, p_y_train))
+    show_error_metrics(p_y_train, y_prediction, "Linear_Regression_Model")
+
+    # TODO: visualize regression line
 
 
 def train_neural_network(p_X_train_scaled, p_y_train):
@@ -53,7 +56,7 @@ def train_neural_network(p_X_train_scaled, p_y_train):
          # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
          layers.Dense(1)])
-    optimizer = keras.optimizers.RMSprop(0.001)
+    optimizer = keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)
     neural_network.compile(loss="mse",
                            optimizer=optimizer,
                            metrics=["mae", "mse"])
@@ -92,10 +95,10 @@ def train_svm(p_X_train_scaled, p_y_train):
     regr.fit(p_X_train_scaled, p_y_train)
     io.save_object(regr, "SVM_Regression_Model_3.pkl")
     y_prediction = regr.predict(p_X_train_scaled)
-    show_error_metrics(p_y_train, y_prediction, "SVM_Regression_Model_3", regr.score(p_X_train_scaled, p_y_train))
+    show_error_metrics(p_y_train, y_prediction, "SVM_Regression_Model_3")
 
 
-def show_error_metrics(p_y_true, p_y_predictions, p_filename, p_score=None):
+def show_error_metrics(p_y_true, p_y_predictions, p_filename):
     """Evaluate the trained models by error metrics.
 
     Print for the given model the following error metrics:
@@ -112,5 +115,10 @@ def show_error_metrics(p_y_true, p_y_predictions, p_filename, p_score=None):
     """
     print(p_filename, "Training loss - Error Metrics:")
     print("RMSE:", np.sqrt(metrics.mean_squared_error(p_y_true, p_y_predictions)), end=" ")
-    print("MAE", metrics.mean_absolute_error(p_y_true, p_y_predictions), end=" ")
-    print("R^2:", p_score)
+    print("MAE:", metrics.mean_absolute_error(p_y_true, p_y_predictions), end=" ")
+    if p_filename != "Neural_Network_Model":
+        # The coefficient of determination: 1 is perfect prediction
+        print("R^2:", metrics.r2_score(p_y_true, p_y_predictions))
+    else:
+        print()
+
