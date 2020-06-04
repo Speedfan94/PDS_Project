@@ -155,9 +155,9 @@ def training():
     print("Train Linear Regression...")
     prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")
-    #prediction.math_train.train_svm(X_train_transformed, y_train)
+    prediction.math_train.train_svm(X_train_transformed, y_train)
     print("Train NN...")
-    #prediction.math_train.train_neural_network(X_train_transformed, y_train)
+    prediction.math_train.train_neural_network(X_train_transformed, y_train)
 
 
 def predict():
