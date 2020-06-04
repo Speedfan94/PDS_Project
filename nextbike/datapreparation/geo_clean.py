@@ -90,7 +90,10 @@ def plz(p_df):
     Returns:
         df (DataFrame): DataFrame of trips with start plz
     """
+    print("Calculating PLZ shapes...")
+    start_time_plz_def = datetime.now().replace(microsecond=0)
     plz_value_def()
+    print("TIME FOR PLZ DEF:", (datetime.now().replace(microsecond=0) - start_time_plz_def))
 
     p_df_new = get_plz(p_df)
     # p_df['plz_start'] = p_df.apply(lambda x: get_plz(x['Latitude_start'], x['Longitude_start']), axis=1)
@@ -130,40 +133,64 @@ def get_plz(p_df):
         i_plz (int): plz for given long and lat
     """
 
-    print("Calculating starting points for df...")
-    # p_df["Point_start"] = p_df.apply(lambda row: shapely.Point(row["Longitude_start"], row["Latitude_start"]), axis=1)
-    p_df["plz_start"] = None
-    print("DONE Calculating starting points for df")
-    for iter_plz, iter_shape in plz_value.items():
-        print("Checking PLZ", iter_plz)
-        start_time = datetime.now().replace(microsecond=0)
-        if type(iter_shape) == list:
-            for poly in iter_shape:
-                p_df["plz_start"] = p_df.apply(lambda row: set_plz(row["Longitude_start"], row["Latitude_start"], poly, iter_plz) if (row["plz_start"] is None) else None, axis=1)
-                """
-                for index, row in p_df.iterrows():
-                    if row["plz_start"] == 0:
-                        starting_point = shapely.Point(row['Longitude_start'], row['Latitude_start'])
-                        if poly.contains(starting_point):
-                            row["plz_start"] = iter_plz
-                """
-                print("PLZ Start (Poly):", p_df["plz_start"])
-        else:
-            p_df["plz_start"] = p_df.apply(lambda row: set_plz(row["Longitude_start"], row["Latitude_start"], iter_shape, iter_plz) if (row["plz_start"] is None) else None, axis=1)
-            """
-            for index, row in p_df.iterrows():
-                if row["plz_start"] == 0:
-                    starting_point = shapely.Point(row['Longitude_start'], row['Latitude_start'])
-                    if iter_shape.contains(starting_point):
-                        row["plz_start"] = iter_plz
-            """
-            print("PLZ Start (Shape):", p_df["plz_start"])
-        print("TIME FOR PLZ:", (datetime.now().replace(microsecond=0) - start_time))
+    df_start = p_df[["Longitude_start", "Latitude_start"]]
+    df_geo_start = df_start.rename({
+        "Longitude_start": "Longitude",
+        "Latitude_start": "Latitude"
+    }, axis=1)
 
+    df_end = p_df[["Longitude_end", "Latitude_end"]]
+    df_geo_end = df_end.rename({
+        "Longitude_end": "Longitude",
+        "Latitude_end": "Latitude"
+    }, axis=1)
+
+    df_all_points = df_geo_start.append(df_geo_end, ignore_index=True)
+    # Could be rounded to boost performance
+    # df_all_points["Longitude"] = df_all_points["Longitude"].round(6)
+    # df_all_points["Latitude"] = df_all_points["Latitude"].round(6)
+    print("Number of trips:", len(p_df))
+    print("Number of points:", len(df_all_points))
+    df_unique_points = df_all_points.drop_duplicates(["Longitude", "Latitude"], ignore_index=True)
+    number_of_unique_points = len(df_unique_points)
+    print("Number of UNIQUE points:", number_of_unique_points)
+
+    start_time_plz_calc = datetime.now().replace(microsecond=0)
+    df_unique_points["plz"] = df_unique_points.apply(lambda row: calc_postalcode_for_coords(row, number_of_unique_points), axis=1)
+    print("")
+    print("=== TIME FOR PLZ CALC:", (datetime.now().replace(microsecond=0) - start_time_plz_calc))
+
+    start_time_plz_to_original_df = datetime.now().replace(microsecond=0)
+    df_nurem_points = df_unique_points.dropna()
+    number_of_nurem_points = len(df_nurem_points)
+    df_nurem_points.apply(lambda row: map_postalcode_to_original_df(row, p_df, number_of_nurem_points), axis=1)
+    print("=== TIME FOR PLZ TO ORIGINAL DF:", (datetime.now().replace(microsecond=0) - start_time_plz_to_original_df))
+
+    print(p_df[["Longitude_start", "Latitude_start", "plz_start", "Longitude_end", "Latitude_end", "plz_end"]].head(50))
     return p_df
 
 
-def set_plz(p_lng, p_lat, p_poly, p_iter_plz):
-    point = shapely.Point(p_lng, p_lat)
-    if p_poly.contains(point):
-        return p_iter_plz
+def calc_postalcode_for_coords(p_row, p_number_of_points):
+    index = p_row.name
+    print("Checking coordinates: ", (index/p_number_of_points*100).round(1), "% (", index, "/", p_number_of_points, ") \r", end="")
+    point = shapely.Point(p_row["Longitude"], p_row["Latitude"])
+    for iter_plz, iter_shape in plz_value.items():
+        if type(iter_shape) == list:
+            for poly in iter_shape:
+                if poly.contains(point):
+                    return iter_plz
+        else:
+            if iter_shape.contains(point):
+                return iter_plz
+
+
+def map_postalcode_to_original_df(p_row, p_df_original, p_number_of_nurem_points):
+    index = p_row.name
+    print("Mapping postalcodes to dataset: ", (index / p_number_of_nurem_points * 100).round(1), "% (", index, "/", p_number_of_nurem_points,
+          ") \r", end="")
+    p_df_original.loc[
+        (p_df_original["Longitude_start"] == p_row["Longitude"]) & (
+         p_df_original["Latitude_start"] == p_row["Latitude"]), "plz_start"] = p_row["plz"]
+    p_df_original.loc[
+        (p_df_original["Longitude_end"] == p_row["Longitude"]) & (
+         p_df_original["Latitude_end"] == p_row["Latitude"]), "plz_end"] = p_row["plz"]
