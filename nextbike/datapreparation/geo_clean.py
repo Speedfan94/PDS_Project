@@ -66,6 +66,8 @@ def postalcode1(p_df):
 
 def postalcode_value_def():
     """TODO:What does this method do?
+    This Method creates Polygons and look, whether the coordinate is located in this Polygon (Area) (ZIP-Code Area)
+    Adds the zip code to the help-variable "plz_value"
 
     Args:
         no args

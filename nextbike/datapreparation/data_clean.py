@@ -60,6 +60,10 @@ def data_cleaning(p_df_original):
         right_on=df_end.index,
         suffixes=('_start', '_end')
     )
+
+    # Only keep trips, which where merged correctly
+    df_merged = df_merged[df_merged["b_number_start"] == df_merged["b_number_end"]]
+
     df_merged.drop(
         ["key_0",
          "b_number_end"], axis=1, inplace=True
@@ -98,6 +102,7 @@ def drop_noise(p_df_trips):
     # Hardcode lower bound because trips of about 2 minutes may be relevant
     lower_duration_bound = 1.0
     upper_duration_bound = p_df_trips["Duration"].quantile(0.90)
+    # upper_duration_bound = 5.0
     # Drop values out of duration bounds
     p_df_trips = p_df_trips[
         (p_df_trips["Duration"] > lower_duration_bound) & (p_df_trips["Duration"] < upper_duration_bound)
