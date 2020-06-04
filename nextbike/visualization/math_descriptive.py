@@ -46,32 +46,41 @@ def plot_and_save_aggregate_stats(p_df_trips):
     day and hour) Returns: no return
     """
 
-    for time_to_aggregate_on in ["month_start", "day_start", "hour_start"]:
-        sr_counts = p_df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).count()
-        fig = sr_counts.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
-        io.save_fig(p_fig=fig, p_filename='counts_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
-        sr_means = p_df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).mean()
-        fig = sr_means.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
-        io.save_fig(p_fig=fig, p_filename='means_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
-        sr_stds = p_df_trips[["Duration", time_to_aggregate_on]].groupby(by=time_to_aggregate_on).std()
-        fig = sr_stds.plot(kind='barh', figsize=(16, 16), fontsize=22).get_figure()
-        io.save_fig(p_fig=fig, p_filename='stds_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
+    for time_to_aggregate_on in ["Month_start", "Day_start", "Hour_start"]:
+        # data
+        x = pd.Series(p_df_trips[time_to_aggregate_on].unique()).sort_values()
+        sr_counts = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].count()
+        sr_means = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].mean()
+        sr_stds = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].std()
+        # plotting
+        # subplot 1
+        width = 0.35
+        fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), gridspec_kw={'width_ratios': [2, 1]})
+        ax1.bar(x.subtract(width/2), height=sr_means.values, width=width, color="green", label="Mean")
+        ax1.bar(x.add(width/2), height=sr_stds.values, width=width, color="red", label="Standard Deviation")
+        ax1.set_xticks(x)
+        ax1.set_xlabel(time_to_aggregate_on)
+        ax1.set_ylabel("Duration [min]")
+        ax1.set_title("Mean and Std of Trip Duration per "+time_to_aggregate_on)
+        ax1.legend(loc="upper left")
+        # subplot 2
+        ax2.bar(x, height=sr_counts.values, label="Count")
+        if time_to_aggregate_on == "Month_start":
+            ax2.set_xticks(x)
+        ax2.set_xlabel(time_to_aggregate_on)
+        ax2.set_ylabel("Number of Trips")
+        ax2.set_title("Count of Trips per "+time_to_aggregate_on)
+        io.save_fig(p_fig=fig, p_filename='Aggregate_Statistics_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
 
 
 def plot_distribution(p_df):
-    """Plots the distribution of trip lengths per month including quantile lines
+    """Plot the distribution of trip duration including quantile lines.
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
         no return
     """
-    # Visualize the distribution of trip lengths per month. Compare the distributions to normal
-    # distributions with mean and standard deviation as calculated before (1.d))
-
-    # TODO: Code to start on
-    # histogram of duration
-
     # data
     duration = p_df['Duration']
     values, base = np.histogram(duration, bins=int(duration.max()), range=(0, int(duration.max())), weights=np.ones(len(duration)) / len(duration))
@@ -79,7 +88,6 @@ def plot_distribution(p_df):
     quantile_50 = np.quantile(duration, 0.5)
     quantile_75 = np.quantile(duration, 0.75)
     quantile_95 = np.quantile(duration, 0.95)
-
     # plotting
     fig, ax = plt.subplots(figsize=(10, 8))
     ax.set_xlabel('Duration of Booking [min]')
@@ -93,10 +101,67 @@ def plot_distribution(p_df):
     plt.vlines(quantile_95, 0, 0.07, linestyles='dashed', label='95% Quantile')
     plt.legend(loc='upper right')
     io.save_fig(fig, p_filename="DurationMinutes_Distribution.png", p_sub_folder2="math")
+    plt.close(fig)
+
+
+def plot_distribution_monthly(p_df):
+    """Plot the distribution of trip lengths per month in violinplots
+    and the normal distribution over all months beside.
+
+    Args:
+        p_df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
+    # data
+    data = p_df[["Duration", "Month_start"]]
+    data["Normals"] = None
+    months = data["Month_start"].unique()
+    for month in months:
+        mean = data[data["Month_start"] == month]["Duration"].mean()
+        std = data[data["Month_start"] == month]["Duration"].std()
+        size = len(data[data["Month_start"] == month])
+        normal_distr = np.random.normal(mean, std, size)
+        data.loc[data["Month_start"] == month, "Normals"] = normal_distr.astype(np.float64)
+    # plotting
+    sns.set_style(style="whitegrid")
+    #
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 5), dpi=300, gridspec_kw={'width_ratios': [3, 1]})
+    # bw=1 is the scale factor for kernel for nicer visualization
+    # cut=0 sets the lower bound of violins to the real lowest duration
+    ax1 = sns.violinplot(
+        x="Month_start",
+        y="Duration",
+        data=data,
+        ax=ax1,
+        bw=1,
+        cut=0,
+        palette="muted"
+    )
+    ax1.set_xlabel('Month')
+    ax1.set_ylabel('Duration [min]')
+    ax1.set_title('Distributions of Durations per Month')
+    ax2 = sns.distplot(
+        data["Normals"]
+    )
+    ax2.set_xlim(left=0)
+    ax2.set_xlabel('Normalized Duration [min]')
+    ax2.set_ylabel('Percentage [%]')
+    ax2.set_title("Normal Distribution over all months")
+    fig.add_axes(ax1)
+    fig.add_axes(ax2)
+    io.save_fig(
+        fig,
+        p_filename="distribution_monthly.png",
+        p_io_folder="output",
+        p_sub_folder1="data_plots",
+        p_sub_folder2="math"
+    )
+    plt.close(fig)
 
 
 def corr_analysis(p_df):
-    """Plot correlation between features
+    """Plot correlation between features.
 
     Args:
         p_df (DataFrame): DataFrame of trips in nuremberg
@@ -104,7 +169,6 @@ def corr_analysis(p_df):
         no return
     """
     corrs = p_df.corr()
-    # corrs.to_csv(io.get_path("feature_correlations.csv", "output"), sep=";")
     # Generate a mask for the upper triangle
     mask = np.triu(np.ones_like(corrs, dtype=np.bool))
 
@@ -115,22 +179,38 @@ def corr_analysis(p_df):
     cmap = sns.diverging_palette(240, 10, as_cmap=True)
 
     # Draw the heatmap with the mask and correct aspect ratio
-    sns.heatmap(corrs, mask=mask, cmap=cmap, center=0,
-                square=True, linewidths=.5, cbar_kws={"shrink": .5})
-    plt.savefig(
-        io.get_path(
-            p_filename="Correlation.png",
-            p_io_folder="output",
-            p_sub_folder1="data_plots",
-            p_sub_folder2="math"
-        )
+    ax1 = sns.heatmap(
+        corrs,
+        mask=mask,
+        cmap=cmap,
+        center=0,
+        ax=ax,
+        square=True,
+        linewidths=.5,
+        cbar_kws={"shrink": .5}
     )
 
+    fig.add_axes(ax1)
+    io.save_fig(
+        fig,
+        p_filename="Correlation.png",
+        p_io_folder="output",
+        p_sub_folder1="data_plots",
+        p_sub_folder2="math"
+    )
+    plt.close(fig)
 
-# todo: add docstring
+
 def plot_mean_duration(p_df):
+    """Plot the mean duration for each day of year and visualize the seasons.
+
+    Args:
+        p_df (DataFrame): Dataframe of trips in nuremberg
+    Returns:
+        no return
+    """
     # calculate mean duration of trips for each day of year
-    df_day_mean = p_df.groupby(by="dayofyear_start").mean()[["Duration", "Season"]]
+    df_day_mean = p_df.groupby(by="Day_of_year_start").mean()[["Duration", "Season"]]
     # create series of days of year
     df_days = pd.DataFrame(columns=["Duration"], index=np.arange(1, 366), data=0)
     # add column mean duration per day to 1 - 365
@@ -170,70 +250,7 @@ def plot_mean_duration(p_df):
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
     )
-
-
-# TODO: add docstring
-def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
-    # true vs predicted value
-    fig_scatter, ax_scatter = plt.subplots(figsize=(10, 5))
-    ax_scatter.set_xlabel('True Y')
-    ax_scatter.set_ylabel('Predicted Y')
-    ax_scatter.set_title(p_model_name)
-    ax_scatter.scatter(p_y_true, p_y_predict)
-    io.save_fig(
-        fig_scatter,
-        p_filename=p_model_name+"_pred_vs_true.png",
-        p_io_folder="output",
-        p_sub_folder1="data_plots",
-        p_sub_folder2="math"
-    )
-
-    # distribution of true vs distribution of predicted value
-    p_y_predict = p_y_predict.flatten()  # NN gives 2-d array as predicted values
-
-    fig_distr, ax_distr = plt.subplots(figsize=(10, 5))
-    ax_distr.set_xlabel('Duration of Booking [min]')
-    ax_distr.set_ylabel('Percentage [%]')
-    ax_distr.set_title("Distribution of Predicted and True Durations")
-    pred_values, pred_base = np.histogram(
-        p_y_predict,
-        bins=int(p_y_predict.max()),
-        range=(0, int(p_y_predict.max())),
-        weights=np.ones(len(p_y_predict)) / len(p_y_predict)
-    )
-    true_values, true_base = np.histogram(
-        p_y_true,
-        bins=int(p_y_predict.max()),
-        range=(0, int(p_y_predict.max())),
-        weights=np.ones(len(p_y_true)) / len(p_y_true)
-    )
-    ax_distr.plot(pred_base[:-1], pred_values, c='red', label=p_model_name)
-    ax_distr.plot(true_base[:-1], true_values, c='green', label="True")
-    plt.legend(loc='upper right')
-    io.save_fig(
-        fig_distr,
-        p_filename=p_model_name+"_distribution.png",
-        p_io_folder="output",
-        p_sub_folder1="data_plots",
-        p_sub_folder2="math"
-    )
-
-
-# TODO: add docstring
-def plot_train_loss(p_history):
-    # Plotting the training and validation loss
-    loss = p_history.history['loss']
-    val_loss = p_history.history['val_loss']
-
-    epochs = range(1, len(loss) + 1)
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(epochs, loss, 'bo', label='Training loss')
-    ax.plot(epochs, val_loss, 'b', label='Validation loss')
-    ax.set_title('Training and validation loss')
-    ax.set_xlabel('Epochs')
-    ax.set_ylabel('Loss')
-    plt.legend()
-    io.save_fig(fig, "NN_error_per_epoch.png", p_sub_folder2="math")
+    plt.close(fig)
 
 
 # TODO: add docstring
@@ -252,17 +269,3 @@ def plot_features_influence(p_df):
 
         io.save_fig(fig, str(i)+col+"_Duration.png", p_sub_folder2="features")
     print("DONE")
-
-
-def visualize_more(p_df):
-    """TODO: What else can we visualize?
-
-    Args:
-        p_df (DataFrame): DataFrame with trip data from nuremberg
-    Returns:
-        no return
-    """
-    # These visualizations are the minimum requirement.
-    # Use more visualizations wherever it makes sense.
-
-    print()

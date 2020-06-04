@@ -12,7 +12,7 @@ def data_cleaning(p_df_original):
     """clean data and create trips from it
 
     This method drops all duplicates from the raw data.
-    It creates trip data for each bike by joining the rows with corresponding start and end .
+    It creates trip data for each bike by joining the rows with corresponding start and end.
 
     Args:
         p_df_original (DataFrame): DataFrame from raw csv
@@ -25,16 +25,6 @@ def data_cleaning(p_df_original):
     df_clean_unique_trip = p_df_original[(p_df_original["trip"] == "start") | (p_df_original["trip"] == "end")]
     df_clean_unique_trip.sort_values(["b_number", "datetime"], inplace=True)
     # We do not check, whether every bike has same amount of starts and ends because merge only returns valid entries
-
-    # TODO: check bike number of start and end trips
-    # TODO: check first position of df must be a "start"
-    # TODO: check last position of df must be a "end"
-
-    # Theoretischer FAll: Special FAll: Die allererste BikeID faengt mit Ende an und das allerletzte Bike enden mit
-    # Start 2: Fahrrad x: endet mit Start und Fahrrad x+1 startet mit End 3: Loesungsansaetze: dadurch,
-    # dass die Fahrraeder nach Zeit sortiert, ist die wahrscheinlich gering
-
-    # Eliminate Noise
     # compare the trip value of each row with the row above (to check for multiple start entries)
     sr_previous_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
     # compare the trip value of each row with the row below (to check for multiple end entries)
@@ -79,11 +69,11 @@ def data_cleaning(p_df_original):
          "b_number_end"], axis=1, inplace=True
     )
     df_merged.rename(
-        {"datetime_start": "Start Time",
-         "b_number_start": "Bike Number",
-         "datetime_end": "End Time",
-         "p_number_start": "Start Place_id",
-         "p_number_end": "End Place_id",
+        {"datetime_start": "Start_Time",
+         "b_number_start": "Bike_Number",
+         "datetime_end": "End_Time",
+         "p_number_start": "Start_Place_id",
+         "p_number_end": "End_Place_id",
          "p_lat_start": "Latitude_start",
          "p_lng_start": "Longitude_start",
          "p_lat_end": "Latitude_end",
@@ -97,8 +87,17 @@ def data_cleaning(p_df_original):
     return df_merged
 
 
-# TODO: Add docstring
 def drop_noise(p_df_trips):
+    """clean data from noisy entires
+
+    This method cleans the trip data by deleting trips which are shorter than 1 minute.
+    Additionally only trips with a duration which is inside the 90% quantile are used.
+
+    Args:
+        p_df_trips (DataFrame): DataFrame of trip data
+    Returns:
+        p_df_trips (DataFrame): DataFrame of trip data without noisy entries
+    """
     # Calculate lower and upper bounds for duration (in minutes)
     # Hardcode lower bound because trips of about 2 minutes may be relevant
     lower_duration_bound = 1.0
