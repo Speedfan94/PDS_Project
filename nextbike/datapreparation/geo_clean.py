@@ -6,7 +6,7 @@ import pandas as pd
 
 # TODO: Try iterating through PLZs, find matching data points & kick them out instead of vice versa
 
-plz_value = {}
+postalcode_value = {}
 
 with open(io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")) as f:
     geo = json.load(f)
@@ -30,15 +30,15 @@ def only_nuremberg(p_df):
     # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
 
-    # adding plz to df
-    # Add PLZ to trip and drop trips without start or end PLZ
+    # adding postalcode to df
+    # Add postalcode to trip and drop trips without start or end PLZ
 
     # TODO: resolve names of methods or file
-    df_plz = plz(p_df)
-    # add start plz
-    df_nurem = df_plz.dropna(axis=0)
+    df_postalcode = postalcode(p_df)
+    # add start postalcode
+    df_nurem = df_postalcode.dropna(axis=0)
     # add end plz
-    df_nurem = plz_end(df_nurem)
+    df_nurem = postalcode_end(df_nurem)
     df_nurem = df_nurem.dropna(axis=0)
 
     return df_nurem
@@ -46,7 +46,7 @@ def only_nuremberg(p_df):
 
 # TODO: Do we actually need this method?
 # Just for a single Point
-def plz1(p_df):
+def postalcode1(p_df):
     """TODO:What does this method do?
 
     Args:
@@ -64,7 +64,7 @@ def plz1(p_df):
     return Point
 
 
-def plz_value_def():
+def postalcode_value_def():
     """TODO:What does this method do?
 
     Args:
@@ -72,15 +72,15 @@ def plz_value_def():
     Returns:
         no return
     """
-    if plz_value == {}:
+    if postalcode_value == {}:
         for feature in geo['features']:
             if feature['geometry']['type'] == 'MultiPolygon':
-                plz_value[feature['properties']['plz']] = list(shapely.shape(feature['geometry']))
+                postalcode_value[feature['properties']['plz']] = list(shapely.shape(feature['geometry']))
             elif feature['geometry']['type'] == 'Polygon':
-                plz_value[feature['properties']['plz']] = shapely.shape(feature['geometry'])
+                postalcode_value[feature['properties']['plz']] = shapely.shape(feature['geometry'])
 
 
-def plz(p_df):
+def postalcode(p_df):
     """Add the corresponding plz to each start long and lat in DataFrame
 
     Args:
@@ -88,10 +88,11 @@ def plz(p_df):
     Returns:
         df (DataFrame): DataFrame of trips with start plz
     """
-    plz_value_def()
+    postalcode_value_def()
 
-    p_df['plz_start'] = p_df.apply(lambda x: get_plz(x['Latitude_start'], x['Longitude_start']), axis=1)
+    p_df['Postalcode_start'] = p_df.apply(lambda x: get_postalcode(x['Latitude_start'], x['Longitude_start']), axis=1)
     return p_df
+
 
 
 # TODO: no concise way of workflow in program structure
@@ -99,7 +100,7 @@ def plz(p_df):
 #  => "plz" add start plz with method "get_plz"
 #  => end plz is then added by plz_end which is called in another file...
 
-def plz_end(p_df):
+def postalcode_end(p_df):
     """Add the corresponding plz to each end long and lat in DataFrame
 
     Args:
@@ -107,30 +108,30 @@ def plz_end(p_df):
     Returns:
         df (DataFrame): DataFrame of trips with end plz
     """
-    plz_value_def()
+    postalcode_value_def()
 
     # TODO: Fix that bad style right here:
     pd.options.mode.chained_assignment = None
-    p_df['plz_end'] = p_df.apply(lambda x: get_plz(x['Latitude_end'], x['Longitude_end']), axis=1)
+    p_df['Postalcode_end'] = p_df.apply(lambda x: get_postalcode(x['Latitude_end'], x['Longitude_end']), axis=1)
     # Todo: fix that bad style right here
     pd.options.mode.chained_assignment = "warn"
     return p_df
 
 
-def get_plz(p_lat, p_lon):
+def get_postalcode(p_lat, p_lon):
     """return the plz for given longitude and latitude
 
     Args:
         p_lat (int): latitude of trip
         p_lon (int): longitude of trip
     Returns:
-        i_plz (int): plz for given long and lat
+        i_postalcode (int): postalcode for given long and lat
         """
     p = shapely.Point(p_lon, p_lat)
-    for iter_plz, iter_shape in plz_value.items():
+    for iter_postalcode, iter_shape in postalcode_value.items():
         if type(iter_shape) == list:
             for poly in iter_shape:
                 if poly.contains(p):
-                    return iter_plz
+                    return iter_postalcode
         elif iter_shape.contains(p):
-            return iter_plz
+            return iter_postalcode

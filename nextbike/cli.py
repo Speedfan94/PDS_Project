@@ -75,19 +75,21 @@ def visualize():
         no Return
     """
     df = io.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    utils.cast_datetime(df, ["Start Time", "End Time"])
+    utils.cast_datetime(df, ["Start_Time", "End_Time"])
     print("Visualize Aggregate Statistics...")
-    visualization.math.calculate_aggregate_statistics(df)
+    visualization.math_descriptive.calculate_aggregate_statistics(df)
     print("Visualize Stations Map...")
     visualization.geo.visualize_stations_moment(df)
     print("Visualize Heatmap Christmas...")
     visualization.geo.visualize_heatmap(df)
     print("Visualize Postalcode Zones...")
     visualization.geo.visualize_plz(df)
+    print("Visualize Monthly Distribution...")
+    visualization.math_descriptive.plot_distribution_monthly(df)
     print("Visualize Distribution Function...")
-    visualization.math.plot_distribution(df)
+    visualization.math_descriptive.plot_distribution(df)
     print("Visualize Mean Duration...")
-    visualization.math.plot_mean_duration(df)
+    visualization.math_descriptive.plot_mean_duration(df)
 
 
 def features():
@@ -100,7 +102,7 @@ def features():
         no Return
     """
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_trips.drop(["Place_start", "Start Time"], axis=1, inplace=True)
+    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
     print("Drop End Information")
     df_only_start = prediction.math_prepare_feature.drop_end_information(df_trips)
     print("Create Dummie Variables...")
@@ -109,7 +111,7 @@ def features():
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
-    visualization.math.corr_analysis(df_features_2)
+    visualization.math_descriptive.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
 
@@ -130,7 +132,6 @@ def training():
     X_scaled_train = prediction.math_prepare_feature.scale(X_train)
     print("Do PCA...")
     X_train_transformed = prediction.math_prepare_feature.do_pca(X_scaled_train)
-    # ____________________________________________________________________________________
     print("Train Linear Regression...")
     prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")

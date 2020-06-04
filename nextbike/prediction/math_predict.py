@@ -91,5 +91,4 @@ def show_errors_metrics(p_y_true, p_y_predictions, p_filename):
     print(p_filename, "Test loss - Error Metrics:")
     print("RMSE:", np.sqrt(metrics.mean_squared_error(p_y_true, p_y_predictions)), end=" ")
     print("MAE", metrics.mean_absolute_error(p_y_true, p_y_predictions))
-    visualization.math.plot_true_vs_predicted(p_y_true, p_y_predictions, p_filename)
-
+    visualization.math_predictive.plot_true_vs_predicted(p_y_true, p_y_predictions, p_filename)

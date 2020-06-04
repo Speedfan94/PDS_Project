@@ -65,11 +65,11 @@ def data_cleaning(p_df_original):
          "b_number_end"], axis=1, inplace=True
     )
     df_merged.rename(
-        {"datetime_start": "Start Time",
-         "b_number_start": "Bike Number",
-         "datetime_end": "End Time",
-         "p_number_start": "Start Place_id",
-         "p_number_end": "End Place_id",
+        {"datetime_start": "Start_Time",
+         "b_number_start": "Bike_Number",
+         "datetime_end": "End_Time",
+         "p_number_start": "Start_Place_id",
+         "p_number_end": "End_Place_id",
          "p_lat_start": "Latitude_start",
          "p_lng_start": "Longitude_start",
          "p_lat_end": "Latitude_end",
