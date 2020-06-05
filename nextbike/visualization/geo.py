@@ -92,7 +92,7 @@ def visualize_heatmap(p_df):
     )
 
 
-def visualize_plz(p_df):
+def visualize_postalcode(p_df):
     """Plots a choropleth graph on a map based on the number of started trips in each zip code region.
     This is be done for the month with the most trips
 

@@ -35,7 +35,10 @@ def create_new_features(p_X):
     p_X["Day_squared"] = np.square(p_X["Day_start"])
     p_X["Month_squared"] = np.square(p_X["Month_start"])
     p_X["Minute_squared"] = np.square(p_X["Minute_start"])
+    # p_X["Minute_squared"] = np.power(p_X["Minute_start"], 3)
     p_X["Weekend_squared"] = np.square(p_X["Weekend"])
+    p_X["Latitude_squared"] = np.square(p_X["Latitude_start"])
+    p_X["Longitude_squared"] = np.square(p_X["Longitude_start"])
     return p_X
 
 
@@ -67,7 +70,7 @@ def drop_end_information(p_df, direction_needed=False):
          "Hour_end",
          "Minute_end",
          "Day_of_year_end",
-         "Dist_end",
+         "Dist_end"
          ], axis=1)
 
     if direction_needed == False:
@@ -91,11 +94,30 @@ def drop_features(p_df):
         df = p_df.drop(
             ["p_uid_start",
              "p_place_type_start",
-             #"p_bikes_start",
-             #"Month_start",
-             #"Day_start",
-             #"Start_Place_id",
-             "p_spot_start"],
+             # "p_bikes_start",
+             "Month_start",
+             "Day_start",
+             # "Start_Place_id",
+             "p_spot_start",
+             "Latitude_start",
+             "Longitude_start",
+             # "Bike Number",
+             "b_bike_type_start",
+             "Hour_start",
+             "Day_of_year_start",
+             # "Season",
+             "Postalcode_start",
+             "Dist_start",
+             "p_bike_start",
+             # "Weekend",
+             # "Hour_squared",
+             "Day_squared",
+             "Month_squared",
+             "Weekend_squared",
+             "Minute_squared"
+             # "Latitude_squared",
+             # "Longitude_squared"
+             ],
             axis=1
         )
     return df
@@ -129,7 +151,7 @@ def do_pca(p_X_scaled_train):
     Returns:
         X_train_scaled_pca (DataFrame): DataFrame of components
     """
-    pca = PCA(n_components=16)
+    pca = PCA(n_components=8)
     pca.fit(p_X_scaled_train)
     pca_explained_variance = pca.explained_variance_ratio_
     print("Var explained:", pca_explained_variance)

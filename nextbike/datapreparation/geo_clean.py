@@ -1,16 +1,5 @@
-import shapely.geometry as shapely
-import json
 from nextbike import io
-from shapely.geometry import shape, Point
-import pandas as pd
-
-# TODO: Try iterating through PLZs, find matching data points & kick them out instead of vice versa
-
-postalcode_value = {}
-
-with open(io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")) as f:
-    geo = json.load(f)
-
+import geopandas as gpd
 
 # In which state is the **center** of Germany
 # Note reverse notation compared to before
@@ -18,120 +7,50 @@ with open(io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder
 
 
 def only_nuremberg(p_df):
-    """Calculates corresponding zip codes to each data point and
-    filters out all data points not in nuremberg (based on zip codes)
+    """Calculates corresponding postalcodes for start and end points of each trip
+    and filters out all data points not in nuremberg (based on postalcodes).
+    Merges trip data with postalcode infos based on the position and kicks out
+    unnecessary postalcode infos.
 
     Args:
         p_df (DataFrame): DataFrame with trip data
     Returns:
-        df_nuremberg (DataFrame): DataFrame with trip data from nuremberg
+        df_nuremberg (DataFrame): DataFrame with trip data from nuremberg including postalcodes
     """
-    # DropTrips outside of Nuremberg with no PLZ, depending on their Start
-    # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
+    # drop trips outside of Nuremberg with no postalcode
+    # add postalcode to trip and drop trips without start or end postalcode
+    # information: nuremberg city center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
 
-    # adding postalcode to df
-    # Add postalcode to trip and drop trips without start or end PLZ
+    # ==========
+    # 1. load postalcodes data from geojson file
+    path_postalcodes_geojson = io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")
+    gdf_postalcodes = gpd.read_file(path_postalcodes_geojson)
 
-    # TODO: resolve names of methods or file
-    df_postalcode = postalcode(p_df)
-    # add start postalcode
-    df_nurem = df_postalcode.dropna(axis=0)
-    # add end plz
-    df_nurem = postalcode_end(df_nurem)
-    df_nurem = df_nurem.dropna(axis=0)
+    # ==========
+    # 2. create geometry points of START points (with longitude and latitude)
+    gdf_geo_start_pos = gpd.GeoDataFrame(p_df,
+                                         geometry=gpd.points_from_xy(p_df["Longitude_start"],
+                                                                     p_df["Latitude_start"]))
 
-    return df_nurem
+    # ==========
+    # 3. join trips and postalcode dfs on START geo points (to build Postalcode_start)
+    gdf_sjoined_start = gpd.sjoin(gdf_geo_start_pos, gdf_postalcodes, how="inner", op="within")
+    # clean up unnecessary columns added by sjoin, rename plz to Postalcode_start
+    df_with_start_postalcode = gdf_sjoined_start.drop(["geometry", "index_right", "note"], axis=1)
+    df_with_start_postalcode.rename({"plz": "Postalcode_start"}, axis=1, inplace=True)
 
+    # ==========
+    # 4. create geometry points of END points (with longitude and latitude)
+    gdf_geo_end_pos = gpd.GeoDataFrame(df_with_start_postalcode,
+                                       geometry=gpd.points_from_xy(df_with_start_postalcode["Longitude_end"],
+                                                                   df_with_start_postalcode["Latitude_end"]))
 
-# TODO: Do we actually need this method?
-# Just for a single Point
-def postalcode1(p_df):
-    """TODO:What does this method do?
+    # ==========
+    # 5. join trips and postalcode dfs on END geo points (to build Postalcode_end)
+    gdf_sjoined_end = gpd.sjoin(gdf_geo_end_pos, gdf_postalcodes, how="inner", op="within")
+    # clean up unnecessary columns added by sjoin, rename plz to Postalcode_end
+    df_with_all_postalcodes = gdf_sjoined_end.drop(["geometry", "index_right", "note"], axis=1)
+    df_with_all_postalcodes.rename({"plz": "Postalcode_end"}, axis=1, inplace=True)
 
-    Args:
-        p_df (DataFrame):
-    Returns:
-        Point (Point):
-    """
-    searchpoint = Point(11.076750, 49.452030)
-    # df_london_center["Longitude"], df_london_center["Latitude"])
-
-    for feature in geo['features']:
-        polygon = shape(feature['geometry'])
-        if polygon.contains(searchpoint):
-            print('Found containing polygon:', feature["properties"]["plz"])
-    return Point
-
-
-def postalcode_value_def():
-    """TODO:What does this method do?
-
-    Args:
-        no args
-    Returns:
-        no return
-    """
-    if postalcode_value == {}:
-        for feature in geo['features']:
-            if feature['geometry']['type'] == 'MultiPolygon':
-                postalcode_value[feature['properties']['plz']] = list(shapely.shape(feature['geometry']))
-            elif feature['geometry']['type'] == 'Polygon':
-                postalcode_value[feature['properties']['plz']] = shapely.shape(feature['geometry'])
-
-
-def postalcode(p_df):
-    """Add the corresponding plz to each start long and lat in DataFrame
-
-    Args:
-        p_df (DataFrame): DataFrame of trips
-    Returns:
-        df (DataFrame): DataFrame of trips with start plz
-    """
-    postalcode_value_def()
-
-    p_df['Postalcode_start'] = p_df.apply(lambda x: get_postalcode(x['Latitude_start'], x['Longitude_start']), axis=1)
-    return p_df
-
-
-
-# TODO: no concise way of workflow in program structure
-#  => "plz" starts initialization of "plz_value" in method plz_value_def
-#  => "plz" add start plz with method "get_plz"
-#  => end plz is then added by plz_end which is called in another file...
-
-def postalcode_end(p_df):
-    """Add the corresponding plz to each end long and lat in DataFrame
-
-    Args:
-        p_df (DataFrame): DataFrame of trips
-    Returns:
-        df (DataFrame): DataFrame of trips with end plz
-    """
-    postalcode_value_def()
-
-    # TODO: Fix that bad style right here:
-    pd.options.mode.chained_assignment = None
-    p_df['Postalcode_end'] = p_df.apply(lambda x: get_postalcode(x['Latitude_end'], x['Longitude_end']), axis=1)
-    # Todo: fix that bad style right here
-    pd.options.mode.chained_assignment = "warn"
-    return p_df
-
-
-def get_postalcode(p_lat, p_lon):
-    """return the plz for given longitude and latitude
-
-    Args:
-        p_lat (int): latitude of trip
-        p_lon (int): longitude of trip
-    Returns:
-        i_postalcode (int): postalcode for given long and lat
-        """
-    p = shapely.Point(p_lon, p_lat)
-    for iter_postalcode, iter_shape in postalcode_value.items():
-        if type(iter_shape) == list:
-            for poly in iter_shape:
-                if poly.contains(p):
-                    return iter_postalcode
-        elif iter_shape.contains(p):
-            return iter_postalcode
+    return df_with_all_postalcodes

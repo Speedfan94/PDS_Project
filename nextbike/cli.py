@@ -52,6 +52,7 @@ def cleaning():
     """Clean the data for further analysis.
 
     Method which runs the sequential flow of the data cleaning part.
+
     Args:
         no Arg
     Returns:
@@ -77,6 +78,7 @@ def visualize():
     """Visualize the data.
 
     Method which runs the sequential flow of the data visualization part.
+
     Args:
         no Arg
     Returns:
@@ -91,7 +93,7 @@ def visualize():
     print("Visualize Heatmap Christmas...")
     visualization.geo.visualize_heatmap(df)
     print("Visualize Postalcode Zones...")
-    visualization.geo.visualize_plz(df)
+    visualization.geo.visualize_postalcode(df)
     print("Visualize Monthly Distribution...")
     visualization.math_descriptive.plot_distribution_monthly(df)
     print("Visualize Distribution Function...")
@@ -104,6 +106,7 @@ def features():
     """Create and prepare the features before prediction part.
 
     Method which runs the sequential flow of the feature preparation and creation part.
+
     Args:
         no Arg
     Returns:
@@ -137,6 +140,7 @@ def training():
     """Train the different machine learning models.
 
     Method which runs the sequential flow on training the ML models.
+
     Args:
         no Arg
     Returns:
@@ -164,6 +168,7 @@ def predict():
     """Predict the duration of trips by different models.
 
     Method which runs the sequential flow of the duration prediction by different trained ML models.
+
     Args:
         no Arg
     Returns:
@@ -184,6 +189,7 @@ def predict_geo():
     """Predict the direction of a trip (towards or away from university).
 
     Method which runs the sequential flow of the direction prediction.
+
     Args:
         no Arg
     Returns:
