@@ -32,6 +32,8 @@ def only_nuremberg(p_df):
     gdf_geo_start_pos = gpd.GeoDataFrame(p_df,
                                          geometry=gpd.points_from_xy(p_df["Longitude_start"],
                                                                      p_df["Latitude_start"]))
+    # set crs to same as postalcode to fix warnings
+    gdf_geo_start_pos.crs = gdf_postalcodes.crs
 
     # ==========
     # 3. join trips and postalcode dfs on START geo points (to build Postalcode_start)
@@ -45,6 +47,8 @@ def only_nuremberg(p_df):
     gdf_geo_end_pos = gpd.GeoDataFrame(df_with_start_postalcode,
                                        geometry=gpd.points_from_xy(df_with_start_postalcode["Longitude_end"],
                                                                    df_with_start_postalcode["Latitude_end"]))
+    # set crs to same as postalcode to fix warnings
+    gdf_geo_end_pos.crs = gdf_postalcodes.crs
 
     # ==========
     # 5. join trips and postalcode dfs on END geo points (to build Postalcode_end)
