@@ -31,8 +31,8 @@ def save_csv(p_df, p_filename):
         no return
     """
     path = os.path.join(get_data_path(), "output", p_filename)
-    p_df.reset_index(drop=True, inplace=True)
-    p_df.to_csv(path, index_label="index")
+    p_df_reindexed = p_df.reset_index(drop=True)
+    p_df_reindexed.to_csv(path, index_label="index")
     print("Saved:", path)
 
 
