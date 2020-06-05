@@ -4,9 +4,6 @@ NUREMBERG_CITY_LONG = 49.452030
 NUREMBERG_CITY_LAT = 11.076750
 DISTANCE = 0.07 * 1
 
-# TODO: Fix that bad style right here:
-pd.options.mode.chained_assignment = None
-
 
 def data_cleaning(p_df_original):
     """clean data and create trips from it
@@ -22,8 +19,8 @@ def data_cleaning(p_df_original):
     # Drop Duplicates and creating new df with only unique files
     p_df_original.drop_duplicates(subset=p_df_original.columns.difference(["p_lng", "p_lat"]), inplace=True)
     # Drop trip first/last
-    df_clean_unique_trip = p_df_original[(p_df_original["trip"] == "start") | (p_df_original["trip"] == "end")]
-    df_clean_unique_trip.sort_values(["b_number", "datetime"], inplace=True)
+    df_clean_unique_trip_unsorted = p_df_original[(p_df_original["trip"] == "start") | (p_df_original["trip"] == "end")]
+    df_clean_unique_trip = df_clean_unique_trip_unsorted.sort_values(["b_number", "datetime"])
     # We do not check, whether every bike has same amount of starts and ends because merge only returns valid entries
     # compare the trip value of each row with the row above (to check for multiple start entries)
     sr_previous_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
