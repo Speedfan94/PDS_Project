@@ -10,6 +10,7 @@ from . import utils
 from . import testing
 
 
+
 @click.command()
 @click.option('--test/--no-test', default=False, help="Testing mode")
 @click.option('--clean/--no-clean', default=True, help="Clean the data.")
@@ -70,8 +71,10 @@ def cleaning():
     df_trips_only_nuremberg = datapreparation.geo_clean.only_nuremberg(df_trips_filter_duration)
     print("Add Distances to University...")
     df_trips_only_nuremberg_dist = datapreparation.feature_add.quick_create_dist(df_trips_only_nuremberg)
+    print("Add weather data...")
+    df_trips_only_nuremberg_weather = datapreparation.add_weather_data.add_weather(df_trips_only_nuremberg_dist)
     print("Save trip dataframe...")
-    io.output.save_csv(df_trips_only_nuremberg_dist, "Trips.csv")
+    io.output.save_csv(df_trips_only_nuremberg_weather, "Trips.csv")
 
 
 def visualize():
