@@ -17,7 +17,7 @@ def data_cleaning(p_df_original):
         df_merged (DataFrame): DataFrame of cleaned trip data
     """
     # Drop Duplicates and creating new df with only unique files
-    p_df_original.drop_duplicates(subset=p_df_original.columns.difference(["p_lng", "p_lat"]), inplace=True)
+    p_df_original = p_df_original.drop_duplicates(subset=p_df_original.columns.difference(["p_lng", "p_lat"]))
     # Drop trip first/last
     df_clean_unique_trip_unsorted = p_df_original[(p_df_original["trip"] == "start") | (p_df_original["trip"] == "end")]
     df_clean_unique_trip = df_clean_unique_trip_unsorted.sort_values(["b_number", "datetime"])
@@ -40,17 +40,17 @@ def data_cleaning(p_df_original):
 
     # drop first entry if dataframe does not start with a start entry
     if df_final.iloc[0]["trip"] != "start":
-        df_final.drop(0, inplace=True)
+        df_final = df_final.drop(0)
     # drop last entry if dataframe does not end with an end entry
     index_last = len(df_final) - 1
     if df_final.iloc[index_last]["trip"] != "end":
-        df_final.drop(index_last, inplace=True)
+        df_final = df_final.drop(index_last)
 
     # split dataframe into start and end entries and merge them into trip dataframe
     df_start = df_final[df_final["trip"] == "start"].drop("trip", axis=1)
     df_end = df_final[df_final["trip"] == "end"].drop("trip", axis=1)
-    df_end.reset_index(drop=True, inplace=True)
-    df_start.reset_index(drop=True, inplace=True)
+    df_end = df_end.reset_index(drop=True)
+    df_start = df_start.reset_index(drop=True)
     df_merged = df_start.merge(
         df_end,
         left_on=df_start.index,
@@ -61,11 +61,11 @@ def data_cleaning(p_df_original):
     # Only keep trips, which where merged correctly
     df_merged = df_merged[df_merged["b_number_start"] == df_merged["b_number_end"]]
 
-    df_merged.drop(
+    df_merged = df_merged.drop(
         ["key_0",
-         "b_number_end"], axis=1, inplace=True
+         "b_number_end"], axis=1
     )
-    df_merged.rename(
+    df_merged = df_merged.rename(
         {"datetime_start": "Start_Time",
          "b_number_start": "Bike_Number",
          "datetime_end": "End_Time",
@@ -78,7 +78,7 @@ def data_cleaning(p_df_original):
          "p_name_start": "Place_start",
          "p_name_end": "Place_end"
          },
-        axis=1, inplace=True
+        axis=1
     )
 
     return df_merged

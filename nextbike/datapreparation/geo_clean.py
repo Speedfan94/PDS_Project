@@ -40,7 +40,7 @@ def only_nuremberg(p_df):
     gdf_sjoined_start = gpd.sjoin(gdf_geo_start_pos, gdf_postalcodes, how="inner", op="within")
     # clean up unnecessary columns added by sjoin, rename plz to Postalcode_start
     df_with_start_postalcode = gdf_sjoined_start.drop(["geometry", "index_right", "note"], axis=1)
-    df_with_start_postalcode.rename({"plz": "Postalcode_start"}, axis=1, inplace=True)
+    df_with_start_postalcode = df_with_start_postalcode.rename({"plz": "Postalcode_start"}, axis=1)
 
     # ==========
     # 4. create geometry points of END points (with longitude and latitude)
@@ -55,6 +55,6 @@ def only_nuremberg(p_df):
     gdf_sjoined_end = gpd.sjoin(gdf_geo_end_pos, gdf_postalcodes, how="inner", op="within")
     # clean up unnecessary columns added by sjoin, rename plz to Postalcode_end
     df_with_all_postalcodes = gdf_sjoined_end.drop(["geometry", "index_right", "note"], axis=1)
-    df_with_all_postalcodes.rename({"plz": "Postalcode_end"}, axis=1, inplace=True)
+    df_with_all_postalcodes = df_with_all_postalcodes.rename({"plz": "Postalcode_end"}, axis=1)
 
     return df_with_all_postalcodes
