@@ -13,10 +13,10 @@ def visualize_stations_moment(p_df):
         no return
     """
     time_moment = "2019-10-01 08:00:00"
-    df_relevant = p_df[p_df["End Time"] <= time_moment]  # exclude all trips during and after that moment
-    df_relevant = df_relevant[df_relevant["End Place_id"] != 0.0]  # exclude free bikes
+    df_relevant = p_df[p_df["End_Time"] <= time_moment]  # exclude all trips during and after that moment
+    df_relevant = df_relevant[df_relevant["End_Place_id"] != 0.0]  # exclude free bikes
     # hold for each station just the last entry sorted by datetime
-    df_relevant_stations = df_relevant.sort_values(by=["End Place_id", "End Time"]).drop_duplicates("End Place_id",
+    df_relevant_stations = df_relevant.sort_values(by=["End_Place_id", "End_Time"]).drop_duplicates("End_Place_id",
                                                                                                     keep="last")
     df_relevant_stations.reset_index(drop=True, inplace=True)
     m = folium.Map(location=[49.452030, 11.076750], zoom_start=13)
@@ -57,7 +57,7 @@ def visualize_heatmap(p_df):
     # before the start of a major public event.
     # https://alysivji.github.io/getting-started-with-folium.html
 
-    stations = p_df[p_df["End Time"].dt.date == dt.date(year=2019, month=12, day=24)]
+    stations = p_df[p_df["End_Time"].dt.date == dt.date(year=2019, month=12, day=24)]
 
     # ToDo: Maybe filter out 0.0 ids and duplicated places
     # todo: variable time to plot heatmap
@@ -92,7 +92,7 @@ def visualize_heatmap(p_df):
     )
 
 
-def visualize_plz(p_df):
+def visualize_postalcode(p_df):
     """Plots a choropleth graph on a map based on the number of started trips in each zip code region.
     This is be done for the month with the most trips
 
@@ -104,24 +104,28 @@ def visualize_plz(p_df):
     # Visualizes the number of started trip for each zip code region for the month with the most trips
 
     # find the month with the most trips:
-    p_df["month"] = p_df["Start Time"].dt.month
+    p_df["Month"] = p_df["Start_Time"].dt.month
 
     # finding the month with most trips in the month
-    month_most = p_df.groupby(by="month").count().idxmax()["Start Time"]
+    month_most = p_df.groupby(by="Month").count().idxmax()["Start_Time"]
 
-    df_biggest_month = p_df[p_df["month"] == month_most]
+    df_biggest_month = p_df[p_df["Month"] == month_most]
     # prints the number of trips per zip code
-    df_map = df_biggest_month.groupby(by="plz_start").count().sort_values(by="Start Time", ascending=True).reset_index()
+    df_map = df_biggest_month.groupby(
+        by="Postalcode_start"
+    ).count().sort_values(
+        by="Start_Time", ascending=True
+    ).reset_index()
 
     m = folium.Map([49.452030, 11.076750], zoom_start=11)
 
-    df_map["plz"] = df_map["plz_start"].astype(str)
+    df_map["Postalcode"] = df_map["Postalcode_start"].astype(str)
 
     folium.Choropleth(
         geo_data=f'{io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")}',
         name="choropleth",
         data=df_map,
-        columns=["plz", "month"],
+        columns=["Postalcode", "Month"],
         key_on='feature.properties.plz',
         legend_name='Trips per zip code',
         fill_color='YlGnBu',
@@ -129,7 +133,7 @@ def visualize_plz(p_df):
         line_opacity=0.5,
     ).add_to(m)
 
-    df_stations = p_df.drop_duplicates("Start Place_id", keep="first")
+    df_stations = p_df.drop_duplicates("Start_Place_id", keep="first")
 
     for index, row in df_stations.iterrows():
         folium.CircleMarker(

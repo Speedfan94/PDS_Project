@@ -40,10 +40,10 @@ def main(clean, viso, train, pred):
     print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
 
 
-# TODO: Add docstring
 def cleaning():
-    """Clean the data for further analysis
+    """Clean the data for further analysis.
 
+    Method which runs the sequential flow of the data cleaning part.
 
     Args:
         no Arg
@@ -66,28 +66,46 @@ def cleaning():
     io.output.save_csv(df_trips_only_nuremberg_dist, "Trips.csv")
 
 
-# TODO: Add docstring
 def visualize():
+    """Visualize the data.
+
+    Method which runs the sequential flow of the data visualization part.
+
+    Args:
+        no Arg
+    Returns:
+        no Return
+    """
     df = io.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    utils.cast_datetime(df, ["Start Time", "End Time"])
+    utils.cast_datetime(df, ["Start_Time", "End_Time"])
     print("Visualize Aggregate Statistics...")
-    visualization.math.calculate_aggregate_statistics(df)
+    visualization.math_descriptive.calculate_aggregate_statistics(df)
     print("Visualize Stations Map...")
     visualization.geo.visualize_stations_moment(df)
     print("Visualize Heatmap Christmas...")
     visualization.geo.visualize_heatmap(df)
     print("Visualize Postalcode Zones...")
-    visualization.geo.visualize_plz(df)
+    visualization.geo.visualize_postalcode(df)
+    print("Visualize Monthly Distribution...")
+    visualization.math_descriptive.plot_distribution_monthly(df)
     print("Visualize Distribution Function...")
-    visualization.math.plot_distribution(df)
+    visualization.math_descriptive.plot_distribution(df)
     print("Visualize Mean Duration...")
-    visualization.math.plot_mean_duration(df)
+    visualization.math_descriptive.plot_mean_duration(df)
 
 
-# TODO: Add docstring
 def features():
+    """Create and prepare the features before prediction part.
+
+    Method which runs the sequential flow of the feature preparation and creation part.
+
+    Args:
+        no Arg
+    Returns:
+        no Return
+    """
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_trips.drop(["Place_start", "Start Time"], axis=1, inplace=True)
+    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
     print("Drop End Information")
     df_only_start = prediction.math_prepare_feature.drop_end_information(df_trips)
     print("Create Dummie Variables...")
@@ -96,13 +114,21 @@ def features():
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
-    visualization.math.corr_analysis(df_features_2)
+    visualization.math_descriptive.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
 
 
-# TODO: Add docstring
 def training():
+    """Train the different machine learning models.
+
+    Method which runs the sequential flow on training the ML models.
+
+    Args:
+        no Arg
+    Returns:
+        no Return
+    """
     df_features = io.input.read_csv(p_filename="Features.csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.math_split.simple_split(df_features)
@@ -110,7 +136,6 @@ def training():
     X_scaled_train = prediction.math_prepare_feature.scale(X_train)
     print("Do PCA...")
     X_train_transformed = prediction.math_prepare_feature.do_pca(X_scaled_train)
-    # ____________________________________________________________________________________
     print("Train Linear Regression...")
     prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")
@@ -119,8 +144,16 @@ def training():
     prediction.math_train.train_neural_network(X_train_transformed, y_train)
 
 
-# TODO: Add docstring
 def predict():
+    """Predict the duration of trips by different models.
+
+    Method which runs the sequential flow of the duration prediction by different trained ML models.
+
+    Args:
+        no Arg
+    Returns:
+        no Return
+    """
     df_features = io.input.read_csv(p_filename="Features.csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.math_split.simple_split(df_features)
@@ -132,8 +165,16 @@ def predict():
     prediction.math_predict.predict_by_nn(X_test, y_test)
 
 
-# TODO: Add docstring
 def predict_geo():
+    """Predict the direction of a trip (towards or away from university).
+
+    Method which runs the sequential flow of the direction prediction.
+
+    Args:
+        no Arg
+    Returns:
+        no Return
+    """
     df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
     print("Predict Trip Direction...")
     prediction.geo_predict.train_pred(df_features)
@@ -143,11 +184,14 @@ def print_time_for_step(p_start_time_step):
     """Calculates time needed for current step and prints it out.
     Returns start time for next step
 
-    :param p_start_time_step: start time of current step
-    :return: start time of next step
+    Args:
+        p_start_time_step (float): start time of current step
+    Returns:
+        start_time_next_step (float): start time of the next step
     """
-    print("TIME FOR STEP:", (datetime.now().replace(microsecond=0) - p_start_time_step))
-    return datetime.now().replace(microsecond=0)
+    start_time_next_step = datetime.now().replace(microsecond=0)
+    print("TIME FOR STEP:", (start_time_next_step - p_start_time_step))
+    return start_time_next_step
 
 
 if __name__ == '__main__':

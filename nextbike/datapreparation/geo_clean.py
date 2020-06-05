@@ -7,23 +7,23 @@ import geopandas as gpd
 
 
 def only_nuremberg(p_df):
-    """Calculates corresponding zip codes to each data point and
-    filters out all data points not in nuremberg (based on zip codes)
+    """Calculates corresponding postalcodes for start and end points of each trip
+    and filters out all data points not in nuremberg (based on postalcodes).
+    Merges trip data with postalcode infos based on the position and kicks out
+    unnecessary postalcode infos.
 
     Args:
         p_df (DataFrame): DataFrame with trip data
     Returns:
-        df_nuremberg (DataFrame): DataFrame with trip data from nuremberg
+        df_nuremberg (DataFrame): DataFrame with trip data from nuremberg including postalcodes
     """
-    # DropTrips outside of Nuremberg with no PLZ, depending on their Start
-    # Information: Nuremberg City Center: Lat: 49.452030, Long: 11.076750
+    # drop trips outside of Nuremberg with no postalcode
+    # add postalcode to trip and drop trips without start or end postalcode
+    # information: nuremberg city center: Lat: 49.452030, Long: 11.076750
     # --> https://www.laengengrad-breitengrad.de/gps-koordinaten-von-nuernberg
 
-    # adding plz to df
-    # Add PLZ to trip and drop trips without start or end PLZ
-
     # ==========
-    # 1. load plz data from geojson file
+    # 1. load postalcodes data from geojson file
     path_postalcodes_geojson = io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")
     gdf_postalcodes = gpd.read_file(path_postalcodes_geojson)
 
@@ -34,23 +34,23 @@ def only_nuremberg(p_df):
                                                                      p_df["Latitude_start"]))
 
     # ==========
-    # 3. join trips and postalcode dfs on START geo points (to build plz_start)
+    # 3. join trips and postalcode dfs on START geo points (to build Postalcode_start)
     gdf_sjoined_start = gpd.sjoin(gdf_geo_start_pos, gdf_postalcodes, how="inner", op="within")
-    # clean up unnecessary columns added by sjoin, rename plz to plz_start
-    df_with_start_plz = gdf_sjoined_start.drop(["geometry", "index_right", "note"], axis=1)
-    df_with_start_plz.rename({"plz": "plz_start"}, axis=1, inplace=True)
+    # clean up unnecessary columns added by sjoin, rename plz to Postalcode_start
+    df_with_start_postalcode = gdf_sjoined_start.drop(["geometry", "index_right", "note"], axis=1)
+    df_with_start_postalcode.rename({"plz": "Postalcode_start"}, axis=1, inplace=True)
 
     # ==========
     # 4. create geometry points of END points (with longitude and latitude)
-    gdf_geo_end_pos = gpd.GeoDataFrame(df_with_start_plz,
-                                       geometry=gpd.points_from_xy(df_with_start_plz["Longitude_end"],
-                                                                   df_with_start_plz["Latitude_end"]))
+    gdf_geo_end_pos = gpd.GeoDataFrame(df_with_start_postalcode,
+                                       geometry=gpd.points_from_xy(df_with_start_postalcode["Longitude_end"],
+                                                                   df_with_start_postalcode["Latitude_end"]))
 
     # ==========
-    # 5. join trips and postalcode dfs on END geo points (to build plz_end)
+    # 5. join trips and postalcode dfs on END geo points (to build Postalcode_end)
     gdf_sjoined_end = gpd.sjoin(gdf_geo_end_pos, gdf_postalcodes, how="inner", op="within")
-    # clean up unnecessary columns added by sjoin, rename plz to plz_end
-    df_with_all_plz = gdf_sjoined_end.drop(["geometry", "index_right", "note"], axis=1)
-    df_with_all_plz.rename({"plz": "plz_end"}, axis=1, inplace=True)
+    # clean up unnecessary columns added by sjoin, rename plz to Postalcode_end
+    df_with_all_postalcodes = gdf_sjoined_end.drop(["geometry", "index_right", "note"], axis=1)
+    df_with_all_postalcodes.rename({"plz": "Postalcode_end"}, axis=1, inplace=True)
 
-    return df_with_all_plz
+    return df_with_all_postalcodes
