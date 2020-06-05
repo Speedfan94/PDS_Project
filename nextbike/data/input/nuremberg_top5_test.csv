@@ -1,7 +1,0 @@
-,p_spot,p_place_type,datetime,b_number,trip,p_uid,p_bikes,p_lat,b_bike_type,p_name,p_number,p_lng,p_bike
-0,True,0,2019-01-20 02:06:00,11281,first,4774295,5,50.808852,15,Biegenstraße/Cineplex,5155.0,8.773133999999999,False
-1,True,0,2019-01-20 14:16:00,11281,last,4774295,4,50.808852,15,Biegenstraße/Cineplex,5155.0,8.773133999999999,False
-2,True,0,2019-01-20 00:00:00,11169,first,4774543,5,50.795224,15,Südbahnhof,5173.0,8.763266,False
-3,True,0,2019-01-20 01:55:00,11169,start,4774543,5,50.795224,15,Südbahnhof,5173.0,8.763266,False
-4,True,0,2019-01-20 02:06:00,11169,end,4774368,4,50.804522,15,Frankfurter Straße/Psychologie,5159.0,8.770358,False
-5,True,0,2019-01-20 08:15:00,11169,start,4774368,3,50.804522,15,Frankfurter Straße/Psychologie,5159.0,8.770358,False

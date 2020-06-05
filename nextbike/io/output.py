@@ -3,14 +3,55 @@ import os
 import pickle
 
 
-def save_model(model):
-    pickle.dump(model, open(os.path.join(get_data_path(), "output/model.pkl"), 'wb'))
+def save_object(p_object, p_filename):
+    """Save an object as a pickle file
+
+    Saves the given object under the given filename under data/output/models/*p_filename*.pkl
+    e.g. Used for ML models, PCA, Scaler
+    Args:
+        p_object (Object): Object which should be saved as pickle file
+        p_filename (str): String of the filename of pickle file
+    Returns:
+        no return
+    """
+    path = os.path.join(get_data_path(), "output", "models", p_filename)
+    pickle.dump(p_object, open(path, 'wb'))
+    print("Saved:", path)
 
 
-def saveTrip(df):
-    # Save final df
-    df.to_csv(os.path.join(get_data_path(), "output/Trips.csv"))
+def save_csv(p_df, p_filename):
+    """Save an dataframe as a csv file
+
+    Saves the given dataframe under the given filename under data/output/*p_filename*.csv
+    e.g. Used for trips.csv, features.csv
+    Args:
+        p_df (DataFrame): Dataframe which should be saved as csv file
+        p_filename (str): String of the filename of csv file
+    Returns:
+        no return
+    """
+    path = os.path.join(get_data_path(), "output", p_filename)
+    p_df.to_csv(path, index_label="index")
+    print("Saved:", path)
 
 
-def save_fig(fig, file_name):
-    fig.savefig(os.path.join(get_data_path(), "output/", file_name))
+# TODO: Add docstring
+def save_fig(p_fig, p_filename, p_io_folder="output", p_sub_folder1="data_plots", p_sub_folder2=""):
+    """Save an figure as a png file
+
+    Saves the given figure under the given filename under
+    data/*p_io_folder*/*p_sub_folder1*/*p_sub_folder2*/*p_filename*.png
+    Where the standard path to save is data/output/data_plots/*p_filename*.png
+    e.g. Used for geographicall visualizations and mathematical visualizations
+    Args:
+        p_fig (Figure): Figure which should be saved as png file
+        p_filename (str): String of the filename of png file
+        p_io_folder (str): String which is input or output
+        p_sub_folder1 (str): String of first subfolder
+        p_sub_folder2 (str): String of second subfolder
+    Returns:
+        no return
+    """
+    path = os.path.join(get_data_path(), p_io_folder, p_sub_folder1, p_sub_folder2, p_filename)
+    p_fig.savefig(path)
+    print("Saved:", path)

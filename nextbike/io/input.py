@@ -4,27 +4,39 @@ import os
 import pickle
 
 
-def read_file(path=os.path.join(get_data_path(), "input/nuremberg.csv")):
+def read_csv(p_filename, p_io_folder, p_sub_folder=""):
+    """Read a csv file under given path which is created from params.
+
+    e.g. Used for nuremberg.csv, trips.csv, features.csv
+    Return the file or an error.
+    Args:
+        p_filename (str): String of the filename of csv
+        p_io_folder (str): String that differentiates between input and output folder
+        p_sub_folder (str): String that contains the subfolder after input or output folder => if not given none
+    Returns:
+        df (DataFrame): DataFrame which is created from the read csv
+    """
+    path = os.path.join(get_data_path(), p_io_folder, p_sub_folder, p_filename)
     try:
-        df = pd.read_csv(path)
+        df = pd.read_csv(path, index_col=0)
+        print("Read:", path)
         return df
     except FileNotFoundError:
         print("Data file not found. Path was " + path)
 
 
-def read_model():
-    path = os.path.join(get_data_path(), "output/model.pkl")
+def read_object(p_filename):
+    """Read a pickle file which contains an object and returns it.
+
+    e.g. Used for ML models, PCA, Scaler
+    Return the file in data/output/models/*p_filename.pkl* or an error.
+    Args:
+        p_filename (str): String of the filename of pickle
+    Returns:
+        my_object (Object): Object which is read by pickle
+    """
+    path = os.path.join(get_data_path(), "output", "models", p_filename)
     with open(path, "rb") as f:
-        model = pickle.load(f)
-    return model
-
-
-def read_trips():
-    path = os.path.join(get_data_path(), "output/Trips.csv")
-    try:
-        df = pd.read_csv(path)
-        return df
-    except FileNotFoundError:
-        print("Data file not found. Path was " + path)
-
-
+        my_object = pickle.load(f)
+        print("Read:", path)
+    return my_object

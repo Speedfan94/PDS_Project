@@ -4,6 +4,10 @@
 # too big files
 nextbike/data/input/nuremberg.csv
 
+# output results (outcommend to upload to git)
+nextbike/data/output/models/
+nextbike/data/output/data_plots/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -130,3 +134,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 nextbike/data/output/Trips.csv
+nextbike/data/output/Features.csv
