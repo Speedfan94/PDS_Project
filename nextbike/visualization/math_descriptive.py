@@ -115,7 +115,7 @@ def plot_distribution_monthly(p_df):
     """
     # data
     data = p_df[["Duration", "Month_start"]]
-    data["Normals"] = None
+    data.loc["Normals"] = None
     months = data["Month_start"].unique()
     for month in months:
         mean = data[data["Month_start"] == month]["Duration"].mean()
@@ -222,7 +222,7 @@ def plot_mean_duration(p_df):
     ).set_index("key_0")
 
     df_datapoints = df_datapoints.fillna(0).rename({"Duration_y": "Duration"}, axis=1)
-    df_datapoints.drop("Duration_x", axis=1, inplace=True)
+    df_datapoints = df_datapoints.drop("Duration_x", axis=1)
     x_1 = df_datapoints[df_datapoints["Season"] == 1].index.values
     x_2 = df_datapoints[df_datapoints["Season"] == 2].index.values
     x_3 = df_datapoints[df_datapoints["Season"] == 3].index.values
