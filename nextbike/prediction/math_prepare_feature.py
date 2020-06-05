@@ -42,7 +42,7 @@ def create_new_features(p_X):
     return p_X
 
 
-def drop_end_information(p_df):
+def drop_end_information(p_df, direction_needed=False):
     """Drop all information of end of trips which are not used for duration prediction and model training.
 
     It does not make any sense to use information on trip ends to predict the duration of a trip.
@@ -70,10 +70,11 @@ def drop_end_information(p_df):
          "Hour_end",
          "Minute_end",
          "Day_of_year_end",
-         "Dist_end",
-         "Direction"],
-        axis=1
-    )
+         "Dist_end"
+         ], axis=1)
+
+    if direction_needed == False:
+        df = df.drop("Direction", axis=1)
     return df
 
 
@@ -93,7 +94,7 @@ def drop_features(p_df):
         df = p_df.drop(
             ["p_uid_start",
              "p_place_type_start",
-             "p_bikes_start",
+             # "p_bikes_start",
              "Month_start",
              "Day_start",
              # "Start_Place_id",
@@ -131,6 +132,7 @@ def scale(p_X_train):
     Returns:
         X_train_scaled (DataFrame): DataFrame with scaled independent variables/ regressors (matrix)
     """
+    # TODO: try robust scaler
     st_scaler = StandardScaler()
     # fit scaler on training set not on test set
     st_scaler.fit(p_X_train)
@@ -151,8 +153,9 @@ def do_pca(p_X_scaled_train):
     """
     pca = PCA(n_components=8)
     pca.fit(p_X_scaled_train)
-    print("Var explained:", pca.explained_variance_ratio_)
-    print("Sum var explained", sum(pca.explained_variance_ratio_))
+    pca_explained_variance = pca.explained_variance_ratio_
+    print("Var explained:", pca_explained_variance)
+    print("Sum var explained", sum(pca_explained_variance))
     io.save_object(pca, "PCA.pkl")
     X_train_scaled_pca = pca.transform(p_X_scaled_train)
     return X_train_scaled_pca
