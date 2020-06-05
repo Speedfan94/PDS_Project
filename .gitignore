@@ -135,3 +135,5 @@ dmypy.json
 .pyre/
 nextbike/data/output/Trips.csv
 nextbike/data/output/Features.csv
+nextbike/data/output/Components.csv
+nextbike/data/output/y_train.csv
