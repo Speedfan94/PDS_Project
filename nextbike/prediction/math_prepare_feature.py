@@ -93,28 +93,28 @@ def drop_features(p_df):
     if do_it:
         df = p_df.drop(
             ["p_uid_start",
-             "p_place_type_start",
+             # "p_place_type_start",
              # "p_bikes_start",
-             "Month_start",
-             "Day_start",
+             # "Month_start",
+             # "Day_start",
              # "Start_Place_id",
-             "p_spot_start",
-             "Latitude_start",
-             "Longitude_start",
+             # "p_spot_start",
+             # "Latitude_start",
+             # "Longitude_start",
              # "Bike Number",
-             "b_bike_type_start",
-             "Hour_start",
-             "Day_of_year_start",
+             # "b_bike_type_start",
+             # "Hour_start",
+             # "Day_of_year_start",
              # "Season",
-             "Postalcode_start",
-             "Dist_start",
-             "p_bike_start",
+             # "Postalcode_start",
+             # "Dist_start",
+             # "p_bike_start",
              # "Weekend",
              # "Hour_squared",
-             "Day_squared",
-             "Month_squared",
-             "Weekend_squared",
-             "Minute_squared"
+             # "Day_squared",
+             # "Month_squared",
+             # "Weekend_squared",
+             # "Minute_squared",
              # "Latitude_squared",
              # "Longitude_squared"
              ],
@@ -151,7 +151,7 @@ def do_pca(p_X_scaled_train):
     Returns:
         X_train_scaled_pca (DataFrame): DataFrame of components
     """
-    pca = PCA(n_components=8)
+    pca = PCA(n_components=18)
     pca.fit(p_X_scaled_train)
     pca_explained_variance = pca.explained_variance_ratio_
     print("Var explained:", pca_explained_variance)

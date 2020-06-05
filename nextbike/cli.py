@@ -133,7 +133,7 @@ def testing_models():
     # TODO: add docstring
     df_components = io.input.read_csv("Components.csv", p_io_folder="output").reset_index(drop=True)
     y_true = io.input.read_csv("y_train.csv", p_io_folder="output")
-    testing.test_model("Linear_Regression_Model", df_components, y_true)
+    testing.test_neuralnetwork_model(df_components, y_true)
 
 
 def training():

@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def cast_datetime(p_df, p_datetime_columns, p_as_numeric_value=False):
-    """ Return the data-path, depending on the location, from where it is called.
+    """ changes the format of the given column to a datetime-format.
 
     Args:
         p_df (dataframe):  dataframe, in which one or more columns

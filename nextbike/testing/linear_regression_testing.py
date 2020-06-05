@@ -4,7 +4,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn import metrics
 
 
-def test_model(p_name, p_components, p_y_train):
+def test_regression_model(p_components, p_y_train):
     df_metrics = pd.DataFrame(columns=["Components", "RMSE", "MAE", "R^2"])
     X_train_transformed = pd.DataFrame(p_components)
     for i in np.arange(0, len(X_train_transformed.columns)):
