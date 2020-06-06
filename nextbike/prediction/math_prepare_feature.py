@@ -3,7 +3,7 @@ from .. import io
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-
+from .. import prediction
 
 def create_dummies(p_df):
     """Create dummie values for all usefull non numerical features.
@@ -31,6 +31,9 @@ def create_new_features(p_X):
     Returns:
         p_X (DataFrame): Dataframe with existing and new added features (matrix)
     """
+    # TODO Weather Data adding implement here, by triggering
+
+    p_X = prediction.add_weather_data.add_weather(p_X)
     p_X["Hour_squared"] = np.square(p_X["Hour_start"])
     p_X["Day_squared"] = np.square(p_X["Day_start"])
     p_X["Month_squared"] = np.square(p_X["Month_start"])
@@ -151,7 +154,7 @@ def do_pca(p_X_scaled_train):
     Returns:
         X_train_scaled_pca (DataFrame): DataFrame of components
     """
-    pca = PCA(n_components=18)
+    pca = PCA(n_components=25)
     pca.fit(p_X_scaled_train)
     pca_explained_variance = pca.explained_variance_ratio_
     print("Var explained:", pca_explained_variance)

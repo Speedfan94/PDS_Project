@@ -28,19 +28,19 @@ def train_pred(p_df):
     X_train_scaled = scaler.transform(X_train)
     # train
     # KNN
-    print("KNN")
+    print("Train KNN")
     clf = KNeighborsClassifier(n_neighbors=20, weights="distance")
     clf.fit(X_train_scaled, y_train)
     # Decision Tree
-    print("Decision Tree")
+    print("Train Decision Tree")
     dt = DecisionTreeClassifier(max_depth=5)
     dt.fit(X_train_scaled, y_train)
     # RF
-    print("Random Forest")
+    print("Train Random Forest")
     rf = RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1)
     rf.fit(X_train_scaled, y_train)
     # NN
-    print("Neural Network")
+    print("Train Neural Network")
     nn = MLPClassifier(alpha=1, max_iter=1000)
     nn.fit(X_train_scaled, y_train)
     # GNB
@@ -49,9 +49,13 @@ def train_pred(p_df):
     #gnb.fit(X_train_scaled, y_train)
     # predict
     X_test_scaled = scaler.transform(X_test)
+    print("Predict KNN")
     print("KNN: Test score (mean accuracy)", np.round(clf.score(X_test_scaled, y_test) * 100, 2), "%")
+    print("Predict DT")
     print("DT: Test score (mean accuracy)", np.round(dt.score(X_test_scaled, y_test) * 100, 2), "%")
+    print("Predict RF")
     print("RF: Test score (mean accuracy)", np.round(rf.score(X_test_scaled, y_test) * 100, 2), "%")
+    print("Predict NN")
     print("NN: Test score (mean accuracy)", np.round(nn.score(X_test_scaled, y_test) * 100, 2), "%")
     #print("GNB: Test score (mean accuracy)", np.round(gnb.score(X_test_scaled, y_test) * 100, 2), "%")
     # TODO: Visualization of 1-dimension?

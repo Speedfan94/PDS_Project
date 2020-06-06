@@ -71,10 +71,8 @@ def cleaning():
     df_trips_only_nuremberg = datapreparation.geo_clean.only_nuremberg(df_trips_filter_duration)
     print("Add Distances to University...")
     df_trips_only_nuremberg_dist = datapreparation.feature_add.quick_create_dist(df_trips_only_nuremberg)
-    print("Add weather data...")
-    df_trips_only_nuremberg_weather = datapreparation.add_weather_data.add_weather(df_trips_only_nuremberg_dist)
     print("Save trip dataframe...")
-    io.output.save_csv(df_trips_only_nuremberg_weather, "Trips.csv")
+    io.output.save_csv(df_trips_only_nuremberg_dist, "Trips.csv")
 
 
 def visualize():
@@ -116,7 +114,6 @@ def features():
         no Return
     """
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
     # TODO: Add corr analysis before feature selection be aware of non numerical features
     # visualization.math_descriptive.corr_analysis(df_features_2)
     print("Drop End Information")
@@ -127,6 +124,7 @@ def features():
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
+    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
     visualization.math_descriptive.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
@@ -136,8 +134,8 @@ def testing_models():
     # TODO: add docstring
     df_components = io.input.read_csv("Components.csv", p_io_folder="output").reset_index(drop=True)
     y_true = io.input.read_csv("y_train.csv", p_io_folder="output")
-    testing.test_neuralnetwork_model(df_components, y_true)
-
+    # testing.nn_testing.test_neuralnetwork_model(df_components, y_true)
+    testing.linear_regression_testing.test_regression_model(df_components, y_true)
 
 def training():
     """Train the different machine learning models.

@@ -64,7 +64,7 @@ def train_neural_network(p_X_train_scaled, p_y_train):
     neural_network.compile(loss="mse",
                            optimizer=optimizer,
                            metrics=["mae", "mse"])
-    epochs = 10
+    epochs = 20
     # batch_size = 200  # right now not used but should be tried
     history = neural_network.fit(p_X_train_scaled, p_y_train.values, epochs=epochs, validation_split=0.2)
     neural_network.save(io.get_path("Neural_Network_Model", "output", "models"))
@@ -120,9 +120,8 @@ def show_error_metrics(p_y_true, p_y_predictions, p_filename):
     print(p_filename, "Training loss - Error Metrics:")
     print("RMSE:", np.sqrt(metrics.mean_squared_error(p_y_true, p_y_predictions)), end=" ")
     print("MAE:", metrics.mean_absolute_error(p_y_true, p_y_predictions), end=" ")
-    if p_filename != "Neural_Network_Model":
-        # The coefficient of determination: 1 is perfect prediction
-        print("R^2:", metrics.r2_score(p_y_true, p_y_predictions))
-    else:
-        print()
+    # The coefficient of determination: 1 is perfect prediction
+    print("R^2:", metrics.r2_score(p_y_true, p_y_predictions))
+
+
 

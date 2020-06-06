@@ -1,6 +1,6 @@
 import pandas as pd
 from nextbike import io
-from .. import utils
+from nextbike import utils
 
 
 def read_weather():
