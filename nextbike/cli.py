@@ -1,7 +1,6 @@
 import click
 from datetime import datetime
 import pandas as pd
-import numpy as np
 from . import io
 from . import datapreparation
 from . import visualization
@@ -24,28 +23,28 @@ def main(test, clean, viso, train, pred):
         start_time_step = start_time
 
         if clean:
-            print("START CLEAN")
+            print("=== START CLEAN")
             cleaning()
             start_time_step = print_time_for_step(start_time_step)
         if viso:
-            print("START VISUALIZE")
+            print("=== START VISUALIZE")
             # TODO Rename visualization.math / geo to math_plot and geo_plot
             visualize()
             start_time_step = print_time_for_step(start_time_step)
         if train:
-            print("START TRAIN")
+            print("=== START TRAIN")
             features()
             training()
             start_time_step = print_time_for_step(start_time_step)
         if pred:
-            print("START PREDICT")
+            print("=== START PREDICT")
             predict()
             start_time_step = print_time_for_step(start_time_step)
-            print("START GEO PREDICT")
+            print("=== START GEO PREDICT")
             predict_geo()
             start_time_step = print_time_for_step(start_time_step)
 
-        print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
+        print("=== TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
 
 
 def cleaning():
@@ -220,7 +219,7 @@ def print_time_for_step(p_start_time_step):
         start_time_next_step (float): start time of the next step
     """
     start_time_next_step = datetime.now().replace(microsecond=0)
-    print("TIME FOR STEP:", (start_time_next_step - p_start_time_step))
+    print("=== TIME FOR STEP:", (start_time_next_step - p_start_time_step))
     return start_time_next_step
 
 
