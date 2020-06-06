@@ -1,9 +1,11 @@
-import pandas as pd
 from .. import io
+from .. import prediction
+from .. import visualization
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-from .. import prediction
+
 
 def create_dummies(p_df):
     """Create dummie values for all usefull non numerical features.
@@ -127,39 +129,42 @@ def drop_features(p_df):
     return df
 
 
-def scale(p_X_train):
+def scale(p_X_train, p_scaler_name):
     """Scale all independent variables/ regressors  in DataFrame
 
     Args:
         p_X_train (DataFrame): DataFrame of independent variables/ regressors (matrix)
+        p_scaler_name (str): Name at which the Scaler is saved
 
     Returns:
         X_train_scaled (DataFrame): DataFrame with scaled independent variables/ regressors (matrix)
     """
-    # TODO: try robust scaler
     st_scaler = StandardScaler()
-    # fit scaler on training set not on test set
+    # fit scaler only on training set not on test set
     st_scaler.fit(p_X_train)
-    io.save_object(st_scaler, "Standard_Scaler.pkl")
+    io.save_object(st_scaler, p_scaler_name+".pkl")
     X_train_scaled = st_scaler.transform(p_X_train)
     return X_train_scaled
 
 
-def do_pca(p_X_scaled_train):
+def do_pca(p_X_scaled_train, p_number_components, p_filename):
     """Do a PCA to analyse which components to take for further predictions.
 
     PCA creates components from existing features by analysing the equality of variance.
     Multicolinearity will be nearly eliminated. => unbiasedness of models e.g. linear regression
     Args:
         p_X_scaled_train (DataFrame): DataFrame of scaled data
+        p_number_components (int): Number of components which PCA should create
+        p_filename (str): Name of file of PCA
     Returns:
         X_train_scaled_pca (DataFrame): DataFrame of components
     """
-    pca = PCA(n_components=25)
+    pca = PCA(n_components=p_number_components)
     pca.fit(p_X_scaled_train)
     pca_explained_variance = pca.explained_variance_ratio_
-    print("Var explained:", pca_explained_variance)
+    # print("Var explained:", pca_explained_variance)
     print("Sum var explained", sum(pca_explained_variance))
-    io.save_object(pca, "PCA.pkl")
+    io.save_object(pca, p_filename+".pkl")
     X_train_scaled_pca = pca.transform(p_X_scaled_train)
+    visualization.math_descriptive.plot_pca_components(pca_explained_variance, p_filename)
     return X_train_scaled_pca
