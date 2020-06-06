@@ -114,8 +114,10 @@ def plot_distribution_monthly(p_df):
         no return
     """
     # data
-    data = p_df[["Duration", "Month_start"]]
-    data["Normals"] = None
+    # important: take a copy of p_df columns!
+    # otherwise pandas throws warnings when initializing column "Normals" with None values
+    data = p_df[["Duration", "Month_start"]].copy()
+    data.loc[:, "Normals"] = None
     months = data["Month_start"].unique()
     for month in months:
         mean = data[data["Month_start"] == month]["Duration"].mean()
@@ -123,9 +125,9 @@ def plot_distribution_monthly(p_df):
         size = len(data[data["Month_start"] == month])
         normal_distr = np.random.normal(mean, std, size)
         data.loc[data["Month_start"] == month, "Normals"] = normal_distr.astype(np.float64)
+
     # plotting
     sns.set_style(style="whitegrid")
-    #
     fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 5), dpi=300, gridspec_kw={'width_ratios': [3, 1]})
     # bw=1 is the scale factor for kernel for nicer visualization
     # cut=0 sets the lower bound of violins to the real lowest duration
@@ -222,7 +224,7 @@ def plot_mean_duration(p_df):
     ).set_index("key_0")
 
     df_datapoints = df_datapoints.fillna(0).rename({"Duration_y": "Duration"}, axis=1)
-    df_datapoints.drop("Duration_x", axis=1, inplace=True)
+    df_datapoints = df_datapoints.drop("Duration_x", axis=1)
     x_1 = df_datapoints[df_datapoints["Season"] == 1].index.values
     x_2 = df_datapoints[df_datapoints["Season"] == 2].index.values
     x_3 = df_datapoints[df_datapoints["Season"] == 3].index.values

@@ -113,7 +113,7 @@ def features():
         no Return
     """
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
+    df_trips = df_trips.drop(["Place_start", "Start_Time"], axis=1)
     # TODO: Add corr analysis before feature selection be aware of non numerical features
     # visualization.math_descriptive.corr_analysis(df_features_2)
     print("Drop End Information")

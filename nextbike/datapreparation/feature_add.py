@@ -28,8 +28,6 @@ def additional_feature_creation(p_df_trips):
     #   divide it be 60 to manually calculate duration in minutes
     #   and round it to two decimals
     p_df_trips['Duration'] = ((p_df_trips['End_Time'] - p_df_trips['Start_Time']).dt.total_seconds() / 60.0).round(2)
-    # TODO: Fix that bad style right here:
-    pd.options.mode.chained_assignment = None
     p_df_trips["Month_start"] = p_df_trips["Start_Time"].dt.month
     p_df_trips["Day_start"] = p_df_trips["Start_Time"].dt.day
     p_df_trips["Hour_start"] = p_df_trips["Start_Time"].dt.hour

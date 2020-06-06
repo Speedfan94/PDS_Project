@@ -18,7 +18,7 @@ def visualize_stations_moment(p_df):
     # hold for each station just the last entry sorted by datetime
     df_relevant_stations = df_relevant.sort_values(by=["End_Place_id", "End_Time"]).drop_duplicates("End_Place_id",
                                                                                                     keep="last")
-    df_relevant_stations.reset_index(drop=True, inplace=True)
+    df_relevant_stations = df_relevant_stations.reset_index(drop=True)
     m = folium.Map(location=[49.452030, 11.076750], zoom_start=13)
     for i in range(len(df_relevant_stations)):
         folium.Marker(
