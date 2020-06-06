@@ -21,7 +21,7 @@ def create_dummies(p_df):
     return df_dummies
 
 
-def create_new_features(p_X):
+def create_new_features(p_X, weather):
     """Create new features which are usefull for prediction performance.
 
     Example methods for feature engineering could be found here:
@@ -33,8 +33,12 @@ def create_new_features(p_X):
     """
     # TODO Weather Data adding implement here, by triggering
 
-    p_X = prediction.add_weather_data.add_weather(p_X)
-    # p_X["Rain"] = np.square(p_X["Hour_start"])
+    if weather:
+        print("Adding Weather Data...")
+        p_X = prediction.add_weather_data.add_weather(p_X)
+        p_X["Rain_squared"] = np.power(p_X["rain(mm)"], 3)
+        p_X["Temp_squared"] = np.power(p_X["Temp(C)"], 3)
+
     p_X["Hour_squared"] = np.square(p_X["Hour_start"])
     p_X["Day_squared"] = np.square(p_X["Day_start"])
     p_X["Month_squared"] = np.square(p_X["Month_start"])
@@ -97,6 +101,8 @@ def drop_features(p_df):
     if do_it:
         df = p_df.drop(
             ["p_uid_start",
+             "rain(mm)",
+             "Temp(C)"
              # "p_place_type_start",
              # "p_bikes_start",
              # "Month_start",

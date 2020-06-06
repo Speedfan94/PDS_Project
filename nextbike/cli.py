@@ -16,7 +16,8 @@ from . import testing
 @click.option('--viso/--no-viso', default=True, help="Visualize the data.")
 @click.option('--train/--no-train', default=True, help="Train the model.")
 @click.option('--pred/--no-pred', default=True, help="Predict with model.")
-def main(test, clean, viso, train, pred):
+@click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
+def main(test, clean, viso, train, pred, weather):
     if test:
         testing_models()
     else:
@@ -34,7 +35,7 @@ def main(test, clean, viso, train, pred):
             start_time_step = print_time_for_step(start_time_step)
         if train:
             print("START TRAIN")
-            features()
+            features(weather)
             training()
             start_time_step = print_time_for_step(start_time_step)
         if pred:
@@ -42,7 +43,7 @@ def main(test, clean, viso, train, pred):
             predict()
             start_time_step = print_time_for_step(start_time_step)
             print("START GEO PREDICT")
-            predict_geo()
+            predict_geo(weather)
             start_time_step = print_time_for_step(start_time_step)
 
         print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
@@ -102,7 +103,7 @@ def visualize():
     visualization.math_descriptive.plot_mean_duration(df)
 
 
-def features():
+def features(weather):
     """Create and prepare the features before prediction part.
 
     Method which runs the sequential flow of the feature preparation and creation part.
@@ -121,7 +122,7 @@ def features():
     print("Create Dummie Variables...")
     df_features = prediction.math_prepare_feature.create_dummies(df_only_start)
     print("Do Feature Engineering...")
-    df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
+    df_features_2 = prediction.math_prepare_feature.create_new_features(df_features, weather)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
     df_features_2 = df_features_2.drop(["Place_start", "Start_Time"], axis=1)
@@ -186,7 +187,7 @@ def predict():
     prediction.math_predict.predict_by_nn(X_test, y_test)
 
 
-def predict_geo():
+def predict_geo(weather):
     """Predict the direction of a trip (towards or away from university).
 
     Method which runs the sequential flow of the direction prediction.
@@ -204,7 +205,7 @@ def predict_geo():
     print("Create Dummie Variables...")
     df_features = prediction.math_prepare_feature.create_dummies(df_features)
     print("Do Feature Engineering...")
-    df_features = prediction.math_prepare_feature.create_new_features(df_features)
+    df_features = prediction.math_prepare_feature.create_new_features(df_features, weather)
     print("Drop Unneeded Features...")
     df_features = prediction.math_prepare_feature.drop_features(df_features)
     df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)
