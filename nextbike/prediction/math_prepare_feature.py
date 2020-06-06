@@ -16,7 +16,7 @@ def create_dummies(p_df):
     p_spot_start = p_df["p_spot_start"].astype(int)
     p_bike_start = p_df["p_bike_start"].astype(int)
     weekend = p_df["Weekend"].astype(int)
-    p_df.drop(["p_spot_start", "p_bike_start", "Weekend"], axis=1, inplace=True)
+    p_df = p_df.drop(["p_spot_start", "p_bike_start", "Weekend"], axis=1)
     df_dummies = pd.concat([p_df, p_spot_start, p_bike_start, weekend], axis=1)
     return df_dummies
 

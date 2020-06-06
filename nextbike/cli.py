@@ -10,7 +10,6 @@ from . import utils
 from . import testing
 
 
-
 @click.command()
 @click.option('--test/--no-test', default=False, help="Testing mode")
 @click.option('--clean/--no-clean', default=True, help="Clean the data.")
@@ -114,6 +113,7 @@ def features():
         no Return
     """
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
+    df_trips = df_trips.drop(["Place_start", "Start_Time"], axis=1)
     # TODO: Add corr analysis before feature selection be aware of non numerical features
     # visualization.math_descriptive.corr_analysis(df_features_2)
     print("Drop End Information")
@@ -124,7 +124,6 @@ def features():
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
-    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
     visualization.math_descriptive.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
@@ -134,8 +133,8 @@ def testing_models():
     # TODO: add docstring
     df_components = io.input.read_csv("Components.csv", p_io_folder="output").reset_index(drop=True)
     y_true = io.input.read_csv("y_train.csv", p_io_folder="output")
-    # testing.nn_testing.test_neuralnetwork_model(df_components, y_true)
-    testing.linear_regression_testing.test_regression_model(df_components, y_true)
+    testing.test_model("Linear_Regression_Model", df_components, y_true)
+
 
 def training():
     """Train the different machine learning models.
