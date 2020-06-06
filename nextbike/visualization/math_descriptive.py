@@ -71,6 +71,7 @@ def plot_and_save_aggregate_stats(p_df_trips):
         ax2.set_ylabel("Number of Trips")
         ax2.set_title("Count of Trips per "+time_to_aggregate_on)
         io.save_fig(p_fig=fig, p_filename='Aggregate_Statistics_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
+        plt.close()
 
 
 def plot_distribution(p_df):
@@ -270,4 +271,5 @@ def plot_features_influence(p_df):
         ax.xaxis.set_ticks(np.arange(min(x), max(x) + 1, max(x) * 0.2))
 
         io.save_fig(fig, str(i)+col+"_Duration.png", p_sub_folder2="features")
+        plt.close()
     print("DONE")
