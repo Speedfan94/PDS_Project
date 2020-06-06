@@ -256,6 +256,22 @@ def plot_mean_duration(p_df):
     plt.close(fig)
 
 
+def plot_pca_components(p_pca_explained_var, p_filename):
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.set_xlabel("Component")
+    ax.set_ylabel("Explained Variance by Component")
+    ax.set_title("Explained Variance by Principal Component (sum = "+str(sum(p_pca_explained_var))+")")
+    ax.bar(np.arange(len(p_pca_explained_var)), p_pca_explained_var)
+    io.save_fig(
+        fig,
+        p_filename=p_filename+".png",
+        p_io_folder="output",
+        p_sub_folder1="data_plots",
+        p_sub_folder2="math"
+    )
+    plt.close(fig)
+
+
 # TODO: add docstring
 def plot_features_influence(p_df):
     fig, ax = plt.subplots(figsize=(10, 5))
