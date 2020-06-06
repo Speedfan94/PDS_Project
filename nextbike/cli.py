@@ -113,7 +113,7 @@ def features():
         no Return
     """
     df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_trips = df_trips.drop(["Place_start", "Start_Time"], axis=1)
+
     # TODO: Add corr analysis before feature selection be aware of non numerical features
     # visualization.math_descriptive.corr_analysis(df_features_2)
     print("Drop End Information")
@@ -121,9 +121,11 @@ def features():
     print("Create Dummie Variables...")
     df_features = prediction.math_prepare_feature.create_dummies(df_only_start)
     print("Do Feature Engineering...")
+    io.output.save_csv(df_features, "Features_pre.csv")
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
+    df_features_2 = df_features_2.drop(["Place_start", "Start_Time"], axis=1)
     visualization.math_descriptive.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
@@ -197,7 +199,7 @@ def predict_geo():
     """
     # TODO: Feature selection etc...
     df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)
+
     print("Drop End Information")
     df_features = prediction.math_prepare_feature.drop_end_information(df_features, direction_needed=True)
     print("Create Dummie Variables...")
@@ -206,6 +208,7 @@ def predict_geo():
     df_features = prediction.math_prepare_feature.create_new_features(df_features)
     print("Drop Unneeded Features...")
     df_features = prediction.math_prepare_feature.drop_features(df_features)
+    df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)
     print("Predict Trip Direction...")
     prediction.geo_predict.train_pred(df_features)
 

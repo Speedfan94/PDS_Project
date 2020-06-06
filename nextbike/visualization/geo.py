@@ -93,7 +93,7 @@ def visualize_heatmap(p_df):
 
 
 def visualize_postalcode(p_df):
-    """Plots a choropleth graph on a map based on the number of started trips in each zip code region.
+    """Plots a choropleth graph on a map based on the number of started trips in each postal code code region.
     This is be done for the month with the most trips
 
     Args:
@@ -101,7 +101,7 @@ def visualize_postalcode(p_df):
     Returns:
         no return
     """
-    # Visualizes the number of started trip for each zip code region for the month with the most trips
+    # Visualizes the number of started trip for each postal code code region for the month with the most trips
 
     # find the month with the most trips:
     p_df["Month"] = p_df["Start_Time"].dt.month
@@ -110,7 +110,7 @@ def visualize_postalcode(p_df):
     month_most = p_df.groupby(by="Month").count().idxmax()["Start_Time"]
 
     df_biggest_month = p_df[p_df["Month"] == month_most]
-    # prints the number of trips per zip code
+    # prints the number of trips per postal code code
     df_map = df_biggest_month.groupby(
         by="Postalcode_start"
     ).count().sort_values(
@@ -127,7 +127,7 @@ def visualize_postalcode(p_df):
         data=df_map,
         columns=["Postalcode", "Month"],
         key_on='feature.properties.plz',
-        legend_name='Trips per zip code',
+        legend_name='Trips per postal code',
         fill_color='YlGnBu',
         fill_opacity=0.7,
         line_opacity=0.5,

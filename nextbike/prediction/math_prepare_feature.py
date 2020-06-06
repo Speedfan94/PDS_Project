@@ -34,6 +34,7 @@ def create_new_features(p_X):
     # TODO Weather Data adding implement here, by triggering
 
     p_X = prediction.add_weather_data.add_weather(p_X)
+    # p_X["Rain"] = np.square(p_X["Hour_start"])
     p_X["Hour_squared"] = np.square(p_X["Hour_start"])
     p_X["Day_squared"] = np.square(p_X["Day_start"])
     p_X["Month_squared"] = np.square(p_X["Month_start"])
