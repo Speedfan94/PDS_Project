@@ -18,9 +18,12 @@ def read_csv(p_filename, p_io_folder, p_sub_folder=""):
     """
     path = os.path.join(get_data_path(), p_io_folder, p_sub_folder, p_filename)
     try:
-        df = pd.read_csv(path, index_col=0)
+        # index_col=0 throws numpy warning,
+        # so we set it manually after reading in the file
+        df = pd.read_csv(path)
+        df_without_unnamed_column = df.set_index(df.columns[0])
         print("Read:", path)
-        return df
+        return df_without_unnamed_column
     except FileNotFoundError:
         print("Data file not found. Path was " + path)
 

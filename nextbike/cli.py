@@ -10,7 +10,6 @@ from . import utils
 from . import testing
 
 
-
 @click.command()
 @click.option('--test/--no-test', default=False, help="Testing mode")
 @click.option('--clean/--no-clean', default=True, help="Clean the data.")
@@ -124,7 +123,7 @@ def features():
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
-    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
+    df_features_2 = df_features_2.drop(["Place_start", "Start_Time"], axis=1)
     visualization.math_descriptive.corr_analysis(df_features_2)
     io.output.save_csv(df_features_2, "Features.csv")
     # visualization.math.plot_features_influence(df_features_2)
