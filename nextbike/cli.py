@@ -121,7 +121,6 @@ def features():
     print("Create Dummie Variables...")
     df_features = prediction.math_prepare_feature.create_dummies(df_only_start)
     print("Do Feature Engineering...")
-    io.output.save_csv(df_features, "Features_pre.csv")
     df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
     print("Visualize correlations...")
     df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
@@ -135,8 +134,8 @@ def testing_models():
     # TODO: add docstring
     df_components = io.input.read_csv("Components.csv", p_io_folder="output").reset_index(drop=True)
     y_true = io.input.read_csv("y_train.csv", p_io_folder="output")
-    testing.test_model("Linear_Regression_Model", df_components, y_true)
-
+    # testing.nn_testing.test_neuralnetwork_model(df_components, y_true)
+    testing.linear_regression_testing.test_regression_model(df_components, y_true)
 
 def training():
     """Train the different machine learning models.
