@@ -11,7 +11,7 @@ from . import testing
 
 # TODO: Usefull help strings
 @click.command()
-@click.option('--test/--no-test', default=False, help="Testing mode")
+@click.option('--test/--no-test', default=False, help="Testing mode") # TODO: add parameter option for different tests
 @click.option('--clean/--no-clean', default=True, help="Clean the data.")
 @click.option('--viso/--no-viso', default=True, help="Visualize the data.")
 @click.option('--train/--no-train', default=True, help="Train duration models.")
@@ -163,16 +163,35 @@ def training_duration_models():
     io.output.save_csv(y_train, p_filename="y_train_Duration.csv")
     io.output.save_csv(df_components, p_filename="Components_Duration.csv")
     # Train
+    # The sets are in order: y_train, y_val, y_prediction_train, y_prediction_val
     print("Train Linear Regression...")
-    lin_regr_y_prediction = prediction.math_train.train_linear_regression(X_train_transformed, y_train)
+    lin_regression_sets = prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")
-    svm_y_prediction = prediction.math_train.train_svm(X_train_transformed, y_train)
+    svm_regression_sets = prediction.math_train.train_svm(X_train_transformed, y_train)
     print("Train NN...")
-    nn_y_prediction = prediction.math_train.train_neural_network(X_train_transformed, y_train)
+    nn_regression_sets = prediction.math_train.train_neural_network(X_train_transformed, y_train)
     # Evaluate Training
-    prediction.evaluate.duration_error_metrics(y_train, lin_regr_y_prediction, "Linear_Regression")
-    prediction.evaluate.duration_error_metrics(y_train, svm_y_prediction, "SVM_Regression")
-    prediction.evaluate.duration_error_metrics(y_train, nn_y_prediction, "NN_Regression")
+    # Linear Regression
+    prediction.evaluate.duration_error_metrics(
+        lin_regression_sets[0], lin_regression_sets[2], "Linear_Regression_Training"
+    )
+    prediction.evaluate.duration_error_metrics(
+        lin_regression_sets[1], lin_regression_sets[3], "Linear_Regression_Validation"
+    )
+    # SVM Regression
+    prediction.evaluate.duration_error_metrics(
+        svm_regression_sets[0], svm_regression_sets[2], "SVM_Regression_Training"
+    )
+    prediction.evaluate.duration_error_metrics(
+        svm_regression_sets[1], svm_regression_sets[3], "SVM_Regression_Validation"
+    )
+    # NN Regression
+    prediction.evaluate.duration_error_metrics(
+        nn_regression_sets[0], nn_regression_sets[2], "NN_Regression_Training"
+    )
+    prediction.evaluate.duration_error_metrics(
+        nn_regression_sets[1], nn_regression_sets[3], "NN_Regression_Validation"
+    )
 
 
 def testing_robust_scaler():
