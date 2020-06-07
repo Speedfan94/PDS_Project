@@ -135,3 +135,6 @@ nextbike/data/output/Trips.csv
 nextbike/data/output/Features.csv
 nextbike/data/output/Components.csv
 nextbike/data/output/y_train.csv
+nextbike/data/output/Components_Duration.csv
+nextbike/data/output/Features_Direction.csv
+nextbike/data/output/Features_Duration.csv
