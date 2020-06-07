@@ -8,6 +8,33 @@ from sklearn import svm
 from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn.model_selection import train_test_split
+from sklearn.dummy import DummyRegressor
+
+
+def train_dummy_regression_median(p_X_train_scaled, p_y_train):
+    # TODO: Docstring
+    # create a validation set which is 20% of the whole dataset. Therefore use formula to receive ca. 0.2857.
+    X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
+    dummy_reg = DummyRegressor(strategy="median")
+    dummy_reg.fit(X_train, y_train)
+    io.save_object(dummy_reg, "Dummy_Mean_Regression_Model.pkl")
+    y_prediction_train = dummy_reg.predict(X_train)
+    y_prediction_val = dummy_reg.predict(X_val)
+    lin_regr_sets = [y_train, y_val, y_prediction_train, y_prediction_val]
+    return lin_regr_sets
+
+
+def train_dummy_regression_mean(p_X_train_scaled, p_y_train):
+    # TODO: Docstring
+    # create a validation set which is 20% of the whole dataset. Therefore use formula to receive ca. 0.2857.
+    X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
+    dummy_reg = DummyRegressor(strategy="mean")
+    dummy_reg.fit(X_train, y_train)
+    io.save_object(dummy_reg, "Dummy_Mean_Regression_Model.pkl")
+    y_prediction_train = dummy_reg.predict(X_train)
+    y_prediction_val = dummy_reg.predict(X_val)
+    lin_regr_sets = [y_train, y_val, y_prediction_train, y_prediction_val]
+    return lin_regr_sets
 
 
 def train_linear_regression(p_X_train_scaled, p_y_train):
