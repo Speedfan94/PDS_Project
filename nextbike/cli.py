@@ -12,18 +12,22 @@ from . import testing
 
 @click.command()
 @click.option('--test/--no-test', default=False, help="Testing mode")
-@click.option('--clean/--no-clean', default=True, help="Clean the data.")
-@click.option('--viso/--no-viso', default=True, help="Visualize the data.")
-@click.option('--train/--no-train', default=True, help="Train the model.")
-@click.option('--pred/--no-pred', default=True, help="Predict with model.")
+@click.option('--clean/--no-clean', default=False, help="Clean the data.")
+@click.option('--viso/--no-viso', default=False, help="Visualize the data.")
+@click.option('--train/--no-train', default=False, help="Train the model.")
+@click.option('--pred/--no-pred', default=False, help="Predict with model.")
 @click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
+@click.option('--map/--no-map', default=True, help="Predict with model.")
 def main(test, clean, viso, train, pred, weather):
     if test:
         testing_models()
+        visualization.main_interactive_maps()
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time
 
+        if map:
+            main_interactive_maps()
         if clean:
             print("START CLEAN")
             cleaning()

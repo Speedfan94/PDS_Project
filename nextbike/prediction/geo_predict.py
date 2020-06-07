@@ -29,19 +29,19 @@ def train_pred(p_df):
     # train
     # KNN
     print("Train KNN")
-    clf = KNeighborsClassifier(n_neighbors=20, weights="distance")
+    clf = KNeighborsClassifier(n_neighbors=10, weights="distance")
     clf.fit(X_train_scaled, y_train)
     # Decision Tree
     print("Train Decision Tree")
-    dt = DecisionTreeClassifier(max_depth=5)
+    dt = DecisionTreeClassifier(max_depth=10)
     dt.fit(X_train_scaled, y_train)
     # RF
     print("Train Random Forest")
-    rf = RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1)
+    rf = RandomForestClassifier(max_depth=10, n_estimators=15, max_features=3)
     rf.fit(X_train_scaled, y_train)
     # NN
     print("Train Neural Network")
-    nn = MLPClassifier(alpha=1, max_iter=1000)
+    nn = MLPClassifier(alpha=0.0001, max_iter=1000, learning_rate="adaptive")
     nn.fit(X_train_scaled, y_train)
     # GNB
     #print("Gaussian Naive Bayes")
