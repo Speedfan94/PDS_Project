@@ -177,19 +177,19 @@ def training_duration_models():
     # Evaluate Training
     # Dummy Regression Mean
     prediction.evaluate.duration_error_metrics(d_mean_sets[0], d_mean_sets[2], "Dummy_Mean_Regression_Training")
-    prediction.evaluate.duration_error_metrics(d_mean_sets[1], d_mean_sets[3], "Dummy_Mean_Regression_Validation")
+    prediction.evaluate.duration_error_metrics(d_mean_sets[1], d_mean_sets[3], "Dummy_Mean_Regression_Validation", "Validation")
     # Dummy Regression Median
     prediction.evaluate.duration_error_metrics(dummy_med_sets[0], dummy_med_sets[2], "Dummy_Med_Regression_Training")
-    prediction.evaluate.duration_error_metrics(dummy_med_sets[1], dummy_med_sets[3], "Dummy_Med_Regression_Validation")
+    prediction.evaluate.duration_error_metrics(dummy_med_sets[1], dummy_med_sets[3], "Dummy_Med_Regression_Validation", "Validation")
     # Linear Regression
     prediction.evaluate.duration_error_metrics(lin_regr_sets[0], lin_regr_sets[2], "Linear_Regression_Training")
-    prediction.evaluate.duration_error_metrics(lin_regr_sets[1], lin_regr_sets[3], "Linear_Regression_Validation")
+    prediction.evaluate.duration_error_metrics(lin_regr_sets[1], lin_regr_sets[3], "Linear_Regression_Validation", "Validation")
     # SVM Regression
     prediction.evaluate.duration_error_metrics(svm_regr_sets[0], svm_regr_sets[2], "SVM_Regression_Training")
-    prediction.evaluate.duration_error_metrics(svm_regr_sets[1], svm_regr_sets[3], "SVM_Regression_Validation")
+    prediction.evaluate.duration_error_metrics(svm_regr_sets[1], svm_regr_sets[3], "SVM_Regression_Validation", "Validation")
     # NN Regression
     prediction.evaluate.duration_error_metrics(nn_regr_sets[0], nn_regr_sets[2], "NN_Regression_Training")
-    prediction.evaluate.duration_error_metrics(nn_regr_sets[1], nn_regr_sets[3], "NN_Regression_Validation")
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[1], nn_regr_sets[3], "NN_Regression_Validation", "Validation")
 
 
 def testing_robust_scaler():
