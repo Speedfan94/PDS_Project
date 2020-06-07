@@ -220,6 +220,10 @@ def predict_duration_models():
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(df_features)
     # Predict
+    print("Predict by Dummy Mean Regression...")
+    dummy_mean_reg_y_prediction = prediction.math_predict.predict_by_dummy_mean(X_test)
+    print("Predict by Median Regression...")
+    dummy_med_reg_y_prediction = prediction.math_predict.predict_by_dummy_median(X_test)
     print("Predict by Linear Regression...")
     lin_regr_y_prediction = prediction.math_predict.predict_by_regression(X_test)
     print("Predict by SVM Regression...")
@@ -227,6 +231,8 @@ def predict_duration_models():
     print("Predict by NN...")
     nn_y_prediction = prediction.math_predict.predict_by_nn(X_test)
     # Evaluate Prediction
+    prediction.evaluate.duration_error_metrics(y_test, dummy_mean_reg_y_prediction, "Dummy_Mean_Regression", "Testing")
+    prediction.evaluate.duration_error_metrics(y_test, dummy_med_reg_y_prediction, "Dummy_Median_Regression", "Testing")
     prediction.evaluate.duration_error_metrics(y_test, lin_regr_y_prediction, "Linear_Regression", "Testing")
     prediction.evaluate.duration_error_metrics(y_test, svm_y_prediction, "SVM_Regression", "Testing")
     prediction.evaluate.duration_error_metrics(y_test, nn_y_prediction, "NN_Regression", "Testing")
