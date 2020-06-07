@@ -28,7 +28,7 @@ def duration_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Trai
 
 def direction_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Training"):
     # TODO: docstring
-    print(p_filename, p_status, "loss - Error Metrics:")
+    print(p_filename, p_status, "Metrics:", end =" ")
     print("Accuracy:", metrics.accuracy_score(p_y_true, p_y_predictions), end=" ")
     print("Confusion Matrix:", metrics.confusion_matrix(p_y_true, p_y_predictions).flatten(), end=" ")
     # zero_division states if dive by 0 error should be raised. With 0 only the value 0 is printed.
