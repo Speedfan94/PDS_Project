@@ -21,7 +21,8 @@ from . import testing
 def main(test, clean, viso, train, pred, traingeo, predgeo):
     if test:
         # testing_duration_models()
-        testing_robust_scaler()
+        # testing_robust_scaler()
+        testing_direction_subsets()
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time
@@ -266,6 +267,12 @@ def train_direction_models():
     prediction.evaluate.direction_error_metrics(y_train, dt_y_prediction, "Decision_Tree_Classifier")
     prediction.evaluate.direction_error_metrics(y_train, rf_y_prediction, "Random_Forest_Classifier")
     prediction.evaluate.direction_error_metrics(y_train, nn_y_prediction, "NN_Classifier")
+
+
+def testing_direction_subsets():
+    # data
+    df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
+    testing.direction_classification_subsets_testing.filter_subsets(df_features)
 
 
 def predict_direction_models():
