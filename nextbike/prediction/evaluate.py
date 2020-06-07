@@ -28,10 +28,19 @@ def duration_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Trai
 
 def direction_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Training"):
     # TODO: docstring
+
+    accuracy = metrics.accuracy_score(p_y_true, p_y_predictions)
+    confusion_matrix = metrics.confusion_matrix(p_y_true, p_y_predictions).flatten() # ohne Flatten: [[1, 4] [2, 5]] mit Flatten:[1, 4, 2, 5]
+    precision = metrics.precision_score(p_y_true, p_y_predictions, zero_division=0)
+
+    recall = metrics.recall_score(p_y_true, p_y_predictions)
+    f1_score = metrics.f1_score(p_y_true, p_y_predictions)
+
     print(p_filename, p_status, "Metrics:", end =" ")
-    print("Accuracy:", metrics.accuracy_score(p_y_true, p_y_predictions), end=" ")
-    print("Confusion Matrix:", metrics.confusion_matrix(p_y_true, p_y_predictions).flatten(), end=" ")
+    print("Accuracy:", accuracy, end=" ")
+    print("Confusion Matrix:", confusion_matrix, end=" ")
     # zero_division states if dive by 0 error should be raised. With 0 only the value 0 is printed.
-    print("Precision:", metrics.precision_score(p_y_true, p_y_predictions, zero_division=0), end=" ")
-    print("Recall:", metrics.recall_score(p_y_true, p_y_predictions), end=" ")
-    print("F1 score", metrics.f1_score(p_y_true, p_y_predictions))
+    print("Precision:", precision, end=" ")
+    print("Recall:", recall, end=" ")
+    print("F1 score", f1_score)
+

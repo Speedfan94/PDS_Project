@@ -13,17 +13,18 @@ from . import testing
 @click.command()
 @click.option('--test/--no-test', default=False, help="Testing mode") # TODO: add parameter option for different tests
 @click.option('--clean/--no-clean', default=True, help="Clean the data.")
-@click.option('--viso/--no-viso', default=True, help="Visualize the data.")
-@click.option('--train/--no-train', default=True, help="Train duration models.")
-@click.option('--pred/--no-pred', default=True, help="Predict duration with models.")
+@click.option('--viso/--no-viso', default=False, help="Visualize the data.")
+@click.option('--train/--no-train', default=False, help="Train duration models.")
+@click.option('--pred/--no-pred', default=False, help="Predict duration with models.")
 @click.option('--traingeo/--no-traingeo', default=True, help="Train direction models.")
-@click.option('--predgeo/--no-predgeo', default=True, help="Predict direction with models.")
-@click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
+@click.option('--predgeo/--no-predgeo', default=False, help="Predict direction with models.")
+@click.option('--weather/--no-weather', default=True, help="Decide, whether to include weather data or not.")
 def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
     if test:
         # testing_duration_models()
         # testing_robust_scaler()
-        testing_direction_subsets()
+        # testing_direction_subsets()
+        visualization.main_test()
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time

@@ -21,7 +21,7 @@ def train_classification_dummy(p_X_train_scaled, p_y_train):
 
 def train_classification_k_neighbors(p_X_train_scaled, p_y_train):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    clf = KNeighborsClassifier(n_neighbors=20, weights="distance")
+    clf = KNeighborsClassifier(n_neighbors=10, weights="distance")
     clf.fit(X_train, y_train)
     y_prediction_train = clf.predict(X_train)
     y_prediction_val = clf.predict(X_val)
@@ -32,7 +32,7 @@ def train_classification_k_neighbors(p_X_train_scaled, p_y_train):
 
 def train_classification_decision_tree(p_X_train_scaled, p_y_train):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    dt = DecisionTreeClassifier(max_depth=5)
+    dt = DecisionTreeClassifier(max_depth=10)
     dt.fit(X_train, y_train)
     y_prediction_train = dt.predict(X_train)
     y_prediction_val = dt.predict(X_val)
@@ -43,7 +43,7 @@ def train_classification_decision_tree(p_X_train_scaled, p_y_train):
 
 def train_classification_random_forest(p_X_train_scaled, p_y_train):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    rf = RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1)
+    rf = RandomForestClassifier(max_depth=10, n_estimators=15, max_features=3)
     rf.fit(X_train, y_train)
     y_prediction_train = rf.predict(X_train)
     y_prediction_val = rf.predict(X_val)
@@ -54,7 +54,7 @@ def train_classification_random_forest(p_X_train_scaled, p_y_train):
 
 def train_classification_neural_network(p_X_train_scaled, p_y_train):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    nn = MLPClassifier(alpha=1, max_iter=1000)
+    nn = MLPClassifier(alpha=0.0001, max_iter=1000)
     nn.fit(X_train, y_train)
     y_prediction_train = nn.predict(X_train)
     y_prediction_val = nn.predict(X_val)
