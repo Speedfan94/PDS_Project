@@ -2,6 +2,32 @@ from .. import io
 from tensorflow.keras.models import load_model
 
 
+def predict_by_dummy_mean(p_X_test):
+    # TODO: Docstring
+    # Read pickle objects
+    scaler = io.read_object("Standard_Scaler_Duration.pkl")
+    pca = io.read_object("PCA_Duration.pkl")
+    model = io.read_object("Dummy_Mean_Regression_Model.pkl.pkl")
+    # Use trained pickle objects
+    X_test_scaled = scaler.transform(p_X_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    y_predictions = model.predict(X_test_transformed)
+    return y_predictions
+
+
+def predict_by_dummy_median(p_X_test):
+    # TODO: Docstring
+    # Read pickle objects
+    scaler = io.read_object("Standard_Scaler_Duration.pkl")
+    pca = io.read_object("PCA_Duration.pkl")
+    model = io.read_object("Dummy_Median_Regression_Model.pkl.pkl")
+    # Use trained pickle objects
+    X_test_scaled = scaler.transform(p_X_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    y_predictions = model.predict(X_test_transformed)
+    return y_predictions
+
+
 def predict_by_regression(p_X_test):
     """Predicts the duration of a trip by trained Linear Regression model.
 
