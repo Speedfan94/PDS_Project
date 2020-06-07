@@ -1,4 +1,3 @@
-from .. import io
 from .. import prediction
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA

@@ -1,6 +1,4 @@
-from .. import io
 from .. import prediction
-import pandas as pd
 from sklearn.preprocessing import RobustScaler
 from sklearn.decomposition import PCA
 
