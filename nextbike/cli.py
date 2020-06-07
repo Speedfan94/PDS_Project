@@ -20,7 +20,8 @@ from . import testing
 @click.option('--predgeo/--no-predgeo', default=True, help="Predict direction with models.")
 def main(test, clean, viso, train, pred, traingeo, predgeo):
     if test:
-        testing_duration_models()
+        # testing_duration_models()
+        testing_robust_scaler()
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time
@@ -171,6 +172,11 @@ def training_duration_models():
     prediction.evaluate.duration_error_metrics(y_train, lin_regr_y_prediction, "Linear_Regression")
     prediction.evaluate.duration_error_metrics(y_train, svm_y_prediction, "SVM_Regression")
     prediction.evaluate.duration_error_metrics(y_train, nn_y_prediction, "NN_Regression")
+
+
+def testing_robust_scaler():
+    df_features = io.input.read_csv("Features_Duration.csv", p_io_folder="output")
+    testing.robust_scaler_testing.test_robust_scaler(df_features)
 
 
 def testing_duration_models():
