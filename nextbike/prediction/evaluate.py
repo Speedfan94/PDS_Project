@@ -43,4 +43,12 @@ def direction_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Tra
     print("Precision:", precision, end=" ")
     print("Recall:", recall, end=" ")
     print("F1 score", f1_score)
-
+    if p_status == "Training":
+        new_row = {'Model': p_filename,
+                   'Settings': "??",
+                   'Accuracy': accuracy,
+                   'Confusion Matrix': confusion_matrix,
+                   'Precision': precision,
+                   'Recall': recall,
+                   'F1 Score': f1_score}
+        return new_row

@@ -16,7 +16,7 @@ from . import testing
 @click.option('--viso/--no-viso', default=False, help="Visualize the data.")
 @click.option('--train/--no-train', default=False, help="Train duration models.")
 @click.option('--pred/--no-pred', default=False, help="Predict duration with models.")
-@click.option('--traingeo/--no-traingeo', default=False, help="Train direction models.")
+@click.option('--traingeo/--no-traingeo', default=True, help="Train direction models.")
 @click.option('--predgeo/--no-predgeo', default=False, help="Predict direction with models.")
 @click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
 def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
@@ -266,6 +266,9 @@ def train_direction_models():
         no Return
     """
     # TODO: Feature selection etc...
+    cols = ["Model", "Kind", "Settings", "Accuracy", "Confusion Matrix", "Precision", "Recall", "F1 Score"]
+    rows = []
+    df_save_results = pd.DataFrame([],index = rows, columns=cols)
     # Prepare
     df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
     print("Split Data...")
@@ -276,32 +279,123 @@ def train_direction_models():
     # TODO: fit number of components
     X_train_transformed = prediction.prepare_feature.do_pca(X_scaled_train, 15, "PCA_Direction")
     # Train
-    print("Train Dummy Classifier...")
-    dummy_sets = prediction.geo_train.train_classification_dummy(X_train_transformed, y_train)
-    print("Train KNeighbors Classifier...")
-    kn_sets = prediction.geo_train.train_classification_k_neighbors(X_train_transformed, y_train)
-    print("Train Decision Tree Classifier...")
-    dt_sets = prediction.geo_train.train_classification_decision_tree(X_train_transformed, y_train)
-    print("Train Random Forest Classifier...")
-    rf_sets = prediction.geo_train.train_classification_random_forest(X_train_transformed, y_train)
-    print("Train NN Classifier...")
-    nn_sets = prediction.geo_train.train_classification_neural_network(X_train_transformed, y_train)
-    # Evaluate Training
+
     # Dummy_Classifier
-    prediction.evaluate.direction_error_metrics(dummy_sets[0], dummy_sets[2], "Dummy_Classifier")
-    prediction.evaluate.direction_error_metrics(dummy_sets[1], dummy_sets[3], "Dummy_Classifier")
+    parameter1 = ["stratified", "most_frequent", "prior", "uniform"]
+
+    for i in parameter1:
+        print("Train Dummy Classifier...")
+        print(i)
+        dummy_sets = prediction.geo_train.train_classification_dummy(X_train_transformed, y_train, i)
+
+        new_row1 = prediction.evaluate.direction_error_metrics(dummy_sets[0], dummy_sets[2], "Dummy_Classifier")
+        new_row1.update({'Settings': i, 'Kind': 'train'})
+        df_save_results = df_save_results.append(new_row1, ignore_index=True)
+        new_row1 = prediction.evaluate.direction_error_metrics(dummy_sets[1], dummy_sets[3], "Dummy_Classifier")
+        new_row1.update({'Settings': i, 'Kind': 'validation'})
+        df_save_results = df_save_results.append(new_row1, ignore_index=True)
+
+    io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
     # KNeighbors_Classifier
-    prediction.evaluate.direction_error_metrics(kn_sets[0], kn_sets[2], "KNeighbors_Classifier")
-    prediction.evaluate.direction_error_metrics(kn_sets[1], kn_sets[3], "KNeighbors_Classifier")
+    parameter1 = [1, 10, 20]
+    parameter2 = ["uniform", "distance"]
+    parameter3 = ["auto", "ball_tree", "kd_tree", "brute"]
+    parameter4 = [1, 50, 100]
+    parameter5 = [1, 2]
+
+    for a in parameter1:
+        for b in parameter2:
+            for c in parameter3:
+                for d in parameter4:
+                    for e in parameter5:
+
+                        print("Train KNeighbors Classifier...")
+                        print(a, b, c, d, e)
+                        kn_sets = prediction.geo_train.train_classification_k_neighbors(X_train_transformed, y_train, a, b, c, d, e)
+
+                        new_row1 = prediction.evaluate.direction_error_metrics(kn_sets[0], kn_sets[2], "KNeighbors_Classifier")
+                        new_row1.update({'Settings': [a, b, c, d, e], 'Kind': 'train'})
+                        df_save_results = df_save_results.append(new_row1, ignore_index=True)
+                        new_row1 = prediction.evaluate.direction_error_metrics(kn_sets[1], kn_sets[3], "KNeighbors_Classifier")
+                        new_row1.update({'Settings': [a, b, c, d, e], 'Kind': 'validation'})
+                        df_save_results = df_save_results.append(new_row1, ignore_index=True)
+        io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
+    io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
     # Decision_Tree_Classifier
-    prediction.evaluate.direction_error_metrics(dt_sets[0], dt_sets[2], "Decision_Tree_Classifier")
-    prediction.evaluate.direction_error_metrics(dt_sets[1], dt_sets[3], "Decision_Tree_Classifier")
+    parameter1 = ["gini", "entropy"]
+    parameter2 = ["best", "random"]
+    parameter3 = [None, 1, 5, 10, 20]
+    parameter4 = [None, "balanced"]
+
+    for a in parameter1:
+        for b in parameter2:
+            for c in parameter3:
+                for d in parameter4:
+                    print("Train Decision Tree Classifier...")
+                    dt_sets = prediction.geo_train.train_classification_decision_tree(X_train_transformed, y_train, a, b, c, d)
+
+                    new_row1 = prediction.evaluate.direction_error_metrics(dt_sets[0], dt_sets[2], "Decision_Tree_Classifier")
+                    new_row1.update({'Settings': [a, b, c, d], 'Kind': 'train'})
+                    df_save_results = df_save_results.append(new_row1, ignore_index=True)
+                    new_row6 = prediction.evaluate.direction_error_metrics(dt_sets[1], dt_sets[3], "Decision_Tree_Classifier")
+                    new_row1.update({'Settings': [a, b, c, d], 'Kind': 'validation'})
+                    df_save_results = df_save_results.append(new_row1, ignore_index=True)
+        io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
+    io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
+
     # Random_Forest_Classifier
-    prediction.evaluate.direction_error_metrics(rf_sets[0], rf_sets[2], "Random_Forest_Classifier")
-    prediction.evaluate.direction_error_metrics(rf_sets[1], rf_sets[3], "Random_Forest_Classifier")
-    # Neural Network Classifier
-    prediction.evaluate.direction_error_metrics(nn_sets[0], nn_sets[2], "NN_Classifier")
-    prediction.evaluate.direction_error_metrics(nn_sets[1], nn_sets[3], "NN_Classifier")
+
+    parameter1 = [10, 100, 1000]
+    parameter2 = ["gini", "entropy"]
+    parameter3 = [None, 1, 10, 100, 1000]
+    parameter4 = [True, False]
+
+    for a in parameter1:
+        for b in parameter2:
+            for c in parameter3:
+                for d in parameter4:
+                    print("Train Random Forest Classifier...")
+                    rf_sets = prediction.geo_train.train_classification_random_forest(X_train_transformed, y_train, a, b, c, d)
+
+                    new_row1 = prediction.evaluate.direction_error_metrics(rf_sets[0], rf_sets[2], "Random_Forest_Classifier")
+                    new_row1.update({'Settings': [a, b, c, d], 'Kind': 'train'})
+                    df_save_results = df_save_results.append(new_row1, ignore_index=True)
+                    new_row1 = prediction.evaluate.direction_error_metrics(rf_sets[1], rf_sets[3], "Random_Forest_Classifier")
+                    new_row1.update({'Settings': [a, b, c, d], 'Kind': 'validation'})
+                    df_save_results = df_save_results.append(new_row1, ignore_index=True)
+        io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
+    io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
+    # Neural Networl Classifier
+    parameter1 = [100, 500]
+    parameter2 = ["identity", "logistic", "tanh", "relu"]
+    parameter3 = ["lbfgs", "sgd", "adam"]
+    parameter4 = [50, 200, 1000]
+
+    for a in parameter1:
+        for b in parameter2:
+            for c in parameter3:
+                for d in parameter4:
+
+                    print("Train NN Classifier...")
+                    nn_sets = prediction.geo_train.train_classification_neural_network(X_train_transformed, y_train, a, b, c, d)
+                    # Evaluate Training
+                    # Neural Network Classifier
+                    new_row1 = prediction.evaluate.direction_error_metrics(nn_sets[0], nn_sets[2], "NN_Classifier")
+                    new_row1.update({'Settings': [a, b, c, d], 'Kind': 'train'})
+                    df_save_results = df_save_results.append(new_row1, ignore_index=True)
+                    new_row1 = prediction.evaluate.direction_error_metrics(nn_sets[1], nn_sets[3], "NN_Classifier")
+                    new_row1.update({'Settings': [a, b, c, d], 'Kind': 'validation'})
+                    df_save_results = df_save_results.append(new_row1, ignore_index=True)
+        io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
+
+    io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
 
 
 def testing_direction_subsets():

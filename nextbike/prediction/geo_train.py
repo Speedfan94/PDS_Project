@@ -8,9 +8,9 @@ from sklearn.dummy import DummyClassifier
 # TODO: Docstrings
 
 
-def train_classification_dummy(p_X_train_scaled, p_y_train):
+def train_classification_dummy(p_X_train_scaled, p_y_train, strategy1):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    dc = DummyClassifier(strategy="most_frequent")
+    dc = DummyClassifier(strategy=strategy1)
     dc.fit(X_train, y_train)
     y_prediction_train = dc.predict(X_train)
     y_prediction_val = dc.predict(X_val)
@@ -19,9 +19,9 @@ def train_classification_dummy(p_X_train_scaled, p_y_train):
     return dummy_classification_sets
 
 
-def train_classification_k_neighbors(p_X_train_scaled, p_y_train):
+def train_classification_k_neighbors(p_X_train_scaled, p_y_train, neighbor, weight, algo, leaf, p):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    clf = KNeighborsClassifier(n_neighbors=10, weights="distance")
+    clf = KNeighborsClassifier(n_neighbors=neighbor, weights=weight, algorithm=algo, leaf_size=leaf, p=p)
     clf.fit(X_train, y_train)
     y_prediction_train = clf.predict(X_train)
     y_prediction_val = clf.predict(X_val)
@@ -30,7 +30,7 @@ def train_classification_k_neighbors(p_X_train_scaled, p_y_train):
     return kn_classification_sets
 
 
-def train_classification_decision_tree(p_X_train_scaled, p_y_train):
+def train_classification_decision_tree(p_X_train_scaled, p_y_train, criterion, splitter, max_depth, class_weight):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     dt = DecisionTreeClassifier(max_depth=10)
     dt.fit(X_train, y_train)
@@ -41,9 +41,9 @@ def train_classification_decision_tree(p_X_train_scaled, p_y_train):
     return dt_classification_sets
 
 
-def train_classification_random_forest(p_X_train_scaled, p_y_train):
+def train_classification_random_forest(p_X_train_scaled, p_y_train, n, criterion, max_d, bootstrap):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    rf = RandomForestClassifier(max_depth=10, n_estimators=15, max_features=3)
+    rf = RandomForestClassifier(max_depth=max_d, n_estimators=n, max_features="auto", criterion=criterion, bootstrap=bootstrap)
     rf.fit(X_train, y_train)
     y_prediction_train = rf.predict(X_train)
     y_prediction_val = rf.predict(X_val)
@@ -52,9 +52,9 @@ def train_classification_random_forest(p_X_train_scaled, p_y_train):
     return rf_classification_sets
 
 
-def train_classification_neural_network(p_X_train_scaled, p_y_train):
+def train_classification_neural_network(p_X_train_scaled, p_y_train, hidden, activation, solver, max_it):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    nn = MLPClassifier(alpha=0.0001, max_iter=1000)
+    nn = MLPClassifier(alpha=0.0001, max_iter=max_it, hidden_layer_sizes=hidden, activation=activation, solver=solver)
     nn.fit(X_train, y_train)
     y_prediction_train = nn.predict(X_train)
     y_prediction_val = nn.predict(X_val)

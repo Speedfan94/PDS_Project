@@ -7,7 +7,7 @@ setup(
     author="team-we-hend-stroh-to-be-the-best-ulk-nudel",
     author_email="student@uni-koeln.de",
     packages=["nextbike"],
-    install_requires=['pandas', 'scikit-learn', 'click', 'shapely', 'folium', 'matplotlib', 'seaborn', 'tensorflow', 'geopy', 'geopandas', "pillow", "scipy", "numpy"],
+    install_requires=['pandas', 'scikit-learn', 'click', 'shapely', 'folium', 'matplotlib', 'seaborn', 'tensorflow', 'geopy', 'geopandas', "numpy"],
     entry_points={
         'console_scripts': ['nextbike=nextbike.cli:main']
     }
