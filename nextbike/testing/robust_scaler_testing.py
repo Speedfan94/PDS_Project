@@ -16,9 +16,11 @@ def test_robust_scaler(p_df):
     X_train_transformed = pca.transform(X_scaled_train)
     # Train
     print("Train NN...")
-    nn_y_prediction = prediction.math_train.train_neural_network(X_train_transformed, y_train, p_testing=True)
+    nn_regr_sets = prediction.math_train.train_neural_network(X_train_transformed, y_train, p_testing=True)
     # Evaluate Training
-    prediction.evaluate.duration_error_metrics(y_train, nn_y_prediction, "NN_Regression")
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[0], nn_regr_sets[2], "NN_Regression_Training")
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[1], nn_regr_sets[3], "NN_Regression_Validation")
+
     # Prepare Predict
     X_scaled_test = robust_scaler.transform(X_test)
     X_test_transformed = pca.transform(X_scaled_test)
