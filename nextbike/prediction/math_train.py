@@ -60,7 +60,7 @@ def train_neural_network(p_X_train_scaled, p_y_train):
          # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
          layers.Dense(1)])
-    optimizer = keras.optimizers.RMSprop(learning_rate=0.001, rho=0.8)
+    optimizer = keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)
     neural_network.compile(loss="mse",
                            optimizer=optimizer,
                            metrics=["mae", "mse"])
