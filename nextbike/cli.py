@@ -20,14 +20,15 @@ from . import testing
 @click.option('--map/--no-map', default=True, help="Predict with model.")
 def main(test, clean, viso, train, pred, weather):
     if test:
-        testing_models()
-        visualization.main_interactive_maps()
+        # testing_models()
+        # visualization.main_interactive_maps()
+        visualization.main()
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time
 
-        if map:
-            main_interactive_maps()
+        # if map:
+        # main_interactive_maps()
         if clean:
             print("START CLEAN")
             cleaning()
