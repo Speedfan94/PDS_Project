@@ -1,65 +1,66 @@
-from .. import visualization
-import numpy as np
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neural_network import MLPClassifier
-from sklearn.naive_bayes import GaussianNB
+from .. import io
 
 
-def train_pred(p_df):
-    """Train and predict different classification models for trip direction.
-
-    Train and predict if trip's end is nearer the university than the start.
-    Print the accuracy of the prediction.
-    Args:
-        p_df (DataFrame): Dataframe of trip data
-    Returns:
-        no Return
-    """
-    # data
-    X = p_df.drop("Direction", axis=1)
-    y = p_df["Direction"]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-    X_train_scaled = scaler.transform(X_train)
-    # train
-    # KNN
-    print("Train KNN")
-    clf = KNeighborsClassifier(n_neighbors=10, weights="distance")
-    clf.fit(X_train_scaled, y_train)
-    # Decision Tree
-    print("Train Decision Tree")
-    dt = DecisionTreeClassifier(max_depth=10)
-    dt.fit(X_train_scaled, y_train)
-    # RF
-    print("Train Random Forest")
-    rf = RandomForestClassifier(max_depth=10, n_estimators=15, max_features=3)
-    rf.fit(X_train_scaled, y_train)
-    # NN
-    print("Train Neural Network")
-    nn = MLPClassifier(alpha=0.0001, max_iter=1000, learning_rate="adaptive")
-    nn.fit(X_train_scaled, y_train)
-    # GNB
-    #print("Gaussian Naive Bayes")
-    #gnb = GaussianNB()
-    #gnb.fit(X_train_scaled, y_train)
-    # predict
-    X_test_scaled = scaler.transform(X_test)
-    print("Predict KNN")
-    print("KNN: Test score (mean accuracy)", np.round(clf.score(X_test_scaled, y_test) * 100, 2), "%")
-    print("Predict DT")
-    print("DT: Test score (mean accuracy)", np.round(dt.score(X_test_scaled, y_test) * 100, 2), "%")
-    print("Predict RF")
-    print("RF: Test score (mean accuracy)", np.round(rf.score(X_test_scaled, y_test) * 100, 2), "%")
-    print("Predict NN")
-    print("NN: Test score (mean accuracy)", np.round(nn.score(X_test_scaled, y_test) * 100, 2), "%")
-    #print("GNB: Test score (mean accuracy)", np.round(gnb.score(X_test_scaled, y_test) * 100, 2), "%")
-    # TODO: Visualization of 1-dimension?
-    #visualization.math_predictive.plot_direction_classification(X, y)
+def predict_by_dummy_classificaion(p_X_test):
+    # TODO: Docstring
+    # Read pickle objects
+    scaler = io.read_object("Standard_Scaler_Direction.pkl")
+    pca = io.read_object("PCA_Direction.pkl")
+    model = io.read_object("Dummy_classifier_model.pkl")
+    # Use trained pickle objects
+    X_test_scaled = scaler.transform(p_X_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    y_predictions = model.predict(X_test_transformed)
+    return y_predictions
 
 
-# TODO: add additional methods for prediction
+def predict_by_k_neighbors_classificaion(p_X_test):
+    # TODO: Docstring
+    # Read pickle objects
+    scaler = io.read_object("Standard_Scaler_Direction.pkl")
+    pca = io.read_object("PCA_Direction.pkl")
+    model = io.read_object("KNearestNeighbours_classifier_model.pkl")
+    # Use trained pickle objects
+    X_test_scaled = scaler.transform(p_X_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    y_predictions = model.predict(X_test_transformed)
+    return y_predictions
+
+
+def predict_by_decision_tree_classificaion(p_X_test):
+    # TODO: Docstring
+    # Read pickle objects
+    scaler = io.read_object("Standard_Scaler_Direction.pkl")
+    pca = io.read_object("PCA_Direction.pkl")
+    model = io.read_object("DecisionTree_classifier_model.pkl")
+    # Use trained pickle objects
+    X_test_scaled = scaler.transform(p_X_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    y_predictions = model.predict(X_test_transformed)
+    return y_predictions
+
+
+def predict_by_random_forest_classificaion(p_X_test):
+    # TODO: Docstring
+    # Read pickle objects
+    scaler = io.read_object("Standard_Scaler_Direction.pkl")
+    pca = io.read_object("PCA_Direction.pkl")
+    model = io.read_object("RandomForest_classifier_model.pkl")
+    # Use trained pickle objects
+    X_test_scaled = scaler.transform(p_X_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    y_predictions = model.predict(X_test_transformed)
+    return y_predictions
+
+
+def predict_by_neural_network_classificaion(p_X_test):
+    # TODO: Docstring
+    # Read pickle objects
+    scaler = io.read_object("Standard_Scaler_Direction.pkl")
+    pca = io.read_object("PCA_Direction.pkl")
+    model = io.read_object("NeuralNetwork_classifier_model.pkl")
+    # Use trained pickle objects
+    X_test_scaled = scaler.transform(p_X_test)
+    X_test_transformed = pca.transform(X_test_scaled)
+    y_predictions = model.predict(X_test_transformed)
+    return y_predictions
