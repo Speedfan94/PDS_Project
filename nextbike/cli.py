@@ -12,13 +12,13 @@ from . import testing
 # TODO: Usefull help strings
 @click.command()
 @click.option('--test/--no-test', default=False, help="Testing mode") # TODO: add parameter option for different tests
-@click.option('--clean/--no-clean', default=True, help="Clean the data.")
+@click.option('--clean/--no-clean', default=False, help="Clean the data.")
 @click.option('--viso/--no-viso', default=False, help="Visualize the data.")
 @click.option('--train/--no-train', default=False, help="Train duration models.")
 @click.option('--pred/--no-pred', default=False, help="Predict duration with models.")
-@click.option('--traingeo/--no-traingeo', default=True, help="Train direction models.")
+@click.option('--traingeo/--no-traingeo', default=False, help="Train direction models.")
 @click.option('--predgeo/--no-predgeo', default=False, help="Predict direction with models.")
-@click.option('--weather/--no-weather', default=True, help="Decide, whether to include weather data or not.")
+@click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
 def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
     if test:
         # testing_duration_models()
@@ -54,7 +54,7 @@ def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
             start_time_step = print_time_for_step(start_time_step)
         if predgeo:
             print("START GEO PREDICT")
-            predict_direction_models(weather)
+            predict_direction_models()
             start_time_step = print_time_for_step(start_time_step)
 
         # TODO: can we use start_time_step instead of datetime.now().replace(microsecond=0) ???
