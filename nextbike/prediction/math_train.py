@@ -28,7 +28,8 @@ def train_linear_regression(p_X_train_scaled, p_y_train):
     io.save_object(lin, "Linear_Regression_Model.pkl")
     y_prediction_train = lin.predict(X_train)
     y_prediction_val = lin.predict(X_val)
-    return [y_train, y_val, y_prediction_train, y_prediction_val]
+    lin_regr_sets = [y_train, y_val, y_prediction_train, y_prediction_val]
+    return lin_regr_sets
 
 
 def train_neural_network(p_X_train_scaled, p_y_train, p_testing=False):
