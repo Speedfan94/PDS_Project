@@ -165,33 +165,21 @@ def training_duration_models():
     # Train
     # The sets are in order: y_train, y_val, y_prediction_train, y_prediction_val
     print("Train Linear Regression...")
-    lin_regression_sets = prediction.math_train.train_linear_regression(X_train_transformed, y_train)
+    lin_regr_sets = prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")
-    svm_regression_sets = prediction.math_train.train_svm(X_train_transformed, y_train)
+    svm_regr_sets = prediction.math_train.train_svm(X_train_transformed, y_train)
     print("Train NN...")
-    nn_regression_sets = prediction.math_train.train_neural_network(X_train_transformed, y_train)
+    nn_regr_sets = prediction.math_train.train_neural_network(X_train_transformed, y_train)
     # Evaluate Training
     # Linear Regression
-    prediction.evaluate.duration_error_metrics(
-        lin_regression_sets[0], lin_regression_sets[2], "Linear_Regression_Training"
-    )
-    prediction.evaluate.duration_error_metrics(
-        lin_regression_sets[1], lin_regression_sets[3], "Linear_Regression_Validation"
-    )
+    prediction.evaluate.duration_error_metrics(lin_regr_sets[0], lin_regr_sets[2], "Linear_Regression_Training")
+    prediction.evaluate.duration_error_metrics(lin_regr_sets[1], lin_regr_sets[3], "Linear_Regression_Validation")
     # SVM Regression
-    prediction.evaluate.duration_error_metrics(
-        svm_regression_sets[0], svm_regression_sets[2], "SVM_Regression_Training"
-    )
-    prediction.evaluate.duration_error_metrics(
-        svm_regression_sets[1], svm_regression_sets[3], "SVM_Regression_Validation"
-    )
+    prediction.evaluate.duration_error_metrics(svm_regr_sets[0], svm_regr_sets[2], "SVM_Regression_Training")
+    prediction.evaluate.duration_error_metrics(svm_regr_sets[1], svm_regr_sets[3], "SVM_Regression_Validation")
     # NN Regression
-    prediction.evaluate.duration_error_metrics(
-        nn_regression_sets[0], nn_regression_sets[2], "NN_Regression_Training"
-    )
-    prediction.evaluate.duration_error_metrics(
-        nn_regression_sets[1], nn_regression_sets[3], "NN_Regression_Validation"
-    )
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[0], nn_regr_sets[2], "NN_Regression_Training")
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[1], nn_regr_sets[3], "NN_Regression_Validation")
 
 
 def testing_robust_scaler():
@@ -271,21 +259,31 @@ def train_direction_models():
     X_train_transformed = prediction.prepare_feature.do_pca(X_scaled_train, 15, "PCA_Direction")
     # Train
     print("Train Dummy Classifier...")
-    dummy_y_prediction = prediction.geo_train.train_classification_dummy(X_train_transformed, y_train)
+    dummy_sets = prediction.geo_train.train_classification_dummy(X_train_transformed, y_train)
     print("Train KNeighbors Classifier...")
-    kn_y_prediction = prediction.geo_train.train_classification_k_neighbors(X_train_transformed, y_train)
+    kn_sets = prediction.geo_train.train_classification_k_neighbors(X_train_transformed, y_train)
     print("Train Decision Tree Classifier...")
-    dt_y_prediction = prediction.geo_train.train_classification_decision_tree(X_train_transformed, y_train)
+    dt_sets = prediction.geo_train.train_classification_decision_tree(X_train_transformed, y_train)
     print("Train Random Forest Classifier...")
-    rf_y_prediction = prediction.geo_train.train_classification_random_forest(X_train_transformed, y_train)
+    rf_sets = prediction.geo_train.train_classification_random_forest(X_train_transformed, y_train)
     print("Train NN Classifier...")
-    nn_y_prediction = prediction.geo_train.train_classification_neural_network(X_train_transformed, y_train)
+    nn_sets = prediction.geo_train.train_classification_neural_network(X_train_transformed, y_train)
     # Evaluate Training
-    prediction.evaluate.direction_error_metrics(y_train, dummy_y_prediction, "Dummy_Classifier")
-    prediction.evaluate.direction_error_metrics(y_train, kn_y_prediction, "KNeighbors_Classifier")
-    prediction.evaluate.direction_error_metrics(y_train, dt_y_prediction, "Decision_Tree_Classifier")
-    prediction.evaluate.direction_error_metrics(y_train, rf_y_prediction, "Random_Forest_Classifier")
-    prediction.evaluate.direction_error_metrics(y_train, nn_y_prediction, "NN_Classifier")
+    # Dummy_Classifier
+    prediction.evaluate.direction_error_metrics(dummy_sets[0], dummy_sets[2], "Dummy_Classifier")
+    prediction.evaluate.direction_error_metrics(dummy_sets[1], dummy_sets[3], "Dummy_Classifier")
+    # KNeighbors_Classifier
+    prediction.evaluate.direction_error_metrics(kn_sets[0], kn_sets[2], "KNeighbors_Classifier")
+    prediction.evaluate.direction_error_metrics(kn_sets[1], kn_sets[3], "KNeighbors_Classifier")
+    # Decision_Tree_Classifier
+    prediction.evaluate.direction_error_metrics(dt_sets[0], dt_sets[2], "Decision_Tree_Classifier")
+    prediction.evaluate.direction_error_metrics(dt_sets[1], dt_sets[3], "Decision_Tree_Classifier")
+    # Random_Forest_Classifier
+    prediction.evaluate.direction_error_metrics(rf_sets[0], rf_sets[2], "Random_Forest_Classifier")
+    prediction.evaluate.direction_error_metrics(rf_sets[1], rf_sets[3], "Random_Forest_Classifier")
+    # Neural Network Classifier
+    prediction.evaluate.direction_error_metrics(nn_sets[0], nn_sets[2], "NN_Classifier")
+    prediction.evaluate.direction_error_metrics(nn_sets[1], nn_sets[3], "NN_Classifier")
 
 
 def testing_direction_subsets():
