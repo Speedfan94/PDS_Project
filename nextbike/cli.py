@@ -164,6 +164,10 @@ def training_duration_models():
     io.output.save_csv(df_components, p_filename="Components_Duration.csv")
     # Train
     # The sets are in order: y_train, y_val, y_prediction_train, y_prediction_val
+    print("Train Dummy Mean Regression...")
+    d_mean_sets = prediction.math_train.train_dummy_regression_mean(X_train_transformed, y_train)
+    print("Train Dummy Median Regression...")
+    dummy_med_sets = prediction.math_train.train_dummy_regression_median(X_train_transformed, y_train)
     print("Train Linear Regression...")
     lin_regr_sets = prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")
@@ -171,6 +175,12 @@ def training_duration_models():
     print("Train NN...")
     nn_regr_sets = prediction.math_train.train_neural_network(X_train_transformed, y_train)
     # Evaluate Training
+    # Dummy Regression Mean
+    prediction.evaluate.duration_error_metrics(d_mean_sets[0], d_mean_sets[2], "Dummy_Mean_Regression_Training")
+    prediction.evaluate.duration_error_metrics(d_mean_sets[1], d_mean_sets[3], "Dummy_Mean_Regression_Validation")
+    # Dummy Regression Median
+    prediction.evaluate.duration_error_metrics(dummy_med_sets[0], dummy_med_sets[2], "Dummy_Med_Regression_Training")
+    prediction.evaluate.duration_error_metrics(dummy_med_sets[1], dummy_med_sets[3], "Dummy_Med_Regression_Validation")
     # Linear Regression
     prediction.evaluate.duration_error_metrics(lin_regr_sets[0], lin_regr_sets[2], "Linear_Regression_Training")
     prediction.evaluate.duration_error_metrics(lin_regr_sets[1], lin_regr_sets[3], "Linear_Regression_Validation")
