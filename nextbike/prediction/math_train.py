@@ -28,7 +28,7 @@ def train_linear_regression(p_X_train_scaled, p_y_train):
     return y_prediction
 
 
-def train_neural_network(p_X_train_scaled, p_y_train):
+def train_neural_network(p_X_train_scaled, p_y_train, p_testing=False):
     """Train Neural Network Model
 
     Train and save a Neural Network model.
@@ -43,6 +43,7 @@ def train_neural_network(p_X_train_scaled, p_y_train):
     Args:
         p_X_train_scaled (DataFrame): Scaled X input of train set (matrix)
         p_y_train (Series): y output to train on (vector)
+        p_testing (Boolean): states if testing should be done
     Returns:
         no return
     """
@@ -65,7 +66,10 @@ def train_neural_network(p_X_train_scaled, p_y_train):
     epochs = 20
     # batch_size = 200  # right now not used but should be tried
     history = neural_network.fit(p_X_train_scaled, p_y_train.values, epochs=epochs, validation_split=0.2)
-    neural_network.save(io.get_path("Neural_Network_Regression_Model", "output", "models"))
+    if p_testing:
+        neural_network.save(io.get_path("TEST_Neural_Network_Regression_Model", "output", "models"))
+    else:
+        neural_network.save(io.get_path("Neural_Network_Regression_Model", "output", "models"))
     y_prediction = neural_network.predict(p_X_train_scaled)
     visualization.math_predictive.plot_train_loss(history)
     return y_prediction
