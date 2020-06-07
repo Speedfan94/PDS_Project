@@ -23,24 +23,29 @@ def predict_by_regression(p_X_test):
     return y_predictions
 
 
-def predict_by_nn(p_X_test):
+def predict_by_nn(p_X_test, p_testing=False):
     """Predicts the duration of a trip by trained neural network model.
 
     This method uses the trained scaler, pca and Neural Network model to predict the given test set duration.
     Then a method to evaluate the performance is called.
     Args:
         p_X_test (DataFrame): Dataframe of input features for prediction (matrix)
+        p_testing (Boolean): States if Testing is done
     Returns:
         no Return
     """
     # Read pickle objects
-    scaler = io.read_object("Standard_Scaler_Duration.pkl")
-    pca = io.read_object("PCA_Duration.pkl")
-    model = load_model(io.get_path("Neural_Network_Regression_Model", "output", "models"))
-    # Use trained pickle objects
-    X_test_scaled = scaler.transform(p_X_test)
-    X_test_transformed = pca.transform(X_test_scaled)
-    y_predictions = model.predict(X_test_transformed)
+    if p_testing:
+        model = load_model(io.get_path("TEST_Neural_Network_Regression_Model", "output", "models"))
+        y_predictions = model.predict(p_X_test)
+    else:
+        scaler = io.read_object("Standard_Scaler_Duration.pkl")
+        pca = io.read_object("PCA_Duration.pkl")
+        model = load_model(io.get_path("Neural_Network_Regression_Model", "output", "models"))
+        # Use trained pickle objects
+        X_test_scaled = scaler.transform(p_X_test)
+        X_test_transformed = pca.transform(X_test_scaled)
+        y_predictions = model.predict(X_test_transformed)
     return y_predictions
 
 
