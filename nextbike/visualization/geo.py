@@ -101,15 +101,10 @@ def visualize_postalcode(p_df):
     Returns:
         no return
     """
-    # Visualizes the number of started trip for each postal code code region for the month with the most trips
-
-    # find the month with the most trips:
-    p_df["Month"] = p_df["Start_Time"].dt.month
-
     # finding the month with most trips in the month
-    month_most = p_df.groupby(by="Month").count().idxmax()["Start_Time"]
+    month_most = p_df.groupby(by="Month_start").count().idxmax()["Start_Time"]
 
-    df_biggest_month = p_df[p_df["Month"] == month_most]
+    df_biggest_month = p_df[p_df["Month_start"] == month_most]
     # prints the number of trips per postal code code
     df_map = df_biggest_month.groupby(
         by="Postalcode_start"
@@ -125,7 +120,7 @@ def visualize_postalcode(p_df):
         geo_data=f'{io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")}',
         name="choropleth",
         data=df_map,
-        columns=["Postalcode", "Month"],
+        columns=["Postalcode", "Month_start"],
         key_on='feature.properties.plz',
         legend_name='Trips per postal code',
         fill_color='YlGnBu',

@@ -12,17 +12,19 @@ from . import testing
 # TODO: Usefull help strings
 @click.command()
 @click.option('--test/--no-test', default=False, help="Testing mode") # TODO: add parameter option for different tests
-@click.option('--clean/--no-clean', default=True, help="Clean the data.")
-@click.option('--viso/--no-viso', default=True, help="Visualize the data.")
-@click.option('--train/--no-train', default=True, help="Train duration models.")
-@click.option('--pred/--no-pred', default=True, help="Predict duration with models.")
-@click.option('--traingeo/--no-traingeo', default=True, help="Train direction models.")
-@click.option('--predgeo/--no-predgeo', default=True, help="Predict direction with models.")
-def main(test, clean, viso, train, pred, traingeo, predgeo):
+@click.option('--clean/--no-clean', default=False, help="Clean the data.")
+@click.option('--viso/--no-viso', default=False, help="Visualize the data.")
+@click.option('--train/--no-train', default=False, help="Train duration models.")
+@click.option('--pred/--no-pred', default=False, help="Predict duration with models.")
+@click.option('--traingeo/--no-traingeo', default=False, help="Train direction models.")
+@click.option('--predgeo/--no-predgeo', default=False, help="Predict direction with models.")
+@click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
+def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
     if test:
         # testing_duration_models()
         # testing_robust_scaler()
-        testing_direction_subsets()
+        # testing_direction_subsets()
+        visualization.main_test()
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time
@@ -38,7 +40,7 @@ def main(test, clean, viso, train, pred, traingeo, predgeo):
             start_time_step = print_time_for_step(start_time_step)
         if train:
             print("START TRAIN")
-            features_duration()
+            features_duration(weather)
             training_duration_models()
             start_time_step = print_time_for_step(start_time_step)
         if pred:
@@ -47,7 +49,7 @@ def main(test, clean, viso, train, pred, traingeo, predgeo):
             start_time_step = print_time_for_step(start_time_step)
         if traingeo:
             print("START GEO TRAIN")
-            features_direction()
+            features_direction(weather)
             train_direction_models()
             start_time_step = print_time_for_step(start_time_step)
         if predgeo:
@@ -113,7 +115,7 @@ def visualize():
     visualization.math_descriptive.plot_mean_duration(df)
 
 
-def features_duration():
+def features_duration(weather):
     """Create and prepare the features before prediction part.
 
     Method which runs the sequential flow of the feature preparation and creation part.
@@ -132,7 +134,7 @@ def features_duration():
     print("Create Dummie Variables...")
     df_features = prediction.prepare_feature.create_dummies(df_only_start)
     print("Do Feature Engineering...")
-    df_features_2 = prediction.prepare_feature.create_new_features(df_features)
+    df_features_2 = prediction.prepare_feature.create_new_features(df_features, weather)
     print("Visualize correlations...")
     df_features_2 = prediction.prepare_feature.drop_features(df_features_2)
     df_features_2 = df_features_2.drop(["Place_start", "Start_Time"], axis=1)
@@ -238,7 +240,7 @@ def predict_duration_models():
     prediction.evaluate.duration_error_metrics(y_test, nn_y_prediction, "NN_Regression", "Testing")
 
 
-def features_direction():
+def features_direction(weather):
     # TODO:Docstring
     df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
     print("Drop End Information")
@@ -246,7 +248,7 @@ def features_direction():
     print("Create Dummie Variables...")
     df_features = prediction.prepare_feature.create_dummies(df_features)
     print("Do Feature Engineering...")
-    df_features = prediction.prepare_feature.create_new_features(df_features)
+    df_features = prediction.prepare_feature.create_new_features(df_features, weather)
     print("Drop Unneeded Features...")
     df_features = prediction.prepare_feature.drop_features(df_features)
     df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)

@@ -1,10 +1,12 @@
 from .. import io
 from .. import prediction
 from .. import visualization
+from .. import utils
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+
 
 
 def create_dummies(p_df):
@@ -23,7 +25,7 @@ def create_dummies(p_df):
     return df_dummies
 
 
-def create_new_features(p_X):
+def create_new_features(p_X, weather):
     """Create new features which are usefull for prediction performance.
 
     Example methods for feature engineering could be found here:
@@ -35,8 +37,18 @@ def create_new_features(p_X):
     """
     # TODO Weather Data adding implement here, by triggering
 
-    p_X = prediction.add_weather_data.add_weather(p_X)
-    # p_X["Rain"] = np.square(p_X["Hour_start"])
+    if weather:
+        print("Adding Weather Data...")
+        p_X = prediction.add_weather(p_X)
+        p_X["Rain_squared"] = np.power(p_X["rain(mm)"], 3)
+        p_X["Temp_squared"] = np.power(p_X["Temp(C)"], 3)
+        p_X = p_X.drop(
+            ["rain(mm)",
+             "Temp(C)"
+             ],
+            axis=1
+        )
+
     p_X["Hour_squared"] = np.square(p_X["Hour_start"])
     p_X["Day_squared"] = np.square(p_X["Day_start"])
     p_X["Month_squared"] = np.square(p_X["Month_start"])
@@ -168,3 +180,23 @@ def do_pca(p_X_scaled_train, p_number_components, p_filename):
     X_train_scaled_pca = pca.transform(p_X_scaled_train)
     visualization.math_descriptive.plot_pca_components(pca_explained_variance, p_filename)
     return X_train_scaled_pca
+
+
+def add_weather(df_trips):
+    """Adds the weather data depending on the date and time to the trips DataFrame
+
+        Args:
+            df_trips (DataFrame): DataFrame from cli.py which contains already the cleaned trips
+        Returns:
+            df_trips (DataFrame): DataFrame, which contains the trips with the weather data
+        """
+    df_weather = io.input.read_csv(p_filename="weather2019.csv", p_io_folder="input")
+    utils.cast_datetime(df_weather, ["Date"])
+    df_trips["Start_Time"] = pd.to_datetime(df_trips["Start_Time"], format="%Y-%m-%d %H:%M:%S")
+    df_trips["Date"] = (df_trips["Start_Time"].dt.date.astype(str) + " " + df_trips["Start_Time"].dt.hour.astype(
+        str) + ":00:00")
+    df_trips["Date"] = pd.to_datetime(df_trips["Date"], format="%Y-%m-%d %H:%M:%S")
+    df_trips = pd.merge(df_trips, df_weather, how="left", on=["Date"])
+    df_trips = df_trips.drop("Date", axis=1)
+
+    return df_trips
