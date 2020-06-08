@@ -2,6 +2,9 @@ import folium
 from folium import plugins
 from .. import io
 import datetime as dt
+import folium.plugins as Fplugins
+
+uni = (49.452210, 11.079575)
 
 
 def visualize_stations_moment(p_df):
@@ -34,6 +37,15 @@ def visualize_stations_moment(p_df):
             fill_color="red",
             color="red"
         ).add_to(m)
+    folium.Marker(
+        location=uni,
+        popup=folium.Popup(
+            "<b>University:</b><br>" +
+            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+        ),
+        tooltip="University",
+        icon=folium.Icon(color='black'),
+    ).add_to(m)
     m.save(
         io.get_path(
             p_filename="Moment.html",
@@ -81,6 +93,16 @@ def visualize_heatmap(p_df):
 
     # plot heatmap
     m.add_child(plugins.HeatMap(stationArr, radius=20))
+
+    folium.Marker(
+        location=uni,
+        popup=folium.Popup(
+            "<b>University:</b><br>" +
+            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+        ),
+        tooltip="University",
+        icon=folium.Icon(color='black'),
+    ).add_to(m)
 
     m.save(
         io.get_path(
@@ -142,9 +164,150 @@ def visualize_postalcode(p_df):
 
     folium.LayerControl().add_to(m)
 
+    folium.Marker(
+        location=uni,
+        popup=folium.Popup(
+            "<b>University:</b><br>" +
+            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+        ),
+        tooltip="University",
+        icon=folium.Icon(color='black'),
+    ).add_to(m)
+
     m.save(
         io.get_path(
             p_filename="Month_Nuremberg.html",
+            p_io_folder="output",
+            p_sub_folder1="data_plots",
+            p_sub_folder2="geo"
+        )
+    )
+
+
+def visualize_trips_per_month(p_df):
+    """TODO:Docstring
+
+    Args:
+        p_df (DataFrame): DataFrame with trip data from nuremberg
+    Returns:
+        no return
+    """
+    # finding the month with most trips in the month
+    # month_most = p_df.groupby(by="Month_start").count().idxmax()["Start_Time"]
+    # Month_start,Day_start
+
+    # df_biggest_month = (p_df[p_df["Month_start"] == 12 & p_df["Day_start"] == 24])
+    # df_biggest_month = (p_df[p_df["Month_start"] == 12) & (p_df["Day_start"] == 24)
+    df_biggest_month = p_df[(p_df["Month_start"] == 12) & (p_df["Day_start"] == 24)]
+    # prints the number of trips per postal code code
+    # df_map = df_biggest_month.groupby(
+    #     by="Postalcode_start"
+    # ).count().sort_values(
+    #     by="Start_Time", ascending=True
+    # ).reset_index()
+
+    m = folium.Map([49.452030, 11.076750], zoom_start=13)
+
+    # df_map["Postalcode"] = df_map["Postalcode_start"].astype(str)
+
+    # folium.Choropleth(
+    #     geo_data=f'{io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")}',
+    #     name="choropleth",
+    #     # data=df_map,
+    #     # columns=["Postalcode", "Month_start"],
+    #     key_on='feature.properties.plz',
+    #     legend_name='Trips per postal code',
+    #     fill_color='YlGnBu',
+    #     fill_opacity=0.7,
+    #     line_opacity=0.5,
+    # ).add_to(m)
+
+    df_stations = p_df.drop_duplicates("Start_Place_id", keep="first")
+
+    for index, row in df_biggest_month.iterrows():
+        folium.PolyLine(locations=[(row["Latitude_start"], row["Longitude_start"]),
+                                   (row["Latitude_end"], row["Longitude_end"])],
+                        line_opacity=0.5, weight=1.5).add_to(m)
+
+    for index, row in df_biggest_month.iterrows():
+        folium.Marker(
+            location=[row["Latitude_start"], row["Longitude_start"]],
+            tooltip=str(row["Place_start"]),
+            popup=folium.Popup(
+                "<b>Station Name:</b><br>" +
+                str(row["Place_end"]) +
+                "<br><b>Bikes at Station: </b>" +
+                str(row["p_bikes_end"]), max_width=400
+            ),
+            icon=folium.Icon(color='green'),
+        ).add_to(m)
+
+    df_stations = p_df.drop_duplicates("End_Place_id", keep="first")
+
+    for index, row in df_biggest_month.iterrows():
+        folium.Marker(
+            location=(row["Latitude_end"], row["Longitude_end"]),
+            tooltip=str(row["Place_end"]),
+            popup=folium.Popup(
+                "<b>Station Name:</b><br>" +
+                str(row["Place_end"]) +
+                "<br><b>Bikes at Station: </b>" +
+                str(row["p_bikes_end"]), max_width=400
+            ),
+            icon=folium.Icon(color='red'),
+        ).add_to(m)
+
+
+    # for i in range(len(df_stations)):
+    #     folium.Marker(
+    #         location=[df_stations["Latitude_end"].iloc[i], df_stations["Longitude_end"].iloc[i]],
+    #         radius=5,
+    #         tooltip=str(df_stations["Place_end"].iloc[i]),
+    #         popup=folium.Popup(
+    #             "<b>Station Name:</b><br>" +
+    #             str(df_stations["Place_end"].iloc[i]) +
+    #             "<br><b>Bikes at Station: </b>" +
+    #             str(df_stations["p_bikes_end"].iloc[i]), max_width=400
+    #         ),
+    #         fill_color="red",
+    #         color="red"
+    #     ).add_to(m)
+
+    folium.LayerControl().add_to(m)
+
+    folium.Marker(
+        location=uni,
+        popup=folium.Popup(
+            "<b>University:</b><br>" +
+            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+        ),
+        tooltip="University",
+        icon=folium.Icon(color='black'),
+    ).add_to(m)
+
+    m.save(
+        io.get_path(
+            p_filename="Month_Nuremberg_Trips.html",
+            p_io_folder="output",
+            p_sub_folder1="data_plots",
+            p_sub_folder2="geo"
+        )
+    )
+
+def HeatMap(df):
+    m = folium.Map([49.452030, 11.076750], zoom_start=13)
+    df.sort_values(by="Start_Time")
+    start = df[["Latitude_start", "Longitude_start"]]
+
+    plugins.HeatMapWithTime(
+        data=start,
+        radius=5,
+
+    ).add_to(m)
+
+    m.save(
+        io.get_path(
+            p_filename="HeatMapByTime_Trips.html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"

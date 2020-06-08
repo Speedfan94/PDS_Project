@@ -16,7 +16,7 @@ from . import testing
 @click.option('--viso/--no-viso', default=False, help="Visualize the data.")
 @click.option('--train/--no-train', default=False, help="Train duration models.")
 @click.option('--pred/--no-pred', default=False, help="Predict duration with models.")
-@click.option('--traingeo/--no-traingeo', default=True, help="Train direction models.")
+@click.option('--traingeo/--no-traingeo', default=False, help="Train direction models.")
 @click.option('--predgeo/--no-predgeo', default=False, help="Predict direction with models.")
 @click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
 def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
@@ -24,7 +24,12 @@ def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
         # testing_duration_models()
         # testing_robust_scaler()
         # testing_direction_subsets()
-        visualization.main_test()
+        # visualization.main_test()
+        df = io.read_csv(p_filename="Trips.csv", p_io_folder="output")
+        utils.cast_datetime(df, ["Start_Time", "End_Time"])
+        # visualization.visualize_trips_per_month(df)
+        visualization.visualize_stations_moment(df)
+        visualization.HeatMap(df)
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time

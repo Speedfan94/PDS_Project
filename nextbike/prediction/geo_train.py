@@ -32,7 +32,7 @@ def train_classification_k_neighbors(p_X_train_scaled, p_y_train, neighbor, weig
 
 def train_classification_decision_tree(p_X_train_scaled, p_y_train, criterion, splitter, max_depth, class_weight):
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
-    dt = DecisionTreeClassifier(max_depth=10)
+    dt = DecisionTreeClassifier(max_depth=max_depth, criterion=criterion, splitter=splitter, class_weight=class_weight)
     dt.fit(X_train, y_train)
     y_prediction_train = dt.predict(X_train)
     y_prediction_val = dt.predict(X_val)

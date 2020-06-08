@@ -84,15 +84,11 @@ def train_neural_network(p_X_train_scaled, p_y_train, p_testing=False):
         [layers.Dense(36, activation="relu", input_shape=[p_X_train_scaled.shape[1]]),
          # layers.Dropout(0.2),
          layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
          layers.Dense(1)])
-    optimizer = keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)
+    optimizer = keras.optimizers.RMSprop(learning_rate=0.0001, rho=0.9)
     neural_network.compile(loss="mse",
                            optimizer=optimizer,
                            metrics=["mae", "mse"])
