@@ -33,10 +33,11 @@ def predict_by_regression(p_X_test):
 
     This method uses the trained scaler, pca and linear regression model to predict the given test set duration.
     Then a method to evaluate the performance is called.
+
     Args:
         p_X_test (DataFrame): Dataframe of input features for prediction (matrix)
     Returns:
-        no Return
+        No return
     """
     # Read pickle objects
     scaler = io.read_object("Standard_Scaler_Duration.pkl")
@@ -54,11 +55,12 @@ def predict_by_nn(p_X_test, p_testing=False):
 
     This method uses the trained scaler, pca and Neural Network model to predict the given test set duration.
     Then a method to evaluate the performance is called.
+
     Args:
         p_X_test (DataFrame): Dataframe of input features for prediction (matrix)
         p_testing (Boolean): States if Testing is done
     Returns:
-        no Return
+        No return
     """
     # Read pickle objects
     if p_testing:
@@ -80,10 +82,11 @@ def predict_by_svm(p_X_test):
 
     This method uses the trained scaler, pca and Support Vector Machine model to predict the given test set duration.
     Then a method to evaluate the performance is called.
+
     Args:
         p_X_test (DataFrame): Dataframe of input features for prediction (matrix)
     Returns:
-        no Return
+        No return
     """
     # Read pickle objects
     scaler = io.read_object("Standard_Scaler_Duration.pkl")

@@ -10,13 +10,14 @@ def duration_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Trai
         - Root Mean Squared Error
         - Mean Absolute Error
         - R^2
+
     Args:
         p_y_true (Series): True values of duration (vector)
         p_y_predictions (Series): Predicted values for train set of duration (vector)
         p_filename (str): Name of the used model
         p_status (str): string which states if metrics are for training or testing
     Returns:
-        no return
+        No return
     """
     print(p_filename, p_status, "loss - Error Metrics:")
     print("RMSE:", np.sqrt(metrics.mean_squared_error(p_y_true, p_y_predictions)), end=" ")

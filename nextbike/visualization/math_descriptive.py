@@ -19,7 +19,7 @@ def calculate_aggregate_statistics(p_df_trips):
     Args:
         p_df_trips (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
     # get first and last date in data to print out period of time
     first_date, last_date = p_df_trips["Start_Time"].agg(["min", "max"]).dt.strftime("%d.%m.%y")
@@ -73,7 +73,7 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
         p_first_date: first date of dataset
         p_last_date: last date of dataset
     Returns:
-        no return
+        No return
     """
     # set general plotting params
     counts_total = p_total_stats["count"]
@@ -208,7 +208,7 @@ def plot_distribution(p_df):
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
     # data
     duration = p_df["Duration"]
@@ -240,7 +240,7 @@ def plot_distribution_monthly(p_df):
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
     # data
     # important: take a copy of p_df columns!
@@ -297,7 +297,7 @@ def corr_analysis(p_df):
     Args:
         p_df (DataFrame): DataFrame of trips in nuremberg
     Returns:
-        no return
+        No return
     """
     corrs = p_df.corr()
     # Generate a mask for the upper triangle
@@ -338,7 +338,7 @@ def plot_mean_duration(p_df):
     Args:
         p_df (DataFrame): Dataframe of trips in nuremberg
     Returns:
-        no return
+        No return
     """
     # calculate mean duration of trips for each day of year
     df_day_mean = p_df.groupby(by="Day_of_year_start").mean()[["Duration", "Season"]]
@@ -385,6 +385,7 @@ def plot_mean_duration(p_df):
 
 
 def plot_pca_components(p_pca_explained_var, p_filename):
+    # TODO: docstring
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.set_xlabel("Component")
     ax.set_ylabel("Explained Variance by Component")

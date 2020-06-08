@@ -7,12 +7,13 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
     """Plot the true duration of trips against the predicted duration.
 
     Plot model predictions against the real duration values of trips.
+
     Args:
         p_y_true (Series): Series of true durations of trips
         p_y_predict (Series): Series of predicted durations of trips by model
         p_model_name (str): String of models name
     Returns:
-        no return
+        No return
     """
     # true vs predicted value
     fig_scatter, ax_scatter = plt.subplots(figsize=(10, 5))
@@ -67,7 +68,7 @@ def plot_train_loss(p_history):
     Args:
         p_history (Object): History of loss during training of neural network
     Returns:
-        no return
+        No return
     """
     # Plotting the training and validation loss
     loss = p_history.history["loss"]
