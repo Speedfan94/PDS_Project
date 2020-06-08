@@ -13,7 +13,7 @@ FONTSIZE_TITLE = 18
 FONTSIZE_AXIS_LABEL = 16
 
 
-def calculate_aggregate_statistics(p_df_trips):
+def calculate_aggregate_statistics(p_df_trips, mode):
     """Calculates the following aggregate statistics and saves them as png file:
         - aggr_stats_whole_df: mean and standard deviation of the whole df, of all weekdays and of all weekends
         - calls plot_and_save_aggregate_stats method to do the same on months, days and hours
@@ -58,11 +58,12 @@ def calculate_aggregate_statistics(p_df_trips):
             p_total_stats=total_stats,
             p_aggr_time_period=timeperiod,
             p_first_date=first_date,
-            p_last_date=last_date
+            p_last_date=last_date,
+            mode=mode
         )
 
 
-def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_period, p_first_date, p_last_date):
+def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_period, p_first_date, p_last_date, mode):
     """Aggregates on different time slots.
         - Calculates count, mean and standard deviation
         - Plots them as horizontal bar chart
@@ -178,7 +179,7 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
 
     io.save_fig(
         p_fig=fig,
-        p_filename="Aggregate_Statistics_"+p_aggr_time_period+".png",
+        p_filename="Aggregate_Statistics_"+p_aggr_time_period+mode+".png",
         p_sub_folder2="math"
     )
     plt.close()
@@ -204,7 +205,7 @@ def build_pie_legend_label(p_row):
     return str_subset_name+": "+str_count_percentage+"% ("+str_count_absolute+" trips)"
 
 
-def plot_distribution(p_df):
+def plot_distribution(p_df, mode):
     """Plot the distribution of trip duration including quantile lines.
 
     Args:
@@ -231,11 +232,11 @@ def plot_distribution(p_df):
     plt.vlines(quantile_75, 0, 0.07, linestyles="dashed", label="75% Quantile", colors="red")
     plt.vlines(quantile_95, 0, 0.07, linestyles="dashed", label="95% Quantile")
     plt.legend(loc="upper right")
-    io.save_fig(fig, p_filename="DurationMinutes_Distribution.png", p_sub_folder2="math")
+    io.save_fig(fig, p_filename="DurationMinutes_Distribution"+mode+".png", p_sub_folder2="math")
     plt.close(fig)
 
 
-def plot_distribution_monthly(p_df):
+def plot_distribution_monthly(p_df, mode):
     """Plot the distribution of trip lengths per month in violinplots
     and the normal distribution over all months beside.
 
@@ -285,7 +286,7 @@ def plot_distribution_monthly(p_df):
     fig.add_axes(ax2)
     io.save_fig(
         fig,
-        p_filename="distribution_monthly.png",
+        p_filename="distribution_monthly"+mode+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -293,7 +294,7 @@ def plot_distribution_monthly(p_df):
     plt.close(fig)
 
 
-def corr_analysis(p_df):
+def corr_analysis(p_df, p_weather):
     """Plot correlation between features.
 
     Args:
@@ -326,7 +327,7 @@ def corr_analysis(p_df):
     fig.add_axes(ax1)
     io.save_fig(
         fig,
-        p_filename="Correlation.png",
+        p_filename="Correlation"+p_weather+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -334,7 +335,7 @@ def corr_analysis(p_df):
     plt.close(fig)
 
 
-def plot_mean_duration(p_df):
+def plot_mean_duration(p_df, mode):
     """Plot the mean duration for each day of year and visualize the seasons.
 
     Args:
@@ -378,7 +379,7 @@ def plot_mean_duration(p_df):
     ax.legend(loc="upper right")
     io.save_fig(
         fig,
-        p_filename="Mean_Duration_per_Day.png",
+        p_filename="Mean_Duration_per_Day"+mode+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"

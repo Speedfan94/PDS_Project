@@ -34,7 +34,7 @@ def create_new_features(p_X, p_weather):
     """
     # TODO Weather Data adding implement here, by triggering
 
-    if p_weather:
+    if len(p_weather) > 0:
         print("Adding Weather Data...")
         p_X = prediction.add_weather(p_X)
         p_X["Rain_squared"] = np.power(p_X["rain(mm)"], 3)
