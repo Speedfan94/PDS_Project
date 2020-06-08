@@ -9,6 +9,8 @@ from nextbike import io
 # define color constants
 COLOR_BAR_MEAN = "yellowgreen"
 COLOR_BAR_STD = "firebrick"
+FONTSIZE_TITLE = 18
+FONTSIZE_AXIS_LABEL = 16
 
 
 def calculate_aggregate_statistics(p_df_trips):
@@ -101,7 +103,7 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
     # add x value for total bar
     x_total = x_max+2
     x = np.append(all_x_values.values, x_total)
-    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), gridspec_kw={"width_ratios": [2, 1]})
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), dpi=300, gridspec_kw={"width_ratios": [2, 1]})
     # subplot 1
     ax1.bar(
         x-(width/2),
@@ -137,9 +139,9 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
         ax1.set_xticks(x)
         ax1.set_xticklabels(subset_labels)
 
-    ax1.set_xlabel(p_aggr_time_period)
-    ax1.set_ylabel("Duration [min]")
-    ax1.set_title("Mean and Std of Trip Duration ("+p_aggr_time_period+")")
+    ax1.set_xlabel(p_aggr_time_period, fontsize=FONTSIZE_AXIS_LABEL)
+    ax1.set_ylabel("Duration [min]", fontsize=FONTSIZE_AXIS_LABEL)
+    ax1.set_title("Mean and Std of Trip Duration ("+p_aggr_time_period+")", fontsize=FONTSIZE_TITLE)
     ax1.legend(loc="upper left")
 
     # subplot 2 (pie chart: weekend vs weekday)
@@ -151,7 +153,7 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
 
     ax2.axis("equal")
     ax2.set_ylim(bottom=-3, top=1.5)
-    ax2.set_title(labels_pie_title)
+    ax2.set_title(labels_pie_title, fontsize=FONTSIZE_TITLE)
     patches_legend = patches
     labels_legend = p_df_aggr_stats["label_pie_legend"]
     pie_legend_title = p_aggr_time_period
@@ -218,10 +220,10 @@ def plot_distribution(p_df):
     quantile_75 = np.quantile(duration, 0.75)
     quantile_95 = np.quantile(duration, 0.95)
     # plotting
-    fig, ax = plt.subplots(figsize=(10, 8))
-    ax.set_xlabel("Duration of Booking [min]")
-    ax.set_ylabel("Percentage")
-    ax.set_title("Distribution of Duration")
+    fig, ax = plt.subplots(figsize=(16, 8), dpi=300)
+    ax.set_xlabel("Duration of Booking [min]", fontsize=FONTSIZE_AXIS_LABEL)
+    ax.set_ylabel("Percentage", fontsize=FONTSIZE_AXIS_LABEL)
+    ax.set_title("Distribution of Duration", fontsize=FONTSIZE_TITLE)
     plt.plot(base[:-1], values, c="blue")
     plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
     plt.vlines(quantile_25, 0, 0.07, linestyles="dashed", label="25% Quantile", colors="green")
@@ -257,7 +259,7 @@ def plot_distribution_monthly(p_df):
 
     # plotting
     sns.set_style(style="whitegrid")
-    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 5), dpi=300, gridspec_kw={"width_ratios": [3, 1]})
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), dpi=300, gridspec_kw={"width_ratios": [3, 1]})
     # bw=1 is the scale factor for kernel for nicer visualization
     # cut=0 sets the lower bound of violins to the real lowest duration
     ax1 = sns.violinplot(
@@ -269,16 +271,16 @@ def plot_distribution_monthly(p_df):
         cut=0,
         palette="muted"
     )
-    ax1.set_xlabel("Month")
-    ax1.set_ylabel("Duration [min]")
-    ax1.set_title("Distributions of Durations per Month")
+    ax1.set_xlabel("Month", fontsize=FONTSIZE_AXIS_LABEL)
+    ax1.set_ylabel("Duration [min]", fontsize=FONTSIZE_AXIS_LABEL)
+    ax1.set_title("Distributions of Durations per Month", fontsize=FONTSIZE_TITLE)
     ax2 = sns.distplot(
         data["Normals"]
     )
     ax2.set_xlim(left=0)
-    ax2.set_xlabel("Normalized Duration [min]")
-    ax2.set_ylabel("Percentage [%]")
-    ax2.set_title("Normal Distribution over all months")
+    ax2.set_xlabel("Normalized Duration [min]", fontsize=FONTSIZE_AXIS_LABEL)
+    ax2.set_ylabel("Percentage [%]", fontsize=FONTSIZE_AXIS_LABEL)
+    ax2.set_title("Normal Distribution over all months", fontsize=FONTSIZE_TITLE)
     fig.add_axes(ax1)
     fig.add_axes(ax2)
     io.save_fig(
@@ -304,7 +306,7 @@ def corr_analysis(p_df):
     mask = np.triu(np.ones_like(corrs, dtype=np.bool))
 
     # Set up the matplotlib figure
-    fig, ax = plt.subplots(figsize=(11, 9))
+    fig, ax = plt.subplots(figsize=(16, 8), dpi=300)
 
     # Generate a custom diverging colormap
     cmap = sns.diverging_palette(240, 10, as_cmap=True)
@@ -364,10 +366,10 @@ def plot_mean_duration(p_df):
     y_4 = df_datapoints[df_datapoints["Season"] == 4]["Duration"]
 
     # Plotting
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.set_xlabel("Day of year")
-    ax.set_ylabel("Mean Duration of Booking [min]")
-    ax.set_title("Mean duration per day")
+    fig, ax = plt.subplots(figsize=(16, 8), dpi=300)
+    ax.set_xlabel("Day of year", fontsize=FONTSIZE_AXIS_LABEL)
+    ax.set_ylabel("Mean Duration of Booking [min]", fontsize=FONTSIZE_AXIS_LABEL)
+    ax.set_title("Mean duration per day", fontsize=FONTSIZE_TITLE)
     ax.bar(x_1, y_1, 1.2, color="cyan", label="Winter")
     ax.bar(x_2, y_2, 1.2, color="red", label="Spring")
     ax.bar(x_3, y_3, 1.2, color="orange", label="Summer")
@@ -386,10 +388,11 @@ def plot_mean_duration(p_df):
 
 def plot_pca_components(p_pca_explained_var, p_filename):
     # TODO: docstring
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.set_xlabel("Component")
-    ax.set_ylabel("Explained Variance by Component")
-    ax.set_title("Explained Variance by Principal Component (sum = "+str(sum(p_pca_explained_var))+")")
+    fig, ax = plt.subplots(figsize=(16, 8), dpi=300)
+    ax.set_xlabel("Component", fontsize=FONTSIZE_AXIS_LABEL)
+    ax.set_ylabel("Explained Variance by Component", fontsize=FONTSIZE_AXIS_LABEL)
+    ax.set_title("Explained Variance by Principal Component (sum = "+str(sum(p_pca_explained_var))+")",
+                 fontsize=FONTSIZE_TITLE)
     ax.bar(np.arange(len(p_pca_explained_var)), p_pca_explained_var)
     io.save_fig(
         fig,
@@ -403,15 +406,15 @@ def plot_pca_components(p_pca_explained_var, p_filename):
 
 # TODO: add docstring
 def plot_features_influence(p_df):
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(16, 8), dpi=300)
     i = 0
     for col in p_df.drop("Duration", axis=1).columns:
         i = i+1
         x = p_df[col]
         y = p_df["Duration"]
-        ax.set_xlabel(col)
-        ax.set_ylabel("Duration")
-        ax.set_title("Duration for each "+col)
+        ax.set_xlabel(col, fontsize=FONTSIZE_AXIS_LABEL)
+        ax.set_ylabel("Duration", fontsize=FONTSIZE_AXIS_LABEL)
+        ax.set_title("Duration for each "+col, fontsize=FONTSIZE_TITLE)
         ax.scatter(x, y, s=1, c="blue")
         ax.xaxis.set_ticks(np.arange(min(x), max(x) + 1, max(x) * 0.2))
 
