@@ -4,7 +4,7 @@ from .. import io
 import datetime as dt
 import folium.plugins as Fplugins
 
-uni = (49.452210, 11.079575)
+uni = (49.458395, 11.085980)
 
 
 def visualize_stations_moment(p_df):
@@ -40,8 +40,7 @@ def visualize_stations_moment(p_df):
     folium.Marker(
         location=uni,
         popup=folium.Popup(
-            "<b>University:</b><br>" +
-            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+            "<b>University:</b><br>", max_width=400
         ),
         tooltip="University",
         icon=folium.Icon(color='black'),
@@ -97,8 +96,7 @@ def visualize_heatmap(p_df):
     folium.Marker(
         location=uni,
         popup=folium.Popup(
-            "<b>University:</b><br>" +
-            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+            "<b>University:</b><br>", max_width=400
         ),
         tooltip="University",
         icon=folium.Icon(color='black'),
@@ -167,8 +165,7 @@ def visualize_postalcode(p_df):
     folium.Marker(
         location=uni,
         popup=folium.Popup(
-            "<b>University:</b><br>" +
-            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+            "<b>University:</b><br>", max_width=400
         ),
         tooltip="University",
         icon=folium.Icon(color='black'),
@@ -278,8 +275,7 @@ def visualize_trips_per_month(p_df):
     folium.Marker(
         location=uni,
         popup=folium.Popup(
-            "<b>University:</b><br>" +
-            str(df_relevant_stations["Place_end"].iloc[i]), max_width=400
+            "<b>University:</b><br>", max_width=400
         ),
         tooltip="University",
         icon=folium.Icon(color='black'),

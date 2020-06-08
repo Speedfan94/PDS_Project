@@ -40,14 +40,14 @@ def create_new_features(p_X, weather):
     if weather:
         print("Adding Weather Data...")
         p_X = prediction.add_weather(p_X)
-        p_X["Rain_squared"] = np.power(p_X["rain(mm)"], 3)
-        p_X["Temp_squared"] = np.power(p_X["Temp(C)"], 3)
-        p_X = p_X.drop(
-            ["rain(mm)",
-             "Temp(C)"
-             ],
-            axis=1
-        )
+        # p_X["Rain_squared"] = np.power(p_X["rain(mm)"], 3) #todo: use plain values for weather
+        # p_X["Temp_squared"] = np.power(p_X["Temp(C)"], 3)
+        # p_X = p_X.drop(
+        #     ["rain(mm)",
+        #      "Temp(C)"
+        #      ],
+        #     axis=1
+        # )
 
     p_X["Hour_squared"] = np.square(p_X["Hour_start"])
     p_X["Day_squared"] = np.square(p_X["Day_start"])

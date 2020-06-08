@@ -14,10 +14,10 @@ from . import testing
 @click.option('--test/--no-test', default=False, help="Testing mode") # TODO: add parameter option for different tests
 @click.option('--clean/--no-clean', default=False, help="Clean the data.")
 @click.option('--viso/--no-viso', default=False, help="Visualize the data.")
-@click.option('--train/--no-train', default=False, help="Train duration models.")
-@click.option('--pred/--no-pred', default=False, help="Predict duration with models.")
-@click.option('--traingeo/--no-traingeo', default=False, help="Train direction models.")
-@click.option('--predgeo/--no-predgeo', default=False, help="Predict direction with models.")
+@click.option('--train/--no-train', default=True, help="Train duration models.")
+@click.option('--pred/--no-pred', default=True, help="Predict duration with models.")
+@click.option('--traingeo/--no-traingeo', default=True, help="Train direction models.")
+@click.option('--predgeo/--no-predgeo', default=True, help="Predict direction with models.")
 @click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
 def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
     if test:
@@ -286,7 +286,7 @@ def train_direction_models():
     # Train
 
     # Dummy_Classifier
-    parameter1 = ["stratified", "most_frequent", "prior", "uniform"]
+    parameter1 = ["most_frequent"] # ["stratified", "most_frequent", "prior", "uniform"]
 
     for i in parameter1:
         print("Train Dummy Classifier...")
@@ -303,11 +303,11 @@ def train_direction_models():
     io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
 
     # KNeighbors_Classifier
-    parameter1 = [1, 10, 20]
-    parameter2 = ["uniform", "distance"]
-    parameter3 = ["auto", "ball_tree", "kd_tree", "brute"]
-    parameter4 = [1, 50, 100]
-    parameter5 = [1, 2]
+    parameter1 = [10]  # [1, 10, 20]
+    parameter2 = ["distance"]  # ["uniform", "distance"]
+    parameter3 = ["auto"]  # ["auto", "ball_tree", "kd_tree", "brute"]
+    parameter4 = [1]  # [1, 50, 100]
+    parameter5 = [1]  # [1, 2]
 
     for a in parameter1:
         for b in parameter2:
@@ -330,10 +330,10 @@ def train_direction_models():
     io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
 
     # Decision_Tree_Classifier
-    parameter1 = ["gini", "entropy"]
-    parameter2 = ["best", "random"]
-    parameter3 = [None, 1, 5, 10, 20]
-    parameter4 = [None, "balanced"]
+    parameter1 = ["gini"]  # ["gini", "entropy"]
+    parameter2 = ["best"]  # ["best", "random"]
+    parameter3 = [None]  # [None, 1, 5, 10, 20]
+    parameter4 = ["balanced"]  # [None, "balanced"]
 
     for a in parameter1:
         for b in parameter2:
@@ -355,10 +355,10 @@ def train_direction_models():
 
     # Random_Forest_Classifier
 
-    parameter1 = [10, 100, 1000]
-    parameter2 = ["gini", "entropy"]
-    parameter3 = [None, 1, 10, 100, 1000]
-    parameter4 = [True, False]
+    parameter1 = [100]  # [10, 100, 1000]
+    parameter2 = ["entropy"]  # ["gini", "entropy"]
+    parameter3 = [100]  # [None, 1, 10, 100, 1000]
+    parameter4 = [False]  # [True, False]
 
     for a in parameter1:
         for b in parameter2:
@@ -378,10 +378,10 @@ def train_direction_models():
     io.save_csv(df_save_results, "Training Results GeoPrediction.csv")
 
     # Neural Networl Classifier
-    parameter1 = [100, 500]
-    parameter2 = ["identity", "logistic", "tanh", "relu"]
-    parameter3 = ["lbfgs", "sgd", "adam"]
-    parameter4 = [50, 200, 1000]
+    parameter1 = [500]  # [100, 500]
+    parameter2 = ["relu"]  # ["identity", "logistic", "tanh", "relu"]
+    parameter3 = ["sgd"]  # ["lbfgs", "sgd", "adam"]
+    parameter4 = [1000]  # [50, 200, 1000]
 
     for a in parameter1:
         for b in parameter2:
