@@ -15,7 +15,7 @@ def save_object(p_object, p_filename):
         no return
     """
     path = os.path.join(get_data_path(), "output", "models", p_filename)
-    pickle.dump(p_object, open(path, 'wb'))
+    pickle.dump(p_object, open(path, "wb"))
     print("Saved:", path)
 
 

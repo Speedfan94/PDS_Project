@@ -65,7 +65,7 @@ def visualize_heatmap(p_df):
 
     # mark each station as a point
     for index, row in stations.iterrows():
-        folium.CircleMarker([row['Latitude_end'], row['Longitude_end']],
+        folium.CircleMarker([row["Latitude_end"], row["Longitude_end"]],
                             radius=3,
                             popup=folium.Popup(
                                 "<b>Station Name:</b><br>" +
@@ -77,7 +77,7 @@ def visualize_heatmap(p_df):
                             ).add_to(m)
 
     # convert to (n, 2) nd-array format for heatmap
-    stationArr = stations[['Latitude_end', 'Longitude_end']].values
+    stationArr = stations[["Latitude_end", "Longitude_end"]].values
 
     # plot heatmap
     m.add_child(plugins.HeatMap(stationArr, radius=20))
@@ -121,9 +121,9 @@ def visualize_postalcode(p_df):
         name="choropleth",
         data=df_map,
         columns=["Postalcode", "Month_start"],
-        key_on='feature.properties.plz',
-        legend_name='Trips per postal code',
-        fill_color='YlGnBu',
+        key_on="feature.properties.plz",
+        legend_name="Trips per postal code",
+        fill_color="YlGnBu",
         fill_opacity=0.7,
         line_opacity=0.5,
     ).add_to(m)
@@ -132,9 +132,9 @@ def visualize_postalcode(p_df):
 
     for index, row in df_stations.iterrows():
         folium.CircleMarker(
-            [row['Latitude_start'], row['Longitude_start']],
+            [row["Latitude_start"], row["Longitude_start"]],
             radius=3,
-            popup=[row['Place_start'], row["Latitude_start"]],
+            popup=[row["Place_start"], row["Latitude_start"]],
             fill_color="#3db7e4",
             color="#3db7e4",
 

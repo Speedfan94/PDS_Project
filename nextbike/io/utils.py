@@ -10,8 +10,8 @@ def get_data_path():
     Returns:
         path (os.path/nextbike/data): Path for given parameters
     """
-    if os.path.isdir(os.path.join(os.getcwd(), 'data')):
-        return os.path.join(os.getcwd(), 'data')
+    if os.path.isdir(os.path.join(os.getcwd(), "data")):
+        return os.path.join(os.getcwd(), "data")
     elif os.path.isdir(os.path.join(os.getcwd(), "../data")):
         return os.path.join(os.getcwd(), "../data")
     elif os.path.isdir(os.path.join(os.getcwd(), "nextbike/data")):

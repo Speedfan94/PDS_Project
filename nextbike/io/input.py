@@ -21,9 +21,15 @@ def read_csv(p_filename, p_io_folder, p_sub_folder=""):
         # index_col=0 throws numpy warning,
         # so we set it manually after reading in the file
         df = pd.read_csv(path)
-        df_without_unnamed_column = df.set_index(df.columns[0])
         print("Read:", path)
-        return df_without_unnamed_column
+        if "Unnamed: 0" in df.columns:
+            df = df.rename({"Unnamed: 0": "index"}, axis=1)
+        if "index" in df.columns:
+            df = df.set_index("index")
+        else:
+            df = df.set_index(df.columns[0])
+
+        return df
     except FileNotFoundError:
         print("Data file not found. Path was " + path)
 
