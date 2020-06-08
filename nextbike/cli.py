@@ -4,7 +4,7 @@ from nextbike import visualization, cli_code, utils
 
 
 # TODO: OPTIONAL: add parameter option for different tests
-@click.group()
+@click.group(invoke_without_command=True)
 @click.option("--test/--no-test", default=False,
               help="Activate to test some alternative algorithms and their performance. Default: False")
 @click.option("--clean/--no-clean", default=False,

@@ -38,7 +38,7 @@ def visualize():
     Returns:
         No return
     """
-    df = io.read_csv(p_filename="Trips.csv", p_io_folder="output")
+    df = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
     utils.cast_datetime(df, ["Start_Time", "End_Time"])
     print("Visualize Aggregate Statistics...")
     visualization.math_descriptive.calculate_aggregate_statistics(df)
