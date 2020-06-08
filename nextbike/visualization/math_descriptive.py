@@ -18,21 +18,21 @@ def calculate_aggregate_statistics(p_df_trips):
     """
 
     # Split into weekends df and weekdays df
-    df_weekends = p_df_trips[p_df_trips['Weekend']]
-    df_weekdays = p_df_trips[p_df_trips['Weekend'] == False]
+    df_weekends = p_df_trips[p_df_trips["Weekend"]]
+    df_weekdays = p_df_trips[p_df_trips["Weekend"] == False]
 
     aggr_stats = {
-        "mean_all": p_df_trips['Duration'].mean(),
-        "std_all": p_df_trips['Duration'].std(),
-        "mean_weekends": df_weekends['Duration'].mean(),
-        "std_weekends": df_weekends['Duration'].std(),
-        "mean_weekdays": df_weekdays['Duration'].mean(),
-        "std_weekdays": df_weekdays['Duration'].std()
+        "mean_all": p_df_trips["Duration"].mean(),
+        "std_all": p_df_trips["Duration"].std(),
+        "mean_weekends": df_weekends["Duration"].mean(),
+        "std_weekends": df_weekends["Duration"].std(),
+        "mean_weekdays": df_weekdays["Duration"].mean(),
+        "std_weekdays": df_weekdays["Duration"].std()
     }
 
     df_aggr_stats = pd.DataFrame.from_dict(aggr_stats, orient="index")
-    fig = df_aggr_stats.plot(kind='barh', figsize=(16, 16), fontsize=20).get_figure()
-    io.save_fig(p_fig=fig, p_filename='aggr_stats_whole_df.png', p_sub_folder2="math")
+    fig = df_aggr_stats.plot(kind="barh", figsize=(16, 16), fontsize=20).get_figure()
+    io.save_fig(p_fig=fig, p_filename="aggr_stats_whole_df.png", p_sub_folder2="math")
     plot_and_save_aggregate_stats(p_df_trips)
 
 
@@ -55,7 +55,7 @@ def plot_and_save_aggregate_stats(p_df_trips):
         # plotting
         # subplot 1
         width = 0.35
-        fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), gridspec_kw={'width_ratios': [2, 1]})
+        fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), gridspec_kw={"width_ratios": [2, 1]})
         ax1.bar(x.subtract(width/2), height=sr_means.values, width=width, color="green", label="Mean")
         ax1.bar(x.add(width/2), height=sr_stds.values, width=width, color="red", label="Standard Deviation")
         ax1.set_xticks(x)
@@ -70,7 +70,7 @@ def plot_and_save_aggregate_stats(p_df_trips):
         ax2.set_xlabel(time_to_aggregate_on)
         ax2.set_ylabel("Number of Trips")
         ax2.set_title("Count of Trips per "+time_to_aggregate_on)
-        io.save_fig(p_fig=fig, p_filename='Aggregate_Statistics_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
+        io.save_fig(p_fig=fig, p_filename="Aggregate_Statistics_" + time_to_aggregate_on + ".png", p_sub_folder2="math")
         plt.close()
 
 
@@ -83,7 +83,7 @@ def plot_distribution(p_df):
         no return
     """
     # data
-    duration = p_df['Duration']
+    duration = p_df["Duration"]
     values, base = np.histogram(duration, bins=int(duration.max()), range=(0, int(duration.max())), weights=np.ones(len(duration)) / len(duration))
     quantile_25 = np.quantile(duration, 0.25)
     quantile_50 = np.quantile(duration, 0.5)
@@ -91,16 +91,16 @@ def plot_distribution(p_df):
     quantile_95 = np.quantile(duration, 0.95)
     # plotting
     fig, ax = plt.subplots(figsize=(10, 8))
-    ax.set_xlabel('Duration of Booking [min]')
-    ax.set_ylabel('Percentage')
-    ax.set_title('Distribution of Duration')
-    plt.plot(base[:-1], values, c='blue')
+    ax.set_xlabel("Duration of Booking [min]")
+    ax.set_ylabel("Percentage")
+    ax.set_title("Distribution of Duration")
+    plt.plot(base[:-1], values, c="blue")
     plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
-    plt.vlines(quantile_25, 0, 0.07, linestyles='dashed', label='25% Quantile', colors='green')
-    plt.vlines(quantile_50, 0, 0.07, linestyles='dashed', label='50% Quantile', colors='yellow')
-    plt.vlines(quantile_75, 0, 0.07, linestyles='dashed', label='75% Quantile', colors='red')
-    plt.vlines(quantile_95, 0, 0.07, linestyles='dashed', label='95% Quantile')
-    plt.legend(loc='upper right')
+    plt.vlines(quantile_25, 0, 0.07, linestyles="dashed", label="25% Quantile", colors="green")
+    plt.vlines(quantile_50, 0, 0.07, linestyles="dashed", label="50% Quantile", colors="yellow")
+    plt.vlines(quantile_75, 0, 0.07, linestyles="dashed", label="75% Quantile", colors="red")
+    plt.vlines(quantile_95, 0, 0.07, linestyles="dashed", label="95% Quantile")
+    plt.legend(loc="upper right")
     io.save_fig(fig, p_filename="DurationMinutes_Distribution.png", p_sub_folder2="math")
     plt.close(fig)
 
@@ -129,7 +129,7 @@ def plot_distribution_monthly(p_df):
 
     # plotting
     sns.set_style(style="whitegrid")
-    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 5), dpi=300, gridspec_kw={'width_ratios': [3, 1]})
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 5), dpi=300, gridspec_kw={"width_ratios": [3, 1]})
     # bw=1 is the scale factor for kernel for nicer visualization
     # cut=0 sets the lower bound of violins to the real lowest duration
     ax1 = sns.violinplot(
@@ -141,15 +141,15 @@ def plot_distribution_monthly(p_df):
         cut=0,
         palette="muted"
     )
-    ax1.set_xlabel('Month')
-    ax1.set_ylabel('Duration [min]')
-    ax1.set_title('Distributions of Durations per Month')
+    ax1.set_xlabel("Month")
+    ax1.set_ylabel("Duration [min]")
+    ax1.set_title("Distributions of Durations per Month")
     ax2 = sns.distplot(
         data["Normals"]
     )
     ax2.set_xlim(left=0)
-    ax2.set_xlabel('Normalized Duration [min]')
-    ax2.set_ylabel('Percentage [%]')
+    ax2.set_xlabel("Normalized Duration [min]")
+    ax2.set_ylabel("Percentage [%]")
     ax2.set_title("Normal Distribution over all months")
     fig.add_axes(ax1)
     fig.add_axes(ax2)
@@ -237,15 +237,15 @@ def plot_mean_duration(p_df):
 
     # Plotting
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.set_xlabel('Day of year')
-    ax.set_ylabel('Mean Duration of Booking [min]')
-    ax.set_title('Mean duration per day')
+    ax.set_xlabel("Day of year")
+    ax.set_ylabel("Mean Duration of Booking [min]")
+    ax.set_title("Mean duration per day")
     ax.bar(x_1, y_1, 1.2, color="cyan", label="Winter")
     ax.bar(x_2, y_2, 1.2, color="red", label="Spring")
     ax.bar(x_3, y_3, 1.2, color="orange", label="Summer")
     ax.bar(x_4, y_4, 1.2, color="green", label="Fall")
     ax.plot(df_datapoints.index, df_datapoints["Duration"], c="black")
-    ax.legend(loc='upper right')
+    ax.legend(loc="upper right")
     io.save_fig(
         fig,
         p_filename="Mean_Duration_per_Day.png",
