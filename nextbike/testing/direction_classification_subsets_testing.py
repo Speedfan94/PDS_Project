@@ -1,5 +1,4 @@
-from .. import prediction
-from .. import io
+from nextbike import io, prediction
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 

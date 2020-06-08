@@ -1,4 +1,4 @@
-from .. import prediction
+from nextbike import prediction
 from sklearn.preprocessing import RobustScaler
 from sklearn.decomposition import PCA
 
