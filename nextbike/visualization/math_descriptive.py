@@ -1,9 +1,14 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib import cm
 from matplotlib.ticker import PercentFormatter
 import seaborn as sns
 from .. import io
+
+# define color constants
+COLOR_BAR_MEAN = "yellowgreen"
+COLOR_BAR_STD = "firebrick"
 
 
 def calculate_aggregate_statistics(p_df_trips):
@@ -16,62 +21,185 @@ def calculate_aggregate_statistics(p_df_trips):
     Returns:
         no return
     """
+    # get first and last date in data to print out period of time
+    first_date, last_date = p_df_trips["Start_Time"].agg(["min", "max"]).dt.strftime("%d.%m.%y")
 
-    # Split into weekends df and weekdays df
-    df_weekends = p_df_trips[p_df_trips['Weekend']]
-    df_weekdays = p_df_trips[p_df_trips['Weekend'] == False]
+    # plot other subsets
+    timeperiods_to_aggregate_on = [
+        "Weekend",
+        "Day_of_week_start",
+        "Month_start",
+        "Day_start",
+        "Hour_start",
+        "Day_of_year_start",
+        "Season"
+    ]
+    for timeperiod in timeperiods_to_aggregate_on:
+        subsets = p_df_trips[timeperiod].unique()
+        subset_labels = pd.Series(subsets).sort_values().values
+        aggr_stats = {
+            "subset": subset_labels,
+            "mean": p_df_trips.groupby(by=timeperiod)["Duration"].mean(),
+            "std": p_df_trips.groupby(by=timeperiod)["Duration"].std(),
+            "count": p_df_trips.groupby(by=timeperiod)["Duration"].count()
+        }
+        df_aggr_stats = pd.DataFrame.from_dict(aggr_stats)
+        total_stats = {
+            "subset": "total",
+            "mean": p_df_trips["Duration"].mean(),
+            "std": p_df_trips["Duration"].std(),
+            "count": p_df_trips["Duration"].count()
+        }
 
-    aggr_stats = {
-        "mean_all": p_df_trips['Duration'].mean(),
-        "std_all": p_df_trips['Duration'].std(),
-        "mean_weekends": df_weekends['Duration'].mean(),
-        "std_weekends": df_weekends['Duration'].std(),
-        "mean_weekdays": df_weekdays['Duration'].mean(),
-        "std_weekdays": df_weekdays['Duration'].std()
-    }
-
-    df_aggr_stats = pd.DataFrame.from_dict(aggr_stats, orient="index")
-    fig = df_aggr_stats.plot(kind='barh', figsize=(16, 16), fontsize=20).get_figure()
-    io.save_fig(p_fig=fig, p_filename='aggr_stats_whole_df.png', p_sub_folder2="math")
-    plot_and_save_aggregate_stats(p_df_trips)
+        plot_and_save_aggregate_stats(
+            p_df_aggr_stats=df_aggr_stats,
+            p_total_stats=total_stats,
+            p_aggr_time_period=timeperiod,
+            p_first_date=first_date,
+            p_last_date=last_date
+        )
 
 
-def plot_and_save_aggregate_stats(p_df_trips):
+def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_period, p_first_date, p_last_date):
     """Aggregates on different time slots.
         - Calculates count, mean and standard deviation
         - Plots them as horizontal bar chart
         - Saves plot as png file
 
-    Args: p_df_trips (DataFrame): Modified DataFrame with trip data from nuremberg (with additional columns month,
-    day and hour) Returns: no return
+    Args:
+        p_df_aggr_stats (DataFrame): aggregation statistics (mean, std, count) for each subset
+        p_total_stats: statistics of whole dataframe (mean, std, count)
+        p_aggr_time_period: time period to aggregate on (aka column name)
+        p_first_date: first date of dataset
+        p_last_date: last date of dataset
+    Returns:
+        no return
     """
+    # set general plotting params
+    counts_total = p_total_stats["count"]
+    p_df_aggr_stats["count_percentage"] = p_df_aggr_stats.apply(lambda row: row["count"]/counts_total*100, axis=1)
+    p_df_aggr_stats["label_pie_legend"] = p_df_aggr_stats.apply(lambda row: build_pie_legend_label(row), axis=1)
 
-    for time_to_aggregate_on in ["Month_start", "Day_start", "Hour_start"]:
-        # data
-        x = pd.Series(p_df_trips[time_to_aggregate_on].unique()).sort_values()
-        sr_counts = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].count()
-        sr_means = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].mean()
-        sr_stds = p_df_trips.groupby(by=time_to_aggregate_on)["Duration"].std()
-        # plotting
-        # subplot 1
-        width = 0.35
-        fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), gridspec_kw={'width_ratios': [2, 1]})
-        ax1.bar(x.subtract(width/2), height=sr_means.values, width=width, color="green", label="Mean")
-        ax1.bar(x.add(width/2), height=sr_stds.values, width=width, color="red", label="Standard Deviation")
+    # create colors for pie chart
+    colormap = cm.Spectral(np.linspace(0, 1, len(p_df_aggr_stats)))
+    # alternative colormaps
+    # colormap = cm.hsv(np.linspace(0, 1, len(subset_labels)))
+    # colormap = cm.viridis(np.linspace(0, 1, len(subset_labels)))
+    colors_pie_counts = [[0, 0, 0, 0.6]] + [list(color[:3]) + [0.8] for color in colormap]
+
+    labels_pie_title = "Count of Trips\n"\
+                       "Total number of Trips: " + str(counts_total) + "\n"\
+                       "(From " + p_first_date + " to " + p_last_date + ")"
+
+    df_aggr_stats_bar_chart = p_df_aggr_stats.append(p_total_stats, ignore_index=True)
+
+    # plotting
+    width = 0.35
+    # generate x values
+    all_x_values = p_df_aggr_stats["subset"].replace({True: 1, False: 0})
+    x_min, x_max = all_x_values.agg(["min", "max"])
+    # add x value for total bar
+    x_total = x_max+2
+    x = np.append(all_x_values.values, x_total)
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), gridspec_kw={'width_ratios': [2, 1]})
+    # subplot 1
+    ax1.bar(
+        x-(width/2),
+        height=df_aggr_stats_bar_chart["mean"].values,
+        width=width,
+        color=COLOR_BAR_MEAN,
+        label="Mean"
+    )
+    ax1.bar(
+        x+(width/2),
+        height=df_aggr_stats_bar_chart["std"].values,
+        width=width,
+        color=COLOR_BAR_STD,
+        label="Standard Deviation"
+    )
+    # set x ticklabels depending on the number of x ticks
+    subset_labels = df_aggr_stats_bar_chart["subset"]
+    if x_total > 360:
+        # day of year: only show ticklabel every 30 ticks
+        labels = np.arange(x_min, x_max + 1, 30)
+        x_ticks = np.append(labels, x_total)
+        x_ticklabels = np.append(labels, "total")
+        ax1.set_xticks(x_ticks)
+        ax1.set_xticklabels(x_ticklabels, rotation=90)
+    elif x_total > 25:
+        # day of month: only show ticklabel every 5 ticks
+        labels = np.arange(x_min, x_max+1, 5)
+        x_ticks = np.append(labels, x_total)
+        x_ticklabels = np.append(labels, "total")
+        ax1.set(xticks=x_ticks, xticklabels=x_ticklabels)
+    else:
+        # show every ticklabel
         ax1.set_xticks(x)
-        ax1.set_xlabel(time_to_aggregate_on)
-        ax1.set_ylabel("Duration [min]")
-        ax1.set_title("Mean and Std of Trip Duration per "+time_to_aggregate_on)
-        ax1.legend(loc="upper left")
-        # subplot 2
-        ax2.bar(x, height=sr_counts.values, label="Count")
-        if time_to_aggregate_on == "Month_start":
-            ax2.set_xticks(x)
-        ax2.set_xlabel(time_to_aggregate_on)
-        ax2.set_ylabel("Number of Trips")
-        ax2.set_title("Count of Trips per "+time_to_aggregate_on)
-        io.save_fig(p_fig=fig, p_filename='Aggregate_Statistics_' + time_to_aggregate_on + '.png', p_sub_folder2="math")
-        plt.close()
+        ax1.set_xticklabels(subset_labels)
+
+    ax1.set_xlabel(p_aggr_time_period)
+    ax1.set_ylabel("Duration [min]")
+    ax1.set_title("Mean and Std of Trip Duration ("+p_aggr_time_period+")")
+    ax1.legend(loc="upper left")
+
+    # subplot 2 (pie chart: weekend vs weekday)
+    patches, texts = ax2.pie(p_df_aggr_stats["count_percentage"],
+                             colors=colors_pie_counts,
+                             startangle=90,
+                             counterclock=False,
+                             wedgeprops={"linewidth": 0.5, "edgecolor": "dimgrey"})
+
+    ax2.axis("equal")
+    ax2.set_ylim(bottom=-3, top=1.5)
+    ax2.set_title(labels_pie_title)
+    patches_legend = patches
+    labels_legend = p_df_aggr_stats["label_pie_legend"]
+    pie_legend_title = p_aggr_time_period
+    if len(labels_legend) > 32:
+        # too many elements in legends, only show top 30
+        df_aggr_stats = p_df_aggr_stats.reset_index(drop=True)
+        df_top_entries = df_aggr_stats.sort_values(by=["count"], ascending=False).head(30)
+        labels_legend = df_top_entries["label_pie_legend"].values
+        patches_legend = []
+        colors_legend = []
+        pie_legend_title = pie_legend_title+" (Top 30)"
+        for top_entry_index in df_top_entries.index:
+            # TODO: Legend colors are broken after filtering legend items
+            colors_legend.append(colors_pie_counts[top_entry_index])
+            patches_legend.append(patches[top_entry_index])
+    ax2.legend(patches_legend,
+               labels=labels_legend,
+               loc="center",
+               bbox_to_anchor=(0.5, 0.2),
+               ncol=2,
+               title=pie_legend_title)
+
+    io.save_fig(
+        p_fig=fig,
+        p_filename='Aggregate_Statistics_'+p_aggr_time_period+'.png',
+        p_sub_folder2="math"
+    )
+    plt.close()
+
+
+def build_pie_legend_label(p_row):
+    """Builds label for pie legend entry
+    (entry name, count percentage and absolute count)
+
+    Args:
+        p_row: current row (wedge of the pie chart)
+    Returns:
+        label
+    """
+    if type(p_row["subset"]) == bool:
+        str_subset_name = str(p_row["subset"])
+    else:
+        # cut off decimals before turning into string
+        str_subset_name = str(int(p_row["subset"]))
+    # round to two decimals before turning into string
+    str_count_percentage = str(np.round(p_row["count_percentage"], 2))
+    str_count_absolute = str(int(p_row["count"]))
+    return str_subset_name+": "+str_count_percentage+"% ("+str_count_absolute+" trips)"
 
 
 def plot_distribution(p_df):
