@@ -74,6 +74,7 @@ def drop_end_information(p_df, direction_needed=False):
          "Hour_end",
          "Minute_end",
          "Day_of_year_end",
+         "Day_of_week_end",
          "Dist_end"
          ], axis=1)
 
