@@ -1,7 +1,6 @@
 import os
 
 
-# TODO: Add docstring
 def get_data_path():
     """ Return the data-path, depending on the location, from where it is called.
 

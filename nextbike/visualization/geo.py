@@ -5,12 +5,12 @@ import datetime as dt
 
 
 def visualize_stations_moment(p_df):
-    """bikes at fixed stations at given point in time
+    """Plots bikes at fixed stations at given point in time
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
     time_moment = "2019-10-01 08:00:00"
     df_relevant = p_df[p_df["End_Time"] <= time_moment]  # exclude all trips during and after that moment
@@ -45,12 +45,12 @@ def visualize_stations_moment(p_df):
 
 
 def visualize_heatmap(p_df):
-    """heatmap for the 24th of December by searching for nearby trip ends.
+    """Plots heatmap for the 24th of December by searching for nearby trip ends.
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
 
     # Create a heatmap based on an interesting aspect of the data, e.g., end locations of trips shortly
@@ -99,7 +99,7 @@ def visualize_postalcode(p_df):
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
     # finding the month with most trips in the month
     month_most = p_df.groupby(by="Month_start").count().idxmax()["Start_Time"]

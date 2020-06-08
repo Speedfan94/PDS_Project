@@ -5,10 +5,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.dummy import DummyClassifier
-# TODO: Docstrings
 
 
 def train_classification_dummy(p_X_train_scaled, p_y_train):
+    # TODO: Docstrings
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     dc = DummyClassifier(strategy="most_frequent")
     dc.fit(X_train, y_train)
@@ -20,6 +20,7 @@ def train_classification_dummy(p_X_train_scaled, p_y_train):
 
 
 def train_classification_k_neighbors(p_X_train_scaled, p_y_train):
+    # TODO: Docstrings
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     clf = KNeighborsClassifier(n_neighbors=10, weights="distance")
     clf.fit(X_train, y_train)
@@ -31,6 +32,7 @@ def train_classification_k_neighbors(p_X_train_scaled, p_y_train):
 
 
 def train_classification_decision_tree(p_X_train_scaled, p_y_train):
+    # TODO: Docstrings
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     dt = DecisionTreeClassifier(max_depth=10)
     dt.fit(X_train, y_train)
@@ -42,6 +44,7 @@ def train_classification_decision_tree(p_X_train_scaled, p_y_train):
 
 
 def train_classification_random_forest(p_X_train_scaled, p_y_train):
+    # TODO: Docstrings
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     rf = RandomForestClassifier(max_depth=10, n_estimators=15, max_features=3)
     rf.fit(X_train, y_train)
@@ -53,6 +56,7 @@ def train_classification_random_forest(p_X_train_scaled, p_y_train):
 
 
 def train_classification_neural_network(p_X_train_scaled, p_y_train):
+    # TODO: Docstrings
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     nn = MLPClassifier(alpha=0.0001, max_iter=1000)
     nn.fit(X_train, y_train)

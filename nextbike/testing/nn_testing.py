@@ -7,6 +7,7 @@ from nextbike import io
 
 
 def test_neuralnetwork_model(p_components, p_y_train):
+    # TODO: Docstring
     # p_components=p_components.iloc["1", "2"]
     df_metrics = pd.DataFrame(columns=["Components", "RMSE", "MAE", "R^2"])
     X_train_transformed = pd.DataFrame(p_components)
@@ -33,11 +34,12 @@ def train_neural_network(p_components, p_y_train):
     """Train Neural_network Model
 
     Train and save a Linear Regression model. Then evaluate the error metrics by another method.
+
     Args:
         p_components (DataFrame): Scaled X input of train set (matrix)
         p_y_train (Series): y output to train on (vector)
     Returns:
-        no return
+        No return
     """
     neural_network = keras.Sequential(
             [layers.Dense(36, activation="relu", input_shape=[p_components.shape[1]]),

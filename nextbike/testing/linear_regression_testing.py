@@ -5,6 +5,7 @@ from sklearn import metrics
 
 
 def test_regression_model(p_components, p_y_train):
+    # TODO: Docstring
     df_metrics = pd.DataFrame(columns=["Components", "RMSE", "MAE", "R^2"])
     X_train_transformed = pd.DataFrame(p_components)
     for i in np.arange(0, len(X_train_transformed.columns)):
@@ -26,11 +27,12 @@ def train_linear_regression(p_components, p_y_train):
     """Train Linear Regression Model
 
     Train and save a Linear Regression model. Then evaluate the error metrics by another method.
+
     Args:
         p_X_train_scaled (DataFrame): Scaled X input of train set (matrix)
         p_y_train (Series): y output to train on (vector)
     Returns:
-        no return
+        No return
     """
     lin = LinearRegression()
     lin.fit(p_components, p_y_train)

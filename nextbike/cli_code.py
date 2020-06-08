@@ -8,9 +8,9 @@ def cleaning(filename="nuremberg.csv"):
     Method which runs the sequential flow of the data cleaning part.
 
     Args:
-        no Arg
+        No args
     Returns:
-        no Return
+        No return
     """
     df = io.input.read_csv(p_filename=filename, p_io_folder="input")
     utils.cast_datetime(df, ["datetime"])
@@ -34,9 +34,9 @@ def visualize():
     Method which runs the sequential flow of the data visualization part.
 
     Args:
-        no Arg
+        No args
     Returns:
-        no Return
+        No return
     """
     df = io.read_csv(p_filename="Trips.csv", p_io_folder="output")
     utils.cast_datetime(df, ["Start_Time", "End_Time"])
@@ -62,9 +62,9 @@ def features_duration(trips_file="Trips.csv", weather=False):
     Method which runs the sequential flow of the feature preparation and creation part.
 
     Args:
-        no Arg
+        No args
     Returns:
-        no Return
+        No return
     """
     df_trips = io.input.read_csv(p_filename=trips_file, p_io_folder="output")
 
@@ -90,9 +90,9 @@ def training_duration_models():
     Method which runs the sequential flow on training the ML models.
 
     Args:
-        no Arg
+        No args
     Returns:
-        no Return
+        No return
     """
     # Prepare
     df_features = io.input.read_csv(p_filename="Features_Duration.csv", p_io_folder="output")
@@ -155,9 +155,9 @@ def predict_duration_models(trips_file, weather=False):
     Method which runs the sequential flow of the duration prediction by different trained ML models.
 
     Args:
-        no Arg
+        No args
     Returns:
-        no Return
+        No return
     """
     # Prepare
     if trips_file:
@@ -206,9 +206,9 @@ def train_direction_models():
     Method which runs the sequential flow of the direction prediction.
 
     Args:
-        no Arg
+        No args
     Returns:
-        no Return
+        No return
     """
     # TODO: Feature selection etc...
     # Prepare
