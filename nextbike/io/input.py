@@ -18,8 +18,17 @@ def read_csv(p_filename, p_io_folder, p_sub_folder=""):
     """
     path = os.path.join(get_data_path(), p_io_folder, p_sub_folder, p_filename)
     try:
-        df = pd.read_csv(path, index_col=0)
+        # index_col=0 throws numpy warning,
+        # so we set it manually after reading in the file
+        df = pd.read_csv(path)
         print("Read:", path)
+        if "Unnamed: 0" in df.columns:
+            df = df.rename({"Unnamed: 0": "index"}, axis=1)
+        if "index" in df.columns:
+            df = df.set_index("index")
+        else:
+            df = df.set_index(df.columns[0])
+
         return df
     except FileNotFoundError:
         print("Data file not found. Path was " + path)

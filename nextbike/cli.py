@@ -1,192 +1,208 @@
 import click
 from datetime import datetime
-from . import io
-from . import datapreparation
-from . import visualization
-from . import prediction
-from . import utils
+from nextbike import visualization, cli_code, utils
 
 
-@click.command()
-@click.option('--clean/--no-clean', default=True, help="Clean the data.")
-@click.option('--viso/--no-viso', default=True, help="Visualize the data.")
-@click.option('--train/--no-train', default=True, help="Train the model.")
-@click.option('--pred/--no-pred', default=True, help="Predict with model.")
-def main(clean, viso, train, pred):
-    start_time = datetime.now().replace(microsecond=0)
-    start_time_step = start_time
+# TODO: OPTIONAL: add parameter option for different tests
+@click.group()
+@click.option("--test/--no-test", default=False,
+              help="Activate to test some alternative algorithms and their performance. Default: False")
+@click.option("--clean/--no-clean", default=False,
+              help="Clean the data, create trips dataset and save it as Trips.csv. Default: False")
+@click.option("--viso/--no-viso", default=False,
+              help="Do descriptive visualizations and plot aggregate statistics and different moments in time."
+                   "Default: False")
+@click.option("--train/--no-train", default=False,
+              help="Train ML models to later on predict trip duration. Save them as pkl files to use again."
+                   "Default: False")
+@click.option("--pred/--no-pred", default=False,
+              help="Predict the trip duration based on given start data by using the built ML models. Default: False")
+@click.option("--traingeo/--no-traingeo", default=False,
+              help="Train ML models to later on predict direction of trips."
+                   "Save them as pkl files to use again. Default: False")
+@click.option("--predgeo/--no-predgeo", default=False,
+              help="Predict the direction of trips (towards or away from university)"
+                   "based on given start data by using the built ML models. Default: False")
+@click.option("--weather/--no-weather", default=False,
+              help="Decide, whether to include weather data or not."
+                   "Beware that weather data has to be manually added to 'data/input' directory"
+                   "for the given time period by the user before running this. Default: False")
+def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
+    """Initial entry point when running 'nextbike' in console.
+    Runs everytime, nextbike is called. Therefore all steps are set off on default.
+
+    This method should only be used to test specific stages/steps of our pipeline.
+
+    Args:
+        test:       option whether to run test stage (Default: False)
+        clean:      option whether to run clean stage (Default: False)
+        viso:       option whether to run viso stage (Default: False)
+        train:      option whether to run train stage (Default: False)
+        pred:       option whether to run pred stage (Default: False)
+        traingeo:   option whether to run traingeo stage (Default: False)
+        predgeo:    option whether to run predgeo stage (Default: False)
+        weather:    option whether to include weather data (Default: False)
+    Returns:
+        No return
+    """
+    if test:
+        # testing_duration_models()
+        # testing_robust_scaler()
+        # testing_direction_subsets()
+        visualization.main_test()
+    else:
+        start_time_main = datetime.now().replace(microsecond=0)
+        start_time_step = start_time_main
+
+        if clean:
+            print("START CLEAN")
+            cli_code.cleaning()
+            start_time_step = utils.print_time_for_step("STEP CLEAN", start_time_step)
+        if viso:
+            print("START VISUALIZE")
+            # TODO Rename visualization.math / geo to math_plot and geo_plot
+            cli_code.visualize()
+            start_time_step = utils.print_time_for_step("STEP VISUALIZATION", start_time_step)
+        if train:
+            print("START TRAIN")
+            cli_code.features_duration(weather)
+            cli_code.training_duration_models()
+            start_time_step = utils.print_time_for_step("STEP TRAIN", start_time_step)
+        if pred:
+            print("START PREDICT")
+            cli_code.predict_duration_models(weather)
+            start_time_step = utils.print_time_for_step("STEP PREDICT", start_time_step)
+        if traingeo:
+            print("START GEO TRAIN")
+            cli_code.features_direction(weather)
+            cli_code.train_direction_models()
+            start_time_step = utils.print_time_for_step("STEP GEO TRAIN", start_time_step)
+        if predgeo:
+            print("START GEO PREDICT")
+            cli_code.predict_direction_models(weather)
+            start_time_step = utils.print_time_for_step("STEP GEO PREDICT", start_time_step)
+
+        # As we in general do not run any of these main command stages, the print might confuse users
+        # utils.print_time_for_step("COMMAND MAIN", start_time_main)
+
+
+@main.command(name="train", help="Train ML models based on nuremberg.csv and save them as pkl files in 'data/output'.")
+@click.option("--regress/--no-regress", default=True,
+              help="Deactivate to skip training regression models used for trip duration prediction. Default: True.")
+@click.option("--classify/--no-classify", default=False,
+              help="Activate to also train classification models used for direction prediction. Default: False")
+@click.option("--weather/--no-weather", default=False,
+              help="Activate to include weather data. Be sure to insert weather data for given time period"
+                   "into 'data/input' directory first by yourself.")
+def train(regress, classify, weather):
+    """Train ML models based on nuremberg.csv and save them as pkl files in 'data/output'
+
+    Args:
+        regress:    option whether to train regression models for duration prediction (Default: True)
+        classify:   option whether to train classification models for direction prediction (Default: False)
+        weather:    option whether to include weather data (Default: False)
+    Returns:
+        No return
+    """
+    start_time_train = datetime.now().replace(microsecond=0)
+    start_time_step = start_time_train
+    if regress:
+        print("START TRAIN")
+        cli_code.features_duration(weather)
+        cli_code.training_duration_models()
+        start_time_step = utils.print_time_for_step("STEP TRAIN", start_time_step)
+
+    if classify:
+        print("START GEO TRAIN")
+        cli_code.features_direction(weather)
+        cli_code.train_direction_models()
+        utils.print_time_for_step("STEP GEO TRAIN", start_time_step)
+    utils.print_time_for_step("COMMAND TRAIN", start_time_train)
+
+
+@main.command(name="predict", help="Loads a previously trained model and predicts journey duration and direction"
+                                   "based on start information given in provided file."
+                                   "File has to be inserted into 'data/input' directory")
+@click.option("--regress/--no-regress", default=True,
+              help="Deactivate to skip training regression models used for trip duration prediction. Default: True.")
+@click.option("--classify/--no-classify", default=False,
+              help="Activate to also train classification models used for direction prediction. Default: False")
+@click.option("--weather/--no-weather", default=False,
+              help="Activate to include weather data. Be sure to insert weather data for given time period"
+                   "into 'data/input' directory first by yourself.")
+@click.argument("filename", default="nuremberg.csv")
+def predict(filename, regress, classify, weather):
+    """Loads a previously trained model and predicts journey duration and direction
+    based on start information given in provided file. File has to be inserted into 'data/input' directory.
+
+    Args:
+        filename:   filename of new data csv file. File has to be located in 'data/input'
+        regress:    option whether to train regression models for duration prediction (Default: True)
+        classify:   option whether to train classification models for direction prediction (Default: False)
+        weather:    option whether to include weather data (Default: False)
+    Returns:
+        No return
+    """
+    start_time_predict = datetime.now().replace(microsecond=0)
+    start_time_step = start_time_predict
+    if regress:
+        print("START PREDICT")
+        cli_code.predict_duration_models(filename, weather)
+        start_time_step = utils.print_time_for_step("STEP PREDICT", start_time_step)
+    if classify:
+        print("START GEO PREDICT")
+        cli_code.predict_direction_models(filename, weather)
+        utils.print_time_for_step("STEP GEO PREDICT", start_time_step)
+    utils.print_time_for_step("COMMAND PREDICT", start_time_predict)
+
+
+@main.command(name="transform", help="Transforms a data set in the provided format to a data set in trip format"
+                                     "and saves it as 'Trips.csv' into 'data/output' directory."
+                                     "New data set has to be inserted into 'data/input' directory.")
+@click.argument("filename", default="nuremberg.csv")
+def transform(filename):
+    """Transforms a data set in the provided format to a data set in trip format
+    and saves it as 'Trips.csv' into 'data/output' directory. New data set has to
+    be inserted into 'data/input' directory.
+
+    Args:
+        filename:   filename of new data csv file. File has to be located in 'data/input'
+    Returns:
+        No return
+    """
+    start_time_transform = datetime.now().replace(microsecond=0)
+    print("START CLEAN")
+    cli_code.cleaning(filename)
+    utils.print_time_for_step("COMMAND TRANSFORM", start_time_transform)
+
+
+@main.command(name="descriptive_analysis",
+              help="Start a descriptive analysis on the given data set. Clean and transform data into trip data."
+                   "Afterwards start plotting descriptive statistics and visualizations.")
+@click.option("--clean/--no-clean", default=True,
+              help="Deactivate to skip data cleaning and transforming into trip data. Default: True.")
+@click.argument("filename", default="nuremberg.csv")
+def descriptive_analysis(filename, clean):
+    """Start a descriptive analysis on the given data set. Clean and transform data into trip data.
+    Afterwards start plotting descriptive statistics and visualizations.
+
+    Args:
+        filename:   filename of new data csv file. File has to be located in 'data/input'
+        clean:      option whether to clean and transform the data first or to only visualize (Default: True)
+    Returns:
+        No return
+    """
+    start_time_desc_analysis = datetime.now().replace(microsecond=0)
+    start_time_step = start_time_desc_analysis
     if clean:
         print("START CLEAN")
-        cleaning()
-        start_time_step = print_time_for_step(start_time_step)
-    if viso:
-        print("START VISUALIZE")
-        # TODO Rename visualization.math / geo to math_plot and geo_plot
-        visualize()
-        start_time_step = print_time_for_step(start_time_step)
-    if train:
-        print("START TRAIN")
-        features()
-        training()
-        start_time_step = print_time_for_step(start_time_step)
-    if pred:
-        print("START PREDICT")
-        predict()
-        start_time_step = print_time_for_step(start_time_step)
-        print("START GEO PREDICT")
-        predict_geo()
-        start_time_step = print_time_for_step(start_time_step)
-
-    print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
+        cli_code.cleaning(filename)
+        start_time_step = utils.print_time_for_step("STEP CLEAN", start_time_step)
+    print("START VISUALIZATION")
+    cli_code.visualize()
+    utils.print_time_for_step("STEP VISUALIZATION", start_time_step)
+    utils.print_time_for_step("COMMAND DESCRIPTIVE ANALYSIS", start_time_desc_analysis)
 
 
-def cleaning():
-    """Clean the data for further analysis.
-
-    Method which runs the sequential flow of the data cleaning part.
-    Args:
-        no Arg
-    Returns:
-        no Return
-    """
-    df = io.input.read_csv(p_filename="nuremberg.csv", p_io_folder="input")
-    utils.cast_datetime(df, ["datetime"])
-    print("Clean Data...")
-    df_trips = datapreparation.data_clean.data_cleaning(df)
-    print("Add Features...")
-    df_trips_add_feat = datapreparation.feature_add.additional_feature_creation(df_trips)
-    print("Clean Noise...")
-    df_trips_filter_duration = datapreparation.data_clean.drop_noise(df_trips_add_feat)
-    print("Clean Postalcodes...")
-    df_trips_only_nuremberg = datapreparation.geo_clean.only_nuremberg(df_trips_filter_duration)
-    print("Add Distances to University...")
-    df_trips_only_nuremberg_dist = datapreparation.feature_add.quick_create_dist(df_trips_only_nuremberg)
-    print("Save trip dataframe...")
-    io.output.save_csv(df_trips_only_nuremberg_dist, "Trips.csv")
-
-
-def visualize():
-    """Visualize the data.
-
-    Method which runs the sequential flow of the data visualization part.
-    Args:
-        no Arg
-    Returns:
-        no Return
-    """
-    df = io.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    utils.cast_datetime(df, ["Start_Time", "End_Time"])
-    print("Visualize Aggregate Statistics...")
-    visualization.math_descriptive.calculate_aggregate_statistics(df)
-    print("Visualize Stations Map...")
-    visualization.geo.visualize_stations_moment(df)
-    print("Visualize Heatmap Christmas...")
-    visualization.geo.visualize_heatmap(df)
-    print("Visualize Postalcode Zones...")
-    visualization.geo.visualize_plz(df)
-    print("Visualize Monthly Distribution...")
-    visualization.math_descriptive.plot_distribution_monthly(df)
-    print("Visualize Distribution Function...")
-    visualization.math_descriptive.plot_distribution(df)
-    print("Visualize Mean Duration...")
-    visualization.math_descriptive.plot_mean_duration(df)
-
-
-def features():
-    """Create and prepare the features before prediction part.
-
-    Method which runs the sequential flow of the feature preparation and creation part.
-    Args:
-        no Arg
-    Returns:
-        no Return
-    """
-    df_trips = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    df_trips.drop(["Place_start", "Start_Time"], axis=1, inplace=True)
-    print("Drop End Information")
-    df_only_start = prediction.math_prepare_feature.drop_end_information(df_trips)
-    print("Create Dummie Variables...")
-    df_features = prediction.math_prepare_feature.create_dummies(df_only_start)
-    print("Do Feature Engineering...")
-    df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
-    print("Visualize correlations...")
-    df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
-    visualization.math_descriptive.corr_analysis(df_features_2)
-    io.output.save_csv(df_features_2, "Features.csv")
-    # visualization.math.plot_features_influence(df_features_2)
-
-
-def training():
-    """Train the different machine learning models.
-
-    Method which runs the sequential flow on training the ML models.
-    Args:
-        no Arg
-    Returns:
-        no Return
-    """
-    df_features = io.input.read_csv(p_filename="Features.csv", p_io_folder="output")
-    print("Split Data...")
-    X_train, X_test, y_train, y_test = prediction.math_split.simple_split(df_features)
-    print("Scale Data...")
-    X_scaled_train = prediction.math_prepare_feature.scale(X_train)
-    print("Do PCA...")
-    X_train_transformed = prediction.math_prepare_feature.do_pca(X_scaled_train)
-    print("Train Linear Regression...")
-    prediction.math_train.train_linear_regression(X_train_transformed, y_train)
-    print("Train SVM Regression...")
-    prediction.math_train.train_svm(X_train_transformed, y_train)
-    print("Train NN...")
-    prediction.math_train.train_neural_network(X_train_transformed, y_train)
-
-
-def predict():
-    """Predict the duration of trips by different models.
-
-    Method which runs the sequential flow of the duration prediction by different trained ML models.
-    Args:
-        no Arg
-    Returns:
-        no Return
-    """
-    df_features = io.input.read_csv(p_filename="Features.csv", p_io_folder="output")
-    print("Split Data...")
-    X_train, X_test, y_train, y_test = prediction.math_split.simple_split(df_features)
-    print("Predict by Linear Regression...")
-    prediction.math_predict.predict_by_regression(X_test, y_test)
-    print("Predict by SVM Regression...")
-    prediction.math_predict.predict_by_svm(X_test, y_test)
-    print("Predict by NN...")
-    prediction.math_predict.predict_by_nn(X_test, y_test)
-
-
-def predict_geo():
-    """Predict the direction of a trip (towards or away from university).
-
-    Method which runs the sequential flow of the direction prediction.
-    Args:
-        no Arg
-    Returns:
-        no Return
-    """
-    df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
-    print("Predict Trip Direction...")
-    prediction.geo_predict.train_pred(df_features)
-
-
-def print_time_for_step(p_start_time_step):
-    """Calculates time needed for current step and prints it out.
-    Returns start time for next step
-
-    Args:
-        p_start_time_step (float): start time of current step
-    Returns:
-        start_time_next_step (float): start time of the next step
-    """
-    start_time_next_step = datetime.now().replace(microsecond=0)
-    print("TIME FOR STEP:", (start_time_next_step - p_start_time_step))
-    return start_time_next_step
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

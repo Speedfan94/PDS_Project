@@ -4,9 +4,6 @@ NUREMBERG_CITY_LONG = 49.452030
 NUREMBERG_CITY_LAT = 11.076750
 DISTANCE = 0.07 * 1
 
-# TODO: Fix that bad style right here:
-pd.options.mode.chained_assignment = None
-
 
 def data_cleaning(p_df_original):
     """clean data and create trips from it
@@ -20,15 +17,15 @@ def data_cleaning(p_df_original):
         df_merged (DataFrame): DataFrame of cleaned trip data
     """
     # Drop Duplicates and creating new df with only unique files
-    p_df_original.drop_duplicates(subset=p_df_original.columns.difference(["p_lng", "p_lat"]), inplace=True)
+    p_df_original = p_df_original.drop_duplicates(subset=p_df_original.columns.difference(["p_lng", "p_lat"]))
     # Drop trip first/last
-    df_clean_unique_trip = p_df_original[(p_df_original["trip"] == "start") | (p_df_original["trip"] == "end")]
-    df_clean_unique_trip.sort_values(["b_number", "datetime"], inplace=True)
+    df_clean_unique_trip_unsorted = p_df_original[(p_df_original["trip"] == "start") | (p_df_original["trip"] == "end")]
+    df_clean_unique_trip = df_clean_unique_trip_unsorted.sort_values(["b_number", "datetime"])
     # We do not check, whether every bike has same amount of starts and ends because merge only returns valid entries
     # compare the trip value of each row with the row above (to check for multiple start entries)
-    sr_previous_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
+    sr_previous_entry_differs = (df_clean_unique_trip["trip"] != df_clean_unique_trip["trip"].shift())
     # compare the trip value of each row with the row below (to check for multiple end entries)
-    sr_next_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift(-1))
+    sr_next_entry_differs = (df_clean_unique_trip["trip"] != df_clean_unique_trip["trip"].shift(-1))
     # check if entries are valid
     #   just checking if previous or next entry differs does not work!
     #   because otherwise we would pick
@@ -36,39 +33,39 @@ def data_cleaning(p_df_original):
     #       or the last start and the last end of each trip
     #   but we want to have the first start and the last end of each trip
     #   so for starts only the previous entry is relevant, for ends only next entry is relevant
-    sr_valid_start = ((df_clean_unique_trip['trip'] == 'start') & sr_previous_entry_differs)
-    sr_valid_end = ((df_clean_unique_trip['trip'] == 'end') & sr_next_entry_differs)
+    sr_valid_start = ((df_clean_unique_trip["trip"] == "start") & sr_previous_entry_differs)
+    sr_valid_end = ((df_clean_unique_trip["trip"] == "end") & sr_next_entry_differs)
     # only take valid trip entries (valid starts and valid ends)
     df_final = df_clean_unique_trip[sr_valid_start | sr_valid_end]
 
     # drop first entry if dataframe does not start with a start entry
     if df_final.iloc[0]["trip"] != "start":
-        df_final.drop(0, inplace=True)
+        df_final = df_final.drop(0)
     # drop last entry if dataframe does not end with an end entry
     index_last = len(df_final) - 1
     if df_final.iloc[index_last]["trip"] != "end":
-        df_final.drop(index_last, inplace=True)
+        df_final = df_final.drop(index_last)
 
     # split dataframe into start and end entries and merge them into trip dataframe
     df_start = df_final[df_final["trip"] == "start"].drop("trip", axis=1)
     df_end = df_final[df_final["trip"] == "end"].drop("trip", axis=1)
-    df_end.reset_index(drop=True, inplace=True)
-    df_start.reset_index(drop=True, inplace=True)
+    df_end = df_end.reset_index(drop=True)
+    df_start = df_start.reset_index(drop=True)
     df_merged = df_start.merge(
         df_end,
         left_on=df_start.index,
         right_on=df_end.index,
-        suffixes=('_start', '_end')
+        suffixes=("_start", "_end")
     )
 
     # Only keep trips, which where merged correctly
     df_merged = df_merged[df_merged["b_number_start"] == df_merged["b_number_end"]]
 
-    df_merged.drop(
+    df_merged = df_merged.drop(
         ["key_0",
-         "b_number_end"], axis=1, inplace=True
+         "b_number_end"], axis=1
     )
-    df_merged.rename(
+    df_merged = df_merged.rename(
         {"datetime_start": "Start_Time",
          "b_number_start": "Bike_Number",
          "datetime_end": "End_Time",
@@ -81,7 +78,7 @@ def data_cleaning(p_df_original):
          "p_name_start": "Place_start",
          "p_name_end": "Place_end"
          },
-        axis=1, inplace=True
+        axis=1
     )
 
     return df_merged

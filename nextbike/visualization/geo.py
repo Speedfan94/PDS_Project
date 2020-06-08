@@ -1,16 +1,16 @@
 import folium
 from folium import plugins
-from .. import io
+from nextbike import io
 import datetime as dt
 
 
 def visualize_stations_moment(p_df):
-    """bikes at fixed stations at given point in time
+    """Plots bikes at fixed stations at given point in time
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
     time_moment = "2019-10-01 08:00:00"
     df_relevant = p_df[p_df["End_Time"] <= time_moment]  # exclude all trips during and after that moment
@@ -18,7 +18,7 @@ def visualize_stations_moment(p_df):
     # hold for each station just the last entry sorted by datetime
     df_relevant_stations = df_relevant.sort_values(by=["End_Place_id", "End_Time"]).drop_duplicates("End_Place_id",
                                                                                                     keep="last")
-    df_relevant_stations.reset_index(drop=True, inplace=True)
+    df_relevant_stations = df_relevant_stations.reset_index(drop=True)
     m = folium.Map(location=[49.452030, 11.076750], zoom_start=13)
     for i in range(len(df_relevant_stations)):
         folium.Marker(
@@ -45,12 +45,12 @@ def visualize_stations_moment(p_df):
 
 
 def visualize_heatmap(p_df):
-    """heatmap for the 24th of December by searching for nearby trip ends.
+    """Plots heatmap for the 24th of December by searching for nearby trip ends.
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
 
     # Create a heatmap based on an interesting aspect of the data, e.g., end locations of trips shortly
@@ -65,7 +65,7 @@ def visualize_heatmap(p_df):
 
     # mark each station as a point
     for index, row in stations.iterrows():
-        folium.CircleMarker([row['Latitude_end'], row['Longitude_end']],
+        folium.CircleMarker([row["Latitude_end"], row["Longitude_end"]],
                             radius=3,
                             popup=folium.Popup(
                                 "<b>Station Name:</b><br>" +
@@ -77,7 +77,7 @@ def visualize_heatmap(p_df):
                             ).add_to(m)
 
     # convert to (n, 2) nd-array format for heatmap
-    stationArr = stations[['Latitude_end', 'Longitude_end']].values
+    stationArr = stations[["Latitude_end", "Longitude_end"]].values
 
     # plot heatmap
     m.add_child(plugins.HeatMap(stationArr, radius=20))
@@ -92,25 +92,20 @@ def visualize_heatmap(p_df):
     )
 
 
-def visualize_plz(p_df):
-    """Plots a choropleth graph on a map based on the number of started trips in each zip code region.
+def visualize_postalcode(p_df):
+    """Plots a choropleth graph on a map based on the number of started trips in each postal code code region.
     This is be done for the month with the most trips
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
     Returns:
-        no return
+        No return
     """
-    # Visualizes the number of started trip for each zip code region for the month with the most trips
-
-    # find the month with the most trips:
-    p_df["Month"] = p_df["Start_Time"].dt.month
-
     # finding the month with most trips in the month
-    month_most = p_df.groupby(by="Month").count().idxmax()["Start_Time"]
+    month_most = p_df.groupby(by="Month_start").count().idxmax()["Start_Time"]
 
-    df_biggest_month = p_df[p_df["Month"] == month_most]
-    # prints the number of trips per zip code
+    df_biggest_month = p_df[p_df["Month_start"] == month_most]
+    # prints the number of trips per postal code code
     df_map = df_biggest_month.groupby(
         by="Postalcode_start"
     ).count().sort_values(
@@ -125,10 +120,10 @@ def visualize_plz(p_df):
         geo_data=f'{io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")}',
         name="choropleth",
         data=df_map,
-        columns=["Postalcode", "Month"],
-        key_on='feature.properties.plz',
-        legend_name='Trips per zip code',
-        fill_color='YlGnBu',
+        columns=["Postalcode", "Month_start"],
+        key_on="feature.properties.plz",
+        legend_name="Trips per postal code",
+        fill_color="YlGnBu",
         fill_opacity=0.7,
         line_opacity=0.5,
     ).add_to(m)
@@ -137,9 +132,9 @@ def visualize_plz(p_df):
 
     for index, row in df_stations.iterrows():
         folium.CircleMarker(
-            [row['Latitude_start'], row['Longitude_start']],
+            [row["Latitude_start"], row["Longitude_start"]],
             radius=3,
-            popup=[row['Place_start'], row["Latitude_start"]],
+            popup=[row["Place_start"], row["Latitude_start"]],
             fill_color="#3db7e4",
             color="#3db7e4",
 

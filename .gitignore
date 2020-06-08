@@ -4,9 +4,9 @@
 # too big files
 nextbike/data/input/nuremberg.csv
 
+
 # output results (outcommend to upload to git)
-nextbike/data/output/models/
-nextbike/data/output/data_plots/
+nextbike/data/output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -135,3 +135,8 @@ dmypy.json
 .pyre/
 nextbike/data/output/Trips.csv
 nextbike/data/output/Features.csv
+nextbike/data/output/Components.csv
+nextbike/data/output/y_train.csv
+nextbike/data/output/Components_Duration.csv
+nextbike/data/output/Features_Direction.csv
+nextbike/data/output/Features_Duration.csv
