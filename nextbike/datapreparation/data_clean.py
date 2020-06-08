@@ -23,9 +23,9 @@ def data_cleaning(p_df_original):
     df_clean_unique_trip = df_clean_unique_trip_unsorted.sort_values(["b_number", "datetime"])
     # We do not check, whether every bike has same amount of starts and ends because merge only returns valid entries
     # compare the trip value of each row with the row above (to check for multiple start entries)
-    sr_previous_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift())
+    sr_previous_entry_differs = (df_clean_unique_trip["trip"] != df_clean_unique_trip["trip"].shift())
     # compare the trip value of each row with the row below (to check for multiple end entries)
-    sr_next_entry_differs = (df_clean_unique_trip['trip'] != df_clean_unique_trip['trip'].shift(-1))
+    sr_next_entry_differs = (df_clean_unique_trip["trip"] != df_clean_unique_trip["trip"].shift(-1))
     # check if entries are valid
     #   just checking if previous or next entry differs does not work!
     #   because otherwise we would pick
@@ -33,8 +33,8 @@ def data_cleaning(p_df_original):
     #       or the last start and the last end of each trip
     #   but we want to have the first start and the last end of each trip
     #   so for starts only the previous entry is relevant, for ends only next entry is relevant
-    sr_valid_start = ((df_clean_unique_trip['trip'] == 'start') & sr_previous_entry_differs)
-    sr_valid_end = ((df_clean_unique_trip['trip'] == 'end') & sr_next_entry_differs)
+    sr_valid_start = ((df_clean_unique_trip["trip"] == "start") & sr_previous_entry_differs)
+    sr_valid_end = ((df_clean_unique_trip["trip"] == "end") & sr_next_entry_differs)
     # only take valid trip entries (valid starts and valid ends)
     df_final = df_clean_unique_trip[sr_valid_start | sr_valid_end]
 
@@ -55,7 +55,7 @@ def data_cleaning(p_df_original):
         df_end,
         left_on=df_start.index,
         right_on=df_end.index,
-        suffixes=('_start', '_end')
+        suffixes=("_start", "_end")
     )
 
     # Only keep trips, which where merged correctly
