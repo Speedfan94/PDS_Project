@@ -3,7 +3,8 @@ import pandas as pd
 from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn import metrics
-from nextbike import io
+from nextbike import io, prediction
+
 
 
 def test_neuralnetwork_model(p_components, p_y_train):
