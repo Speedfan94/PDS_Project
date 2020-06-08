@@ -4,8 +4,14 @@ from sklearn.decomposition import PCA
 
 
 def filter_subsets(p_df):
-    # TODO: Docstring
-    # TODO: What happens if month start is dropped from features?
+    """Filters data on different months and iterates over each month
+    to test with subset classification.
+
+    Args:
+        p_df:   Whole data set
+    Returns:
+        No return
+    """
     months = p_df["Month_start"].unique()
     months.sort()
     for month in months:
@@ -19,7 +25,15 @@ def filter_subsets(p_df):
 
 
 def test_subset_classification(p_df_subset, p_weather):
-    # TODO: Docstring
+    """For each month, tries to classify direction with
+    dummy classifiers and k nearest neighbor classifiers.
+
+    Args:
+        p_df_subset:    subset of the data set to classify on
+        p_weather:      file ending when weather data is included
+    Returns:
+        No return
+    """
     X = p_df_subset.drop("Direction", axis=1)
     y = p_df_subset["Direction"]
     print("Scale Data...")

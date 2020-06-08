@@ -5,7 +5,15 @@ from sklearn import metrics
 
 
 def test_regression_model(p_components, p_y_train):
-    # TODO: Docstring
+    """Takes different combinations of pca components and trains Linear Regression models on them.
+    Prints out performance measurements.
+
+    Args:
+        p_components:   PCA components
+        p_y_train:      y train data
+    Returns:
+        No return
+    """
     df_metrics = pd.DataFrame(columns=["Components", "RMSE", "MAE", "R^2"])
     X_train_transformed = pd.DataFrame(p_components)
     for i in np.arange(0, len(X_train_transformed.columns)):
