@@ -1,4 +1,4 @@
-from .. import io
+from nextbike import io
 
 
 def predict_by_dummy_classificaion(p_X_test):

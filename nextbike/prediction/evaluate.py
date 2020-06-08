@@ -1,4 +1,4 @@
-from .. import visualization
+from nextbike import visualization
 import numpy as np
 from sklearn import metrics
 

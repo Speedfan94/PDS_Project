@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.ticker import PercentFormatter
 import seaborn as sns
-from .. import io
+from nextbike import io
 
 # define color constants
 COLOR_BAR_MEAN = "yellowgreen"

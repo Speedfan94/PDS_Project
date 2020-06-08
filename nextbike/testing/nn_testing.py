@@ -2,9 +2,8 @@ import numpy as np
 import pandas as pd
 from tensorflow import keras
 from tensorflow.keras import layers
-from sklearn.linear_model import LinearRegression
 from sklearn import metrics
-from .. import io
+from nextbike import io
 
 
 def test_neuralnetwork_model(p_components, p_y_train):

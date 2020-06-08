@@ -1,4 +1,4 @@
-from .. import io
+from nextbike import io
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
