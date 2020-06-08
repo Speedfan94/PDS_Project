@@ -4,7 +4,7 @@ from nextbike import io
 import datetime as dt
 
 
-def visualize_stations_moment(p_df):
+def visualize_stations_moment(p_df, mode):
     """Plots bikes at fixed stations at given point in time
 
     Args:
@@ -36,7 +36,7 @@ def visualize_stations_moment(p_df):
         ).add_to(m)
     m.save(
         io.get_path(
-            p_filename="Moment.html",
+            p_filename="Moment"+mode+".html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"
@@ -44,7 +44,7 @@ def visualize_stations_moment(p_df):
     )
 
 
-def visualize_heatmap(p_df):
+def visualize_heatmap(p_df, mode):
     """Plots heatmap for the 24th of December by searching for nearby trip ends.
 
     Args:
@@ -84,7 +84,7 @@ def visualize_heatmap(p_df):
 
     m.save(
         io.get_path(
-            p_filename="One-Day-in-Nuremberg.html",
+            p_filename="One-Day-in-Nuremberg"+mode+".html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"
@@ -92,7 +92,7 @@ def visualize_heatmap(p_df):
     )
 
 
-def visualize_postalcode(p_df):
+def visualize_postalcode(p_df, mode):
     """Plots a choropleth graph on a map based on the number of started trips in each postal code code region.
     This is be done for the month with the most trips
 
@@ -144,7 +144,7 @@ def visualize_postalcode(p_df):
 
     m.save(
         io.get_path(
-            p_filename="Month_Nuremberg.html",
+            p_filename="Month_Nuremberg"+mode+".html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"

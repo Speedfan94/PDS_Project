@@ -18,7 +18,7 @@ def filter_subsets(p_df):
         test_subset_classification(df_subset)
 
 
-def test_subset_classification(p_df_subset):
+def test_subset_classification(p_df_subset, p_weather):
     # TODO: Docstring
     X = p_df_subset.drop("Direction", axis=1)
     y = p_df_subset["Direction"]
@@ -30,8 +30,8 @@ def test_subset_classification(p_df_subset):
     pca.fit(X_scaled_train)
     X_train_transformed = pca.transform(X_scaled_train)
     # Read Models
-    dummy = io.read_object("Dummy_classifier_model.pkl")
-    clf = io.read_object("KNearestNeighbours_classifier_model.pkl")
+    dummy = io.read_object("Dummy_classifier_model"+p_weather+".pkl")
+    clf = io.read_object("KNearestNeighbours_classifier_model"+p_weather+".pkl")
     # Predict
     print("Predict...")
     dummy_y_prediction = dummy.predict(X_train_transformed)

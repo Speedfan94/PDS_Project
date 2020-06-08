@@ -23,7 +23,7 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
     ax_scatter.scatter(p_y_true, p_y_predict)
     io.save_fig(
         fig_scatter,
-        p_filename=p_model_name+"_pred_vs_true.png",
+        p_filename="pred_vs_true_"+p_model_name+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -54,7 +54,7 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
     plt.legend(loc="upper right")
     io.save_fig(
         fig_distr,
-        p_filename=p_model_name+"_distribution.png",
+        p_filename="distribution_"+p_model_name+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -62,11 +62,12 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
     plt.close(fig_distr)
 
 
-def plot_train_loss(p_history):
+def plot_train_loss(p_history, p_weather):
     """Plot the train and validation loss of Neural Network.
 
     Args:
         p_history (Object): History of loss during training of neural network
+        p_weather (str): Add Info, whether weather data is used
     Returns:
         No return
     """
@@ -82,19 +83,5 @@ def plot_train_loss(p_history):
     ax.set_xlabel("Epochs")
     ax.set_ylabel("Loss")
     plt.legend()
-    io.save_fig(fig, "NN_error_per_epoch.png", p_sub_folder2="math")
-    plt.close(fig)
-
-
-# TODO: add docstring
-def plot_direction_classification(p_X_train, p_y_train):
-    p_X_train["Direction"] = p_y_train
-    # x1 = p_X_train[p_X_train["Direction"]==True]["Duration"]
-    y1 = p_X_train[p_X_train["Direction"] == True]["Dist_start"]
-    # x2 = p_X_train[p_X_train["Direction"]==False]["Duration"]
-    y2 = p_X_train[p_X_train["Direction"] == False]["Dist_start"]
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.scatter(0, y2, c="green")
-    ax.scatter(0, y1, c="red")
-    io.save_fig(fig, p_filename="Classification_Data.png", p_sub_folder2="math")
+    io.save_fig(fig, "NN_error_per_epoch"+p_weather+".png", p_sub_folder2="math")
     plt.close(fig)
