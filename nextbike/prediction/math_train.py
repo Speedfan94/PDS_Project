@@ -1,6 +1,5 @@
-from .. import io
-from .. import visualization
-import numpy as np
+from nextbike import io
+from nextbike import visualization
 import warnings
 
 from sklearn.linear_model import LinearRegression

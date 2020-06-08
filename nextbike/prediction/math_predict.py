@@ -1,4 +1,4 @@
-from .. import io
+from nextbike import io
 from tensorflow.keras.models import load_model
 
 
