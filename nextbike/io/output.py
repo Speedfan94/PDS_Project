@@ -19,7 +19,7 @@ def save_object(p_object, p_filename):
     print("Saved:", path)
 
 
-def save_csv(p_df, p_filename):
+def save_csv(p_df, p_filename, p_subfolder=""):
     """Save an dataframe as a csv file
 
     Saves the given dataframe under the given filename under data/output/*p_filename*.csv
@@ -27,10 +27,11 @@ def save_csv(p_df, p_filename):
     Args:
         p_df (DataFrame): Dataframe which should be saved as csv file
         p_filename (str): String of the filename of csv file
+        p_subfolder (str): String with name of subfolder to save in (optional)
     Returns:
         no return
     """
-    path = os.path.join(get_data_path(), "output", p_filename)
+    path = os.path.join(get_data_path(), "output", p_subfolder, p_filename)
     p_df_reindexed = p_df.reset_index(drop=True)
     p_df_reindexed.to_csv(path, index_label="index")
     print("Saved:", path)

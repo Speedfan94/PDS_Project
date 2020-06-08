@@ -1,7 +1,6 @@
 import click
 from datetime import datetime
 import pandas as pd
-import numpy as np
 from . import io
 from . import datapreparation
 from . import visualization
@@ -10,15 +9,22 @@ from . import utils
 from . import testing
 
 
+# TODO: Usefull help strings
 @click.command()
-@click.option('--test/--no-test', default=False, help="Testing mode")
-@click.option('--clean/--no-clean', default=True, help="Clean the data.")
-@click.option('--viso/--no-viso', default=True, help="Visualize the data.")
-@click.option('--train/--no-train', default=True, help="Train the model.")
-@click.option('--pred/--no-pred', default=True, help="Predict with model.")
-def main(test, clean, viso, train, pred):
+@click.option('--test/--no-test', default=False, help="Testing mode") # TODO: add parameter option for different tests
+@click.option('--clean/--no-clean', default=False, help="Clean the data.")
+@click.option('--viso/--no-viso', default=False, help="Visualize the data.")
+@click.option('--train/--no-train', default=False, help="Train duration models.")
+@click.option('--pred/--no-pred', default=False, help="Predict duration with models.")
+@click.option('--traingeo/--no-traingeo', default=False, help="Train direction models.")
+@click.option('--predgeo/--no-predgeo', default=False, help="Predict direction with models.")
+@click.option('--weather/--no-weather', default=False, help="Decide, whether to include weather data or not.")
+def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
     if test:
-        testing_models()
+        # testing_duration_models()
+        # testing_robust_scaler()
+        # testing_direction_subsets()
+        visualization.main_test()
     else:
         start_time = datetime.now().replace(microsecond=0)
         start_time_step = start_time
@@ -34,17 +40,24 @@ def main(test, clean, viso, train, pred):
             start_time_step = print_time_for_step(start_time_step)
         if train:
             print("START TRAIN")
-            features()
-            training()
+            features_duration(weather)
+            training_duration_models()
             start_time_step = print_time_for_step(start_time_step)
         if pred:
             print("START PREDICT")
-            predict()
+            predict_duration_models()
             start_time_step = print_time_for_step(start_time_step)
+        if traingeo:
+            print("START GEO TRAIN")
+            features_direction(weather)
+            train_direction_models()
+            start_time_step = print_time_for_step(start_time_step)
+        if predgeo:
             print("START GEO PREDICT")
-            predict_geo()
+            predict_direction_models()
             start_time_step = print_time_for_step(start_time_step)
 
+        # TODO: can we use start_time_step instead of datetime.now().replace(microsecond=0) ???
         print("TIME FOR RUN:", (datetime.now().replace(microsecond=0) - start_time))
 
 
@@ -102,7 +115,7 @@ def visualize():
     visualization.math_descriptive.plot_mean_duration(df)
 
 
-def features():
+def features_duration(weather):
     """Create and prepare the features before prediction part.
 
     Method which runs the sequential flow of the feature preparation and creation part.
@@ -117,27 +130,20 @@ def features():
     # TODO: Add corr analysis before feature selection be aware of non numerical features
     # visualization.math_descriptive.corr_analysis(df_features_2)
     print("Drop End Information")
-    df_only_start = prediction.math_prepare_feature.drop_end_information(df_trips)
+    df_only_start = prediction.prepare_feature.drop_end_information(df_trips)
     print("Create Dummie Variables...")
-    df_features = prediction.math_prepare_feature.create_dummies(df_only_start)
+    df_features = prediction.prepare_feature.create_dummies(df_only_start)
     print("Do Feature Engineering...")
-    df_features_2 = prediction.math_prepare_feature.create_new_features(df_features)
+    df_features_2 = prediction.prepare_feature.create_new_features(df_features, weather)
     print("Visualize correlations...")
-    df_features_2 = prediction.math_prepare_feature.drop_features(df_features_2)
+    df_features_2 = prediction.prepare_feature.drop_features(df_features_2)
     df_features_2 = df_features_2.drop(["Place_start", "Start_Time"], axis=1)
     visualization.math_descriptive.corr_analysis(df_features_2)
-    io.output.save_csv(df_features_2, "Features.csv")
+    io.output.save_csv(df_features_2, "Features_Duration.csv")
     # visualization.math.plot_features_influence(df_features_2)
 
 
-def testing_models():
-    # TODO: add docstring
-    df_components = io.input.read_csv("Components.csv", p_io_folder="output").reset_index(drop=True)
-    y_true = io.input.read_csv("y_train.csv", p_io_folder="output")
-    # testing.nn_testing.test_neuralnetwork_model(df_components, y_true)
-    testing.linear_regression_testing.test_regression_model(df_components, y_true)
-
-def training():
+def training_duration_models():
     """Train the different machine learning models.
 
     Method which runs the sequential flow on training the ML models.
@@ -147,25 +153,61 @@ def training():
     Returns:
         no Return
     """
-    df_features = io.input.read_csv(p_filename="Features.csv", p_io_folder="output")
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Duration.csv", p_io_folder="output")
     print("Split Data...")
-    X_train, X_test, y_train, y_test = prediction.math_split.simple_split(df_features)
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(df_features)
     print("Scale Data...")
-    X_scaled_train = prediction.math_prepare_feature.scale(X_train)
+    X_scaled_train = prediction.prepare_feature.scale(X_train, "Standard_Scaler_Duration")
     print("Do PCA...")
-    X_train_transformed = prediction.math_prepare_feature.do_pca(X_scaled_train)
+    X_train_transformed = prediction.prepare_feature.do_pca(X_scaled_train, 21, "PCA_Duration")
     df_components = pd.DataFrame(X_train_transformed)
-    io.output.save_csv(y_train, p_filename="y_train.csv")
-    io.output.save_csv(df_components, p_filename="Components.csv")
+    io.output.save_csv(y_train, p_filename="y_train_Duration.csv")
+    io.output.save_csv(df_components, p_filename="Components_Duration.csv")
+    # Train
+    # The sets are in order: y_train, y_val, y_prediction_train, y_prediction_val
+    print("Train Dummy Mean Regression...")
+    d_mean_sets = prediction.math_train.train_dummy_regression_mean(X_train_transformed, y_train)
+    print("Train Dummy Median Regression...")
+    dummy_med_sets = prediction.math_train.train_dummy_regression_median(X_train_transformed, y_train)
     print("Train Linear Regression...")
-    prediction.math_train.train_linear_regression(X_train_transformed, y_train)
+    lin_regr_sets = prediction.math_train.train_linear_regression(X_train_transformed, y_train)
     print("Train SVM Regression...")
-    prediction.math_train.train_svm(X_train_transformed, y_train)
+    svm_regr_sets = prediction.math_train.train_svm(X_train_transformed, y_train)
     print("Train NN...")
-    prediction.math_train.train_neural_network(X_train_transformed, y_train)
+    nn_regr_sets = prediction.math_train.train_neural_network(X_train_transformed, y_train)
+    # Evaluate Training
+    # Dummy Regression Mean
+    prediction.evaluate.duration_error_metrics(d_mean_sets[0], d_mean_sets[2], "Dummy_Mean_Regression_Training")
+    prediction.evaluate.duration_error_metrics(d_mean_sets[1], d_mean_sets[3], "Dummy_Mean_Regression_Validation", "Validation")
+    # Dummy Regression Median
+    prediction.evaluate.duration_error_metrics(dummy_med_sets[0], dummy_med_sets[2], "Dummy_Med_Regression_Training")
+    prediction.evaluate.duration_error_metrics(dummy_med_sets[1], dummy_med_sets[3], "Dummy_Med_Regression_Validation", "Validation")
+    # Linear Regression
+    prediction.evaluate.duration_error_metrics(lin_regr_sets[0], lin_regr_sets[2], "Linear_Regression_Training")
+    prediction.evaluate.duration_error_metrics(lin_regr_sets[1], lin_regr_sets[3], "Linear_Regression_Validation", "Validation")
+    # SVM Regression
+    prediction.evaluate.duration_error_metrics(svm_regr_sets[0], svm_regr_sets[2], "SVM_Regression_Training")
+    prediction.evaluate.duration_error_metrics(svm_regr_sets[1], svm_regr_sets[3], "SVM_Regression_Validation", "Validation")
+    # NN Regression
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[0], nn_regr_sets[2], "NN_Regression_Training")
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[1], nn_regr_sets[3], "NN_Regression_Validation", "Validation")
 
 
-def predict():
+def testing_robust_scaler():
+    df_features = io.input.read_csv("Features_Duration.csv", p_io_folder="output")
+    testing.robust_scaler_testing.test_robust_scaler(df_features)
+
+
+def testing_duration_models():
+    # TODO: add docstring
+    df_components = io.input.read_csv("Components_Duration.csv", p_io_folder="output").reset_index(drop=True)
+    y_true = io.input.read_csv("y_train_Duration.csv", p_io_folder="output")
+    # testing.nn_testing.test_neuralnetwork_model(df_components, y_true)
+    testing.linear_regression_testing.test_regression_model(df_components, y_true)
+
+
+def predict_duration_models():
     """Predict the duration of trips by different models.
 
     Method which runs the sequential flow of the duration prediction by different trained ML models.
@@ -175,18 +217,45 @@ def predict():
     Returns:
         no Return
     """
-    df_features = io.input.read_csv(p_filename="Features.csv", p_io_folder="output")
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Duration.csv", p_io_folder="output")
     print("Split Data...")
-    X_train, X_test, y_train, y_test = prediction.math_split.simple_split(df_features)
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(df_features)
+    # Predict
+    print("Predict by Dummy Mean Regression...")
+    dummy_mean_reg_y_prediction = prediction.math_predict.predict_by_dummy_mean(X_test)
+    print("Predict by Median Regression...")
+    dummy_med_reg_y_prediction = prediction.math_predict.predict_by_dummy_median(X_test)
     print("Predict by Linear Regression...")
-    prediction.math_predict.predict_by_regression(X_test, y_test)
+    lin_regr_y_prediction = prediction.math_predict.predict_by_regression(X_test)
     print("Predict by SVM Regression...")
-    prediction.math_predict.predict_by_svm(X_test, y_test)
+    svm_y_prediction = prediction.math_predict.predict_by_svm(X_test)
     print("Predict by NN...")
-    prediction.math_predict.predict_by_nn(X_test, y_test)
+    nn_y_prediction = prediction.math_predict.predict_by_nn(X_test)
+    # Evaluate Prediction
+    prediction.evaluate.duration_error_metrics(y_test, dummy_mean_reg_y_prediction, "Dummy_Mean_Regression", "Testing")
+    prediction.evaluate.duration_error_metrics(y_test, dummy_med_reg_y_prediction, "Dummy_Median_Regression", "Testing")
+    prediction.evaluate.duration_error_metrics(y_test, lin_regr_y_prediction, "Linear_Regression", "Testing")
+    prediction.evaluate.duration_error_metrics(y_test, svm_y_prediction, "SVM_Regression", "Testing")
+    prediction.evaluate.duration_error_metrics(y_test, nn_y_prediction, "NN_Regression", "Testing")
 
 
-def predict_geo():
+def features_direction(weather):
+    # TODO:Docstring
+    df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
+    print("Drop End Information")
+    df_features = prediction.prepare_feature.drop_end_information(df_features, direction_needed=True)
+    print("Create Dummie Variables...")
+    df_features = prediction.prepare_feature.create_dummies(df_features)
+    print("Do Feature Engineering...")
+    df_features = prediction.prepare_feature.create_new_features(df_features, weather)
+    print("Drop Unneeded Features...")
+    df_features = prediction.prepare_feature.drop_features(df_features)
+    df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)
+    io.output.save_csv(df_features, "Features_Direction.csv")
+
+
+def train_direction_models():
     """Predict the direction of a trip (towards or away from university).
 
     Method which runs the sequential flow of the direction prediction.
@@ -197,19 +266,73 @@ def predict_geo():
         no Return
     """
     # TODO: Feature selection etc...
-    df_features = io.input.read_csv(p_filename="Trips.csv", p_io_folder="output")
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
+    print("Split Data...")
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(df_features)
+    print("Scale Data...")
+    X_scaled_train = prediction.prepare_feature.scale(X_train, "Standard_Scaler_Direction")
+    print("Do PCA...")
+    # TODO: fit number of components
+    X_train_transformed = prediction.prepare_feature.do_pca(X_scaled_train, 15, "PCA_Direction")
+    # Train
+    print("Train Dummy Classifier...")
+    dummy_sets = prediction.geo_train.train_classification_dummy(X_train_transformed, y_train)
+    print("Train KNeighbors Classifier...")
+    kn_sets = prediction.geo_train.train_classification_k_neighbors(X_train_transformed, y_train)
+    print("Train Decision Tree Classifier...")
+    dt_sets = prediction.geo_train.train_classification_decision_tree(X_train_transformed, y_train)
+    print("Train Random Forest Classifier...")
+    rf_sets = prediction.geo_train.train_classification_random_forest(X_train_transformed, y_train)
+    print("Train NN Classifier...")
+    nn_sets = prediction.geo_train.train_classification_neural_network(X_train_transformed, y_train)
+    # Evaluate Training
+    # Dummy_Classifier
+    prediction.evaluate.direction_error_metrics(dummy_sets[0], dummy_sets[2], "Dummy_Classifier")
+    prediction.evaluate.direction_error_metrics(dummy_sets[1], dummy_sets[3], "Dummy_Classifier")
+    # KNeighbors_Classifier
+    prediction.evaluate.direction_error_metrics(kn_sets[0], kn_sets[2], "KNeighbors_Classifier")
+    prediction.evaluate.direction_error_metrics(kn_sets[1], kn_sets[3], "KNeighbors_Classifier")
+    # Decision_Tree_Classifier
+    prediction.evaluate.direction_error_metrics(dt_sets[0], dt_sets[2], "Decision_Tree_Classifier")
+    prediction.evaluate.direction_error_metrics(dt_sets[1], dt_sets[3], "Decision_Tree_Classifier")
+    # Random_Forest_Classifier
+    prediction.evaluate.direction_error_metrics(rf_sets[0], rf_sets[2], "Random_Forest_Classifier")
+    prediction.evaluate.direction_error_metrics(rf_sets[1], rf_sets[3], "Random_Forest_Classifier")
+    # Neural Network Classifier
+    prediction.evaluate.direction_error_metrics(nn_sets[0], nn_sets[2], "NN_Classifier")
+    prediction.evaluate.direction_error_metrics(nn_sets[1], nn_sets[3], "NN_Classifier")
 
-    print("Drop End Information")
-    df_features = prediction.math_prepare_feature.drop_end_information(df_features, direction_needed=True)
-    print("Create Dummie Variables...")
-    df_features = prediction.math_prepare_feature.create_dummies(df_features)
-    print("Do Feature Engineering...")
-    df_features = prediction.math_prepare_feature.create_new_features(df_features)
-    print("Drop Unneeded Features...")
-    df_features = prediction.math_prepare_feature.drop_features(df_features)
-    df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)
-    print("Predict Trip Direction...")
-    prediction.geo_predict.train_pred(df_features)
+
+def testing_direction_subsets():
+    # data
+    df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
+    testing.direction_classification_subsets_testing.filter_subsets(df_features)
+
+
+def predict_direction_models():
+    # TODO: Docstring
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
+    print("Split Data...")
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(df_features)
+    # Predict
+    print("Predict by Dummy Classification...")
+    dummy_y_prediction = prediction.geo_predict.predict_by_dummy_classificaion(X_test)
+    print("Predict by KNeighbors Classificaion...")
+    kn_y_prediction = prediction.geo_predict.predict_by_k_neighbors_classificaion(X_test)
+    print("predict_by_decision_tree_classificaion...")
+    dt_y_prediction = prediction.geo_predict.predict_by_decision_tree_classificaion(X_test)
+    print("predict_by_random_forest_classificaion")
+    rf_y_prediction = prediction.geo_predict.predict_by_random_forest_classificaion(X_test)
+    print("predict_by_neural_network_classificaion")
+    nn_y_prediction = prediction.geo_predict.predict_by_neural_network_classificaion(X_test)
+    # Evaluate Prediction
+    prediction.evaluate.direction_error_metrics(y_test, dummy_y_prediction, "Dummy_Classifier", "Testing")
+    prediction.evaluate.direction_error_metrics(y_test, kn_y_prediction, "KNeighbors_Classifier", "Testing")
+    prediction.evaluate.direction_error_metrics(y_test, dt_y_prediction, "Decision_Tree_Classifier", "Testing")
+    prediction.evaluate.direction_error_metrics(y_test, rf_y_prediction, "Random_Forest_Classifier", "Testing")
+    prediction.evaluate.direction_error_metrics(y_test, nn_y_prediction, "NN_Classifier", "Testing")
 
 
 def print_time_for_step(p_start_time_step):
