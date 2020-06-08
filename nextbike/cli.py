@@ -149,6 +149,7 @@ def predict(filename, regress, classify, weather):
     """
     start_time_predict = datetime.now().replace(microsecond=0)
     start_time_step = start_time_predict
+    weather_data = ""
     if weather:
         weather_data = "_weather"
     print("START CLEAN")
@@ -159,7 +160,7 @@ def predict(filename, regress, classify, weather):
         start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
     if classify:
         print("START GEO PREDICT")
-        cli_code.predict_direction_models(p_weather=weather)
+        cli_code.predict_direction_models(p_weather=weather_data)
         utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
     utils.print_time_for_step(p_step_name="COMMAND PREDICT", p_start_time_step=start_time_predict)
 
@@ -188,8 +189,6 @@ def transform(filename):
 @main.command(name="descriptive_analysis",
               help="Start a descriptive analysis on the given data set. Clean and transform data into trip data."
                    "Afterwards start plotting descriptive statistics and visualizations.")
-@click.option("--clean/--no-clean", default=True,
-              help="Deactivate to skip data cleaning and transforming into trip data. Default: True.")
 @click.argument("filename", default="nuremberg.csv")
 def descriptive_analysis(filename):
     """Start a descriptive analysis on the given data set. Clean and transform data into trip data.
