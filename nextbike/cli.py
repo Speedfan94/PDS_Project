@@ -12,7 +12,7 @@ from nextbike import visualization, cli_code, utils
 @click.option("--viso/--no-viso", default=False,
               help="Do descriptive visualizations and plot aggregate statistics and different moments in time."
                    "Default: False")
-@click.option("--train/--no-train", default=False,
+@click.option("--traindur/--no-traindur", default=False,
               help="Train ML models to later on predict trip duration. Save them as pkl files to use again."
                    "Default: False")
 @click.option("--pred/--no-pred", default=False,
@@ -27,7 +27,7 @@ from nextbike import visualization, cli_code, utils
               help="Decide, whether to include weather data or not."
                    "Beware that weather data has to be manually added to 'data/input' directory"
                    "for the given time period by the user before running this. Default: False")
-def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
+def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
     """Initial entry point when running 'nextbike' in console.
     Runs everytime, nextbike is called. Therefore all steps are set off on default.
 
@@ -37,7 +37,7 @@ def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
         test:       option whether to run test stage (Default: False)
         clean:      option whether to run clean stage (Default: False)
         viso:       option whether to run viso stage (Default: False)
-        train:      option whether to run train stage (Default: False)
+        traindur:      option whether to run train stage (Default: False)
         pred:       option whether to run pred stage (Default: False)
         traingeo:   option whether to run traingeo stage (Default: False)
         predgeo:    option whether to run predgeo stage (Default: False)
@@ -57,30 +57,30 @@ def main(test, clean, viso, train, pred, traingeo, predgeo, weather):
         if clean:
             print("START CLEAN")
             cli_code.cleaning()
-            start_time_step = utils.print_time_for_step("STEP CLEAN", start_time_step)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
         if viso:
             print("START VISUALIZE")
             # TODO Rename visualization.math / geo to math_plot and geo_plot
             cli_code.visualize()
-            start_time_step = utils.print_time_for_step("STEP VISUALIZATION", start_time_step)
-        if train:
+            start_time_step = utils.print_time_for_step(p_step_name="STEP VISUALIZATION", p_start_time_step=start_time_step)
+        if traindur:
             print("START TRAIN")
-            cli_code.features_duration(weather)
+            cli_code.features_duration(p_weather=weather)
             cli_code.training_duration_models()
-            start_time_step = utils.print_time_for_step("STEP TRAIN", start_time_step)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
         if pred:
             print("START PREDICT")
-            cli_code.predict_duration_models(weather)
-            start_time_step = utils.print_time_for_step("STEP PREDICT", start_time_step)
+            cli_code.predict_duration_models(p_weather=weather)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
         if traingeo:
             print("START GEO TRAIN")
-            cli_code.features_direction(weather)
+            cli_code.features_direction(p_weather=weather)
             cli_code.train_direction_models()
-            start_time_step = utils.print_time_for_step("STEP GEO TRAIN", start_time_step)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
         if predgeo:
             print("START GEO PREDICT")
-            cli_code.predict_direction_models(weather)
-            start_time_step = utils.print_time_for_step("STEP GEO PREDICT", start_time_step)
+            cli_code.predict_direction_models(p_weather=weather)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
 
         # As we in general do not run any of these main command stages, the print might confuse users
         # utils.print_time_for_step("COMMAND MAIN", start_time_main)
@@ -108,16 +108,16 @@ def train(regress, classify, weather):
     start_time_step = start_time_train
     if regress:
         print("START TRAIN")
-        cli_code.features_duration(weather)
+        cli_code.features_duration(p_weather=weather)
         cli_code.training_duration_models()
-        start_time_step = utils.print_time_for_step("STEP TRAIN", start_time_step)
+        start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
 
     if classify:
         print("START GEO TRAIN")
-        cli_code.features_direction(weather)
+        cli_code.features_direction(p_weather=weather)
         cli_code.train_direction_models()
-        utils.print_time_for_step("STEP GEO TRAIN", start_time_step)
-    utils.print_time_for_step("COMMAND TRAIN", start_time_train)
+        utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
+    utils.print_time_for_step(p_step_name="COMMAND TRAIN", p_start_time_step=start_time_train)
 
 
 @main.command(name="predict", help="Loads a previously trained model and predicts journey duration and direction"
@@ -147,13 +147,13 @@ def predict(filename, regress, classify, weather):
     start_time_step = start_time_predict
     if regress:
         print("START PREDICT")
-        cli_code.predict_duration_models(filename, weather)
-        start_time_step = utils.print_time_for_step("STEP PREDICT", start_time_step)
+        cli_code.predict_duration_models(p_trips_file=filename, p_weather=weather)
+        start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
     if classify:
         print("START GEO PREDICT")
-        cli_code.predict_direction_models(filename, weather)
-        utils.print_time_for_step("STEP GEO PREDICT", start_time_step)
-    utils.print_time_for_step("COMMAND PREDICT", start_time_predict)
+        cli_code.predict_direction_models(p_trips_file=filename, p_weather=weather)
+        utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
+    utils.print_time_for_step(p_step_name="COMMAND PREDICT", p_start_time_step=start_time_predict)
 
 
 @main.command(name="transform", help="Transforms a data set in the provided format to a data set in trip format"
@@ -172,8 +172,8 @@ def transform(filename):
     """
     start_time_transform = datetime.now().replace(microsecond=0)
     print("START CLEAN")
-    cli_code.cleaning(filename)
-    utils.print_time_for_step("COMMAND TRANSFORM", start_time_transform)
+    cli_code.cleaning(p_filename=filename)
+    utils.print_time_for_step(p_step_name="COMMAND TRANSFORM", p_start_time_step=start_time_transform)
 
 
 @main.command(name="descriptive_analysis",
@@ -196,12 +196,12 @@ def descriptive_analysis(filename, clean):
     start_time_step = start_time_desc_analysis
     if clean:
         print("START CLEAN")
-        cli_code.cleaning(filename)
-        start_time_step = utils.print_time_for_step("STEP CLEAN", start_time_step)
+        cli_code.cleaning(p_filename=filename)
+        start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
     print("START VISUALIZATION")
     cli_code.visualize()
-    utils.print_time_for_step("STEP VISUALIZATION", start_time_step)
-    utils.print_time_for_step("COMMAND DESCRIPTIVE ANALYSIS", start_time_desc_analysis)
+    utils.print_time_for_step(p_step_name="STEP VISUALIZATION", p_start_time_step=start_time_step)
+    utils.print_time_for_step(p_step_name="COMMAND DESCRIPTIVE ANALYSIS", p_start_time_step=start_time_desc_analysis)
 
 
 if __name__ == "__main__":

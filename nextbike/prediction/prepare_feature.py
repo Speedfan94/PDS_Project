@@ -21,19 +21,20 @@ def create_dummies(p_df):
     return df_dummies
 
 
-def create_new_features(p_X, weather):
+def create_new_features(p_X, p_weather):
     """Create new features which are usefull for prediction performance.
 
     Example methods for feature engineering could be found here:
     https://de.devoteam.com/blog-post/bedeutung-der-feature-engineering-methoden-2/
     Args:
-        p_X (DataFrame): Dataframe of existing features (matrix)
+        p_X (DataFrame):    Dataframe of existing features (matrix)
+        p_weather:          option whether weather should be included
     Returns:
-        p_X (DataFrame): Dataframe with existing and new added features (matrix)
+        p_X (DataFrame):    Dataframe with existing and new added features (matrix)
     """
     # TODO Weather Data adding implement here, by triggering
 
-    if weather:
+    if p_weather:
         print("Adding Weather Data...")
         p_X = prediction.add_weather(p_X)
         p_X["Rain_squared"] = np.power(p_X["rain(mm)"], 3)
