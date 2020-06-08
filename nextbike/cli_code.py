@@ -182,7 +182,7 @@ def testing_duration_models():
     testing.linear_regression_testing.test_regression_model(p_components=df_components, p_y_train=y_true)
 
 
-def predict_duration_models(p_trips_file, p_weather=False):
+def predict_duration_models(p_weather=False, p_trips_file=""):
     """Predict the duration of trips by different models.
 
     Method which runs the sequential flow of the duration prediction by different trained ML models.
@@ -194,7 +194,7 @@ def predict_duration_models(p_trips_file, p_weather=False):
         No return
     """
     # Prepare
-    if p_trips_file:
+    if len(p_trips_file) > 0:
         # first create features for duration prediction out of trips data
         features_duration(p_trips_file=p_trips_file, p_weather=p_weather)
     df_features = io.input.read_csv(p_filename="Features_Duration.csv", p_io_folder="output")
@@ -332,10 +332,10 @@ def testing_direction_subsets():
     testing.direction_classification_subsets_testing.filter_subsets(p_df=df_features)
 
 
-def predict_direction_models(p_trips_file, p_weather=False):
+def predict_direction_models(p_trips_file="", p_weather=False):
     # TODO: Docstring
     # Prepare
-    if p_trips_file:
+    if len(p_trips_file) > 0:
         # first create features for direction prediction out of trips data
         features_direction(p_trips_file=p_trips_file, p_weather=p_weather)
     df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
