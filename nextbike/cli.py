@@ -1,6 +1,6 @@
 import click
 from datetime import datetime
-from nextbike import visualization, cli_code, utils
+from nextbike import cli_code, utils, testing
 
 
 # TODO: OPTIONAL: add parameter option for different tests
@@ -47,13 +47,14 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
     """
     if test:
         # testing_duration_models()
-        # testing_robust_scaler()
+        testing.testing_robust_scaler()
         # testing_direction_subsets()
-        visualization.main_test()
     else:
         start_time_main = datetime.now().replace(microsecond=0)
         start_time_step = start_time_main
-
+        weather_data = ""
+        if weather:
+            weather_data = "_weather"
         if clean:
             print("START CLEAN")
             cli_code.cleaning()
@@ -65,21 +66,21 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
             start_time_step = utils.print_time_for_step(p_step_name="STEP VISUALIZATION", p_start_time_step=start_time_step)
         if traindur:
             print("START TRAIN")
-            cli_code.features_duration(p_weather=weather)
-            cli_code.training_duration_models()
+            cli_code.features_duration(p_weather=weather_data)
+            cli_code.training_duration_models(p_weather=weather_data)
             start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
         if pred:
             print("START PREDICT")
-            cli_code.predict_duration_models(p_weather=weather)
+            cli_code.predict_duration_models(p_weather=weather_data)
             start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
         if traingeo:
             print("START GEO TRAIN")
-            cli_code.features_direction(p_weather=weather)
-            cli_code.train_direction_models()
+            cli_code.features_direction(p_weather=weather_data)
+            cli_code.train_direction_models(weather_data)
             start_time_step = utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
         if predgeo:
             print("START GEO PREDICT")
-            cli_code.predict_direction_models(p_weather=weather)
+            cli_code.predict_direction_models(p_weather=weather_data)
             start_time_step = utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
 
         # As we in general do not run any of these main command stages, the print might confuse users
@@ -106,16 +107,19 @@ def train(regress, classify, weather):
     """
     start_time_train = datetime.now().replace(microsecond=0)
     start_time_step = start_time_train
+    weather_data = ""
+    if weather:
+        weather_data = "_weather"
     if regress:
         print("START TRAIN")
-        cli_code.features_duration(p_weather=weather)
-        cli_code.training_duration_models()
+        cli_code.features_duration(p_weather=weather_data)
+        cli_code.training_duration_models(p_weather=weather_data)
         start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
 
     if classify:
         print("START GEO TRAIN")
         cli_code.features_direction(p_weather=weather)
-        cli_code.train_direction_models()
+        cli_code.train_direction_models(p_weather=weather)
         utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
     utils.print_time_for_step(p_step_name="COMMAND TRAIN", p_start_time_step=start_time_train)
 
@@ -145,13 +149,18 @@ def predict(filename, regress, classify, weather):
     """
     start_time_predict = datetime.now().replace(microsecond=0)
     start_time_step = start_time_predict
+    weather_data = ""
+    if weather:
+        weather_data = "_weather"
+    print("START CLEAN")
+    cli_code.cleaning(p_filename=filename, mode="_testing")
     if regress:
         print("START PREDICT")
-        cli_code.predict_duration_models(p_trips_file=filename, p_weather=weather)
+        cli_code.predict_duration_models(p_weather=weather_data)
         start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
     if classify:
         print("START GEO PREDICT")
-        cli_code.predict_direction_models(p_trips_file=filename, p_weather=weather)
+        cli_code.predict_direction_models(p_weather=weather)
         utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
     utils.print_time_for_step(p_step_name="COMMAND PREDICT", p_start_time_step=start_time_predict)
 
@@ -170,9 +179,10 @@ def transform(filename):
     Returns:
         No return
     """
+
     start_time_transform = datetime.now().replace(microsecond=0)
     print("START CLEAN")
-    cli_code.cleaning(p_filename=filename)
+    cli_code.cleaning(p_filename=filename, mode="_testing")
     utils.print_time_for_step(p_step_name="COMMAND TRANSFORM", p_start_time_step=start_time_transform)
 
 
@@ -182,24 +192,22 @@ def transform(filename):
 @click.option("--clean/--no-clean", default=True,
               help="Deactivate to skip data cleaning and transforming into trip data. Default: True.")
 @click.argument("filename", default="nuremberg.csv")
-def descriptive_analysis(filename, clean):
+def descriptive_analysis(filename):
     """Start a descriptive analysis on the given data set. Clean and transform data into trip data.
     Afterwards start plotting descriptive statistics and visualizations.
 
     Args:
         filename:   filename of new data csv file. File has to be located in 'data/input'
-        clean:      option whether to clean and transform the data first or to only visualize (Default: True)
     Returns:
         No return
     """
     start_time_desc_analysis = datetime.now().replace(microsecond=0)
     start_time_step = start_time_desc_analysis
-    if clean:
-        print("START CLEAN")
-        cli_code.cleaning(p_filename=filename)
-        start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
+    print("START CLEAN")
+    cli_code.cleaning(p_filename=filename, mode="_testing")
+    start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
     print("START VISUALIZATION")
-    cli_code.visualize()
+    cli_code.visualize("_testing")
     utils.print_time_for_step(p_step_name="STEP VISUALIZATION", p_start_time_step=start_time_step)
     utils.print_time_for_step(p_step_name="COMMAND DESCRIPTIVE ANALYSIS", p_start_time_step=start_time_desc_analysis)
 
