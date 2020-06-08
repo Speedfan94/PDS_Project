@@ -1,4 +1,3 @@
-import pandas as pd
 import geopy.distance as geodis
 
 

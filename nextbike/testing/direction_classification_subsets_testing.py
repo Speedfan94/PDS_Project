@@ -4,6 +4,7 @@ from sklearn.decomposition import PCA
 
 
 def filter_subsets(p_df):
+    # TODO: Docstring
     # TODO: What happens if month start is dropped from features?
     months = p_df["Month_start"].unique()
     months.sort()
@@ -18,6 +19,7 @@ def filter_subsets(p_df):
 
 
 def test_subset_classification(p_df_subset):
+    # TODO: Docstring
     X = p_df_subset.drop("Direction", axis=1)
     y = p_df_subset["Direction"]
     print("Scale Data...")
