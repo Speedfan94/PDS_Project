@@ -33,12 +33,14 @@ def additional_feature_creation(p_df_trips):
     p_df_trips["Hour_start"] = p_df_trips["Start_Time"].dt.hour
     p_df_trips["Minute_start"] = p_df_trips["Start_Time"].dt.minute
     p_df_trips["Day_of_year_start"] = p_df_trips["Start_Time"].dt.dayofyear
+    p_df_trips["Day_of_week_start"] = p_df_trips["Start_Time"].dt.dayofweek
     p_df_trips["Season"] = (p_df_trips["Month_start"] % 12 + 3) // 3  # winter: 1, spring: 2, summer: 3, fall: 4
     p_df_trips["Month_end"] = p_df_trips["End_Time"].dt.month
     p_df_trips["Day_end"] = p_df_trips["End_Time"].dt.day
     p_df_trips["Hour_end"] = p_df_trips["End_Time"].dt.hour
     p_df_trips["Minute_end"] = p_df_trips["Start_Time"].dt.minute
     p_df_trips["Day_of_year_end"] = p_df_trips["End_Time"].dt.dayofyear
+    p_df_trips["Day_of_week_end"] = p_df_trips["End_Time"].dt.dayofweek
 
     return p_df_trips
 
