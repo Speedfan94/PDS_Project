@@ -12,6 +12,9 @@ COLOR_BAR_MEAN = "yellowgreen"
 COLOR_BAR_STD = "firebrick"
 FONTSIZE_TITLE = 18
 FONTSIZE_AXIS_LABEL = 16
+LEGEND_SIZE_LARGE=20
+LEGEND_SIZE_MEDIUM=15
+LEGEND_SIZE_SMALL=10
 
 
 def calculate_aggregate_statistics(p_df_trips, p_mode):
@@ -145,7 +148,7 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
     ax1.set_xlabel(p_aggr_time_period, fontsize=FONTSIZE_AXIS_LABEL)
     ax1.set_ylabel("Duration [min]", fontsize=FONTSIZE_AXIS_LABEL)
     ax1.set_title("Mean and Std of Trip Duration ("+p_aggr_time_period+")", fontsize=FONTSIZE_TITLE)
-    ax1.legend(loc="upper left")
+    ax1.legend(loc="upper left", prop={"size": LEGEND_SIZE_MEDIUM})
 
     # subplot 2 (pie chart: weekend vs weekday)
     patches, texts = ax2.pie(p_df_aggr_stats["count_percentage"],
@@ -233,7 +236,7 @@ def plot_distribution(p_df, p_mode):
     plt.vlines(quantile_50, 0, 0.07, linestyles="dashed", label="50% Quantile", colors="yellow")
     plt.vlines(quantile_75, 0, 0.07, linestyles="dashed", label="75% Quantile", colors="red")
     plt.vlines(quantile_95, 0, 0.07, linestyles="dashed", label="95% Quantile")
-    plt.legend(loc="upper right", prop={"size": 20})
+    plt.legend(loc="upper right", prop={"size": LEGEND_SIZE_LARGE})
     io.save_fig(fig, p_filename="DurationMinutes_Distribution"+p_mode+".png", p_sub_folder2="math")
     plt.close(fig)
 
@@ -380,7 +383,7 @@ def plot_mean_duration(p_df, p_mode):
     ax.bar(x_3, y_3, 1.2, color="orange", label="Summer")
     ax.bar(x_4, y_4, 1.2, color="green", label="Fall")
     ax.plot(df_datapoints.index, df_datapoints["Duration"], c="black")
-    ax.legend(loc="upper right")
+    ax.legend(loc="upper right", prop={"size": LEGEND_SIZE_LARGE})
     io.save_fig(
         fig,
         p_filename="Mean_Duration_per_Day"+p_mode+".png",
@@ -441,7 +444,7 @@ def plot_features_influence(p_df):
     print("DONE")
 
 
-def plot_all_subet_lines_graphs(p_df_trips):
+def plot_all_subet_lines_graphs(p_df_trips, p_mode=""):
     """Plots all subset line graphs.
     Subset line graphs each include two plots: Dureation mean and count.
     Data is grouped into different subsets and for each subset, a line in a different color is drawn.
@@ -454,6 +457,7 @@ def plot_all_subet_lines_graphs(p_df_trips):
 
     Args:
         p_df_trips:     trips data set
+        p_mode:                 file ending if called with test data
     Returns:
         No return
     """
@@ -461,19 +465,23 @@ def plot_all_subet_lines_graphs(p_df_trips):
     df_trips_copy["Hour_of_week_start"] = df_trips_copy["Day_of_week_start"] * 24 + (df_trips_copy["Hour_start"]+1)
     plot_duration_and_counts_by_subset(p_df_trips=df_trips_copy,
                                        p_column_on_x_axis="Hour_start",
-                                       p_subset_column="Month_start")
+                                       p_subset_column="Month_start",
+                                       p_mode=p_mode)
     plot_duration_and_counts_by_subset(p_df_trips=df_trips_copy,
                                        p_column_on_x_axis="Hour_start",
-                                       p_subset_column="Season")
+                                       p_subset_column="Season",
+                                       p_mode=p_mode)
     plot_duration_and_counts_by_subset(p_df_trips=df_trips_copy,
                                        p_column_on_x_axis="Hour_of_week_start",
-                                       p_subset_column="Day_of_week_start")
+                                       p_subset_column="Day_of_week_start",
+                                       p_mode=p_mode)
     plot_duration_and_counts_by_subset(p_df_trips=df_trips_copy,
                                        p_column_on_x_axis="Day_of_year_start",
-                                       p_subset_column="Month_start")
+                                       p_subset_column="Month_start",
+                                       p_mode=p_mode)
 
 
-def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_column):
+def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_column, p_mode):
     """Prepares the data for subset line graphs, creates figure and subplots
     and calls plotting method for each subplot.
 
@@ -487,10 +495,11 @@ def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_
         p_df_trips:             trips data set
         p_column_on_x_axis:     column to be grouped by and plotted on x axis
         p_subset_column:        subset to group on (plotted by one colored line for each subset entry)
+        p_mode:                 file ending if called with test data
     Returns:
         No return
     """
-    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8))
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8), dpi=300)
 
     if p_subset_column == "Day_of_week_start":
         labels_subset = calendar.day_name
@@ -515,9 +524,9 @@ def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_
     subset_column_name = subset_column_name_with_underscore.replace("_", " ")
 
     # plot duration by subset
-    ax1.set_xlabel(column_on_x_axis_name)
-    ax1.set_ylabel("Duration Mean [min]")
-    ax1.set_title("Duration Mean per "+column_on_x_axis_name+" by "+subset_column_name)
+    ax1.set_xlabel(column_on_x_axis_name, fontsize=FONTSIZE_AXIS_LABEL)
+    ax1.set_ylabel("Duration Mean [min]", fontsize=FONTSIZE_AXIS_LABEL)
+    ax1.set_title("Duration Mean per "+column_on_x_axis_name+" by "+subset_column_name, fontsize=FONTSIZE_TITLE)
     df_trips_per_hour_weekday_duration = df_trips_per_hour_weekday["Duration"].mean()
     df_trips_per_hour_weekday_duration = df_trips_per_hour_weekday_duration.unstack()
     plot_subset_lines_data_onto_subplot(p_subplot=ax1,
@@ -525,9 +534,9 @@ def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_
                                         p_labels_subset=labels_subset)
 
     # plot count by subset
-    ax2.set_xlabel(column_on_x_axis_name)
-    ax2.set_ylabel("Number of trips")
-    ax2.set_title("Number of trips per "+column_on_x_axis_name+" by "+subset_column_name)
+    ax2.set_xlabel(column_on_x_axis_name, fontsize=FONTSIZE_AXIS_LABEL)
+    ax2.set_ylabel("Number of trips", fontsize=FONTSIZE_AXIS_LABEL)
+    ax2.set_title("Number of trips per "+column_on_x_axis_name+" by "+subset_column_name, fontsize=FONTSIZE_TITLE)
     # As we just want to count the number of entries, take any column (here: "Bike_Number")
     # to not have duplicated data
     df_trips_per_hour_weekday_count = df_trips_per_hour_weekday["Bike_Number"].count()
@@ -536,9 +545,10 @@ def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_
                                         p_df_data_by_subset=df_trips_per_hour_weekday_count,
                                         p_labels_subset=labels_subset)
 
+    filename = "SubsetLines_DurationCounts_"+column_on_x_axis_name_with_underscore+"_by_"+subset_column_name_with_underscore+p_mode+".png"
     io.save_fig(
         fig,
-        p_filename="SubsetLines_DurationCounts_"+column_on_x_axis_name_with_underscore+"_by_"+subset_column_name_with_underscore+".png",
+        p_filename=filename,
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -564,4 +574,4 @@ def plot_subset_lines_data_onto_subplot(p_subplot, p_df_data_by_subset, p_labels
         if subset_column in p_df_data_by_subset.columns:
             p_subplot.plot(p_df_data_by_subset.index.values, p_df_data_by_subset[subset_column], label=p_labels_subset[subset_column])
 
-    p_subplot.legend(loc="upper right")
+    p_subplot.legend(loc="upper right", prop={"size": LEGEND_SIZE_SMALL})
