@@ -7,7 +7,7 @@ uni = (49.458395, 11.085980)
 
 
 def visualize_stations_moment(p_df, p_mode=""):
-    """bikes at fixed stations at given point in time
+    """prints a map of nuremberg with all bikes at fixed stations at given point in time in a circleMarker
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
@@ -58,7 +58,7 @@ def visualize_stations_moment(p_df, p_mode=""):
 
 
 def visualize_heatmap(p_df, p_mode=""):
-    """heatmap for the 24th of December by searching for nearby trip ends.
+    """prints a heat map of nuremberg with all End Trips
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
@@ -116,6 +116,7 @@ def visualize_heatmap(p_df, p_mode=""):
 def visualize_postalcode(p_df, p_mode=""):
     """Plots a choropleth graph on a map based on the number of started trips in each postal code code region.
     This is be done for the month with the most trips
+    The fixed bike stations are marked as well
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
@@ -190,7 +191,8 @@ def visualize_postalcode(p_df, p_mode=""):
 
 
 def visualize_trips_per_month(p_df, p_mode=""):
-    """TODO:Docstring
+    """prints a map of nuremberg with trips at a given day
+    marks start as green circle and end as red one
 
     Args:
         p_df (DataFrame): DataFrame with trip data from nuremberg
