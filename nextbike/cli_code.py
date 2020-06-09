@@ -26,7 +26,7 @@ def cleaning(p_filename="nuremberg.csv", p_mode=""):
     print("Add Distances to University...")
     df_trips_only_nuremberg_dist = datapreparation.feature_add.quick_create_dist(p_df=df_trips_only_nuremberg)
     print("Save trip dataframe...")
-    io.output.save_csv(p_df=df_trips_only_nuremberg_dist, p_filename="Trips"+p_mode+".csv")
+    io.output.save_csv(p_df=df_trips_only_nuremberg_dist, p_filename="Trips" + p_mode + ".csv")
 
 
 def visualize(p_mode=""):
@@ -39,7 +39,7 @@ def visualize(p_mode=""):
     Returns:
         No return
     """
-    df = io.input.read_csv(p_filename="Trips"+p_mode+".csv", p_io_folder="output")
+    df = io.input.read_csv(p_filename="Trips" + p_mode + ".csv", p_io_folder="output")
     utils.cast_datetime(p_df=df, p_datetime_columns=["Start_Time", "End_Time"])
     print("Visualize Aggregate Statistics...")
     visualization.math_descriptive.calculate_aggregate_statistics(p_df_trips=df, p_mode=p_mode)
@@ -49,6 +49,8 @@ def visualize(p_mode=""):
     visualization.geo.visualize_heatmap(p_df=df, p_mode=p_mode)
     print("Visualize Postalcode Zones...")
     visualization.geo.visualize_postalcode(p_df=df, p_mode=p_mode)
+    print("Visualize Trips in Map...")
+    visualization.geo.visualize_trips_per_month(p_df=df, p_mode=p_mode)
     print("Visualize Monthly Distribution...")
     visualization.math_descriptive.plot_distribution_monthly(p_df=df, p_mode=p_mode)
     print("Visualize Distribution Function...")
@@ -67,7 +69,7 @@ def features_duration(p_weather, p_mode=""):
     Returns:
         No return
     """
-    df_trips = io.input.read_csv(p_filename="Trips"+p_mode+".csv", p_io_folder="output")
+    df_trips = io.input.read_csv(p_filename="Trips" + p_mode + ".csv", p_io_folder="output")
 
     # TODO: Add corr analysis before feature selection be aware of non numerical features
     # visualization.math_descriptive.corr_analysis(df_features_2)
@@ -81,7 +83,7 @@ def features_duration(p_weather, p_mode=""):
     df_features_2 = prediction.prepare_feature.drop_features(p_df=df_features_2)
     df_features_2 = df_features_2.drop(["Place_start", "Start_Time"], axis=1)
     visualization.math_descriptive.corr_analysis(p_df=df_features_2, p_weather=p_weather)
-    io.output.save_csv(p_df=df_features_2, p_filename="Features_Duration"+p_mode+p_weather+".csv")
+    io.output.save_csv(p_df=df_features_2, p_filename="Features_Duration" + p_mode + p_weather + ".csv")
     # visualization.math.plot_features_influence(df_features_2)
 
 
@@ -96,18 +98,23 @@ def training_duration_models(p_weather, p_mode=""):
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Duration"+p_mode+p_weather+".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_mode + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df=df_features)
     print("Scale Data...")
-    X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train, p_scaler_name="Standard_Scaler_Duration"+p_weather)
+    X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train,
+                                                      p_scaler_name="Standard_Scaler_Duration" + p_weather)
     print("Do PCA...")
+    components = 17
+    # if len(p_weather) > 0:
+    #     components = 21
+
     X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
-                                                            p_number_components=21,
-                                                            p_filename="PCA_Duration"+p_weather)
+                                                            p_number_components=components,
+                                                            p_filename="PCA_Duration" + p_weather)
     df_components = pd.DataFrame(X_train_transformed)
-    io.output.save_csv(p_df=y_train, p_filename="y_train_Duration"+p_weather+".csv")
-    io.output.save_csv(p_df=df_components, p_filename="Components_Duration"+p_weather+".csv")
+    io.output.save_csv(p_df=y_train, p_filename="y_train_Duration" + p_weather + ".csv")
+    io.output.save_csv(p_df=df_components, p_filename="Components_Duration" + p_weather + ".csv")
     # Train
     # The sets are in order: y_train, y_val, y_prediction_train, y_prediction_val
     print("Train Dummy Mean Regression...")
@@ -129,42 +136,42 @@ def training_duration_models(p_weather, p_mode=""):
     # Dummy Regression Mean
     prediction.evaluate.duration_error_metrics(p_y_true=d_mean_sets[0],
                                                p_y_predictions=d_mean_sets[2],
-                                               p_filename="Dummy_Mean_Regression_Training"+p_weather)
+                                               p_filename="Dummy_Mean_Regression_Training" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=d_mean_sets[1],
                                                p_y_predictions=d_mean_sets[3],
-                                               p_filename="Dummy_Mean_Regression_Validation"+p_weather,
+                                               p_filename="Dummy_Mean_Regression_Validation" + p_weather,
                                                p_status="Validation")
     # Dummy Regression Median
     prediction.evaluate.duration_error_metrics(p_y_true=dummy_med_sets[0],
                                                p_y_predictions=dummy_med_sets[2],
-                                               p_filename="Dummy_Med_Regression_Training"+p_weather)
+                                               p_filename="Dummy_Med_Regression_Training" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=dummy_med_sets[1],
                                                p_y_predictions=dummy_med_sets[3],
-                                               p_filename="Dummy_Med_Regression_Validation"+p_weather,
+                                               p_filename="Dummy_Med_Regression_Validation" + p_weather,
                                                p_status="Validation")
     # Linear Regression
     prediction.evaluate.duration_error_metrics(p_y_true=lin_regr_sets[0],
                                                p_y_predictions=lin_regr_sets[2],
-                                               p_filename="Linear_Regression_Training"+p_weather)
+                                               p_filename="Linear_Regression_Training" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=lin_regr_sets[1],
                                                p_y_predictions=lin_regr_sets[3],
-                                               p_filename="Linear_Regression_Validation"+p_weather,
+                                               p_filename="Linear_Regression_Validation" + p_weather,
                                                p_status="Validation")
     # SVM Regression
     prediction.evaluate.duration_error_metrics(p_y_true=svm_regr_sets[0],
                                                p_y_predictions=svm_regr_sets[2],
-                                               p_filename="SVM_Regression_Training"+p_weather)
+                                               p_filename="SVM_Regression_Training" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=svm_regr_sets[1],
                                                p_y_predictions=svm_regr_sets[3],
-                                               p_filename="SVM_Regression_Validation"+p_weather,
+                                               p_filename="SVM_Regression_Validation" + p_weather,
                                                p_status="Validation")
     # NN Regression
     prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[0],
                                                p_y_predictions=nn_regr_sets[2],
-                                               p_filename="NN_Regression_Training"+p_weather)
+                                               p_filename="NN_Regression_Training" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[1],
                                                p_y_predictions=nn_regr_sets[3],
-                                               p_filename="NN_Regression_Validation"+p_weather,
+                                               p_filename="NN_Regression_Validation" + p_weather,
                                                p_status="Validation")
 
 
@@ -201,7 +208,7 @@ def predict_duration_models(p_weather):
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Duration"+p_weather+".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df=df_features)
     # Predict
@@ -239,6 +246,7 @@ def predict_duration_models(p_weather):
 
 
 def features_direction(p_weather, p_mode=""):
+
     """Prepares features for direction prediction out of trip data.
     Drops end information and unneeded features, creates new features
     and saves them as csv file.
@@ -249,7 +257,8 @@ def features_direction(p_weather, p_mode=""):
     Returns:
         No return
     """
-    df_features = io.input.read_csv(p_filename="Trips"+p_mode+".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Trips" + p_mode + ".csv", p_io_folder="output")
+
     print("Drop End Information")
     df_features = prediction.prepare_feature.drop_end_information(p_df=df_features, direction_needed=True)
     print("Create Dummie Variables...")
@@ -259,7 +268,7 @@ def features_direction(p_weather, p_mode=""):
     print("Drop Unneeded Features...")
     df_features = prediction.prepare_feature.drop_features(p_df=df_features)
     df_features = df_features.drop(["Place_start", "Start_Time"], axis=1)
-    io.output.save_csv(p_df=df_features, p_filename="Features_Direction"+p_mode+p_weather+".csv")
+    io.output.save_csv(p_df=df_features, p_filename="Features_Direction" + p_mode + p_weather + ".csv")
 
 
 def train_direction_models(p_weather, p_mode=""):
@@ -275,16 +284,17 @@ def train_direction_models(p_weather, p_mode=""):
     """
     # TODO: Feature selection etc...
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Direction"+p_mode+p_weather+".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_mode + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
     print("Scale Data...")
-    X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train, p_scaler_name="Standard_Scaler_Direction"+p_weather)
+    X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train,
+                                                      p_scaler_name="Standard_Scaler_Direction" + p_weather)
     print("Do PCA...")
     # TODO: fit number of components
     X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
-                                                            p_number_components=15,
-                                                            p_filename="PCA_Direction"+p_weather)
+                                                            p_number_components=17,
+                                                            p_filename="PCA_Direction" + p_weather)
     # Train
     print("Train Dummy Classifier...")
     dummy_sets = prediction.geo_train.train_classification_dummy(p_X_train_scaled=X_train_transformed,
@@ -305,38 +315,40 @@ def train_direction_models(p_weather, p_mode=""):
     # Dummy_Classifier
     prediction.evaluate.direction_error_metrics(p_y_true=dummy_sets[0],
                                                 p_y_predictions=dummy_sets[2],
-                                                p_filename="Dummy_Classifier"+p_weather)
+                                                p_filename="Dummy_Classifier" + p_weather)
     prediction.evaluate.direction_error_metrics(p_y_true=dummy_sets[1],
                                                 p_y_predictions=dummy_sets[3],
-                                                p_filename="Dummy_Classifier"+p_weather, p_status="Validation")
+                                                p_filename="Dummy_Classifier" + p_weather, p_status="Validation")
     # KNeighbors_Classifier
     prediction.evaluate.direction_error_metrics(p_y_true=kn_sets[0],
                                                 p_y_predictions=kn_sets[2],
-                                                p_filename="KNeighbors_Classifier"+p_weather)
+                                                p_filename="KNeighbors_Classifier" + p_weather)
     prediction.evaluate.direction_error_metrics(p_y_true=kn_sets[1],
                                                 p_y_predictions=kn_sets[3],
-                                                p_filename="KNeighbors_Classifier"+p_weather, p_status="Validation")
+                                                p_filename="KNeighbors_Classifier" + p_weather, p_status="Validation")
     # Decision_Tree_Classifier
     prediction.evaluate.direction_error_metrics(p_y_true=dt_sets[0],
                                                 p_y_predictions=dt_sets[2],
-                                                p_filename="Decision_Tree_Classifier"+p_weather)
+                                                p_filename="Decision_Tree_Classifier" + p_weather)
     prediction.evaluate.direction_error_metrics(p_y_true=dt_sets[1],
                                                 p_y_predictions=dt_sets[3],
-                                                p_filename="Decision_Tree_Classifier"+p_weather, p_status="Validation")
+                                                p_filename="Decision_Tree_Classifier" + p_weather,
+                                                p_status="Validation")
     # Random_Forest_Classifier
     prediction.evaluate.direction_error_metrics(p_y_true=rf_sets[0],
                                                 p_y_predictions=rf_sets[2],
-                                                p_filename="Random_Forest_Classifier"+p_weather)
+                                                p_filename="Random_Forest_Classifier" + p_weather)
     prediction.evaluate.direction_error_metrics(p_y_true=rf_sets[1],
                                                 p_y_predictions=rf_sets[3],
-                                                p_filename="Random_Forest_Classifier"+p_weather, p_status="Validation")
+                                                p_filename="Random_Forest_Classifier" + p_weather,
+                                                p_status="Validation")
     # Neural Network Classifier
     prediction.evaluate.direction_error_metrics(p_y_true=nn_sets[0],
                                                 p_y_predictions=nn_sets[2],
-                                                p_filename="NN_Classifier"+p_weather)
+                                                p_filename="NN_Classifier" + p_weather)
     prediction.evaluate.direction_error_metrics(p_y_true=nn_sets[1],
                                                 p_y_predictions=nn_sets[3],
-                                                p_filename="NN_Classifier"+p_weather, p_status="Validation")
+                                                p_filename="NN_Classifier" + p_weather, p_status="Validation")
 
 
 def testing_direction_subsets():
@@ -360,7 +372,7 @@ def predict_direction_models(p_weather):
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Direction"+p_weather+".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
     # Predict
@@ -369,29 +381,32 @@ def predict_direction_models(p_weather):
     print("Predict by KNeighbors Classificaion...")
     kn_y_prediction = prediction.geo_predict.predict_by_k_neighbors_classificaion(p_X_test=X_test, p_weather=p_weather)
     print("predict_by_decision_tree_classificaion...")
-    dt_y_prediction = prediction.geo_predict.predict_by_decision_tree_classificaion(p_X_test=X_test, p_weather=p_weather)
+    dt_y_prediction = prediction.geo_predict.predict_by_decision_tree_classificaion(p_X_test=X_test,
+                                                                                    p_weather=p_weather)
     print("predict_by_random_forest_classificaion")
-    rf_y_prediction = prediction.geo_predict.predict_by_random_forest_classificaion(p_X_test=X_test, p_weather=p_weather)
+    rf_y_prediction = prediction.geo_predict.predict_by_random_forest_classificaion(p_X_test=X_test,
+                                                                                    p_weather=p_weather)
     print("predict_by_neural_network_classificaion")
-    nn_y_prediction = prediction.geo_predict.predict_by_neural_network_classificaion(p_X_test=X_test, p_weather=p_weather)
+    nn_y_prediction = prediction.geo_predict.predict_by_neural_network_classificaion(p_X_test=X_test,
+                                                                                     p_weather=p_weather)
     # Evaluate Prediction
     prediction.evaluate.direction_error_metrics(p_y_true=y_test,
                                                 p_y_predictions=dummy_y_prediction,
-                                                p_filename="Dummy_Classifier"+p_weather,
+                                                p_filename="Dummy_Classifier" + p_weather,
                                                 p_status="Testing")
     prediction.evaluate.direction_error_metrics(p_y_true=y_test,
                                                 p_y_predictions=kn_y_prediction,
-                                                p_filename="KNeighbors_Classifier"+p_weather,
+                                                p_filename="KNeighbors_Classifier" + p_weather,
                                                 p_status="Testing")
     prediction.evaluate.direction_error_metrics(p_y_true=y_test,
                                                 p_y_predictions=dt_y_prediction,
-                                                p_filename="Decision_Tree_Classifier"+p_weather,
+                                                p_filename="Decision_Tree_Classifier" + p_weather,
                                                 p_status="Testing")
     prediction.evaluate.direction_error_metrics(p_y_true=y_test,
                                                 p_y_predictions=rf_y_prediction,
-                                                p_filename="Random_Forest_Classifier"+p_weather,
+                                                p_filename="Random_Forest_Classifier" + p_weather,
                                                 p_status="Testing")
     prediction.evaluate.direction_error_metrics(p_y_true=y_test,
                                                 p_y_predictions=nn_y_prediction,
-                                                p_filename="NN_Classifier"+p_weather,
+                                                p_filename="NN_Classifier" + p_weather,
                                                 p_status="Testing")

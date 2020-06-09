@@ -24,7 +24,7 @@ def duration_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Trai
     print("MAE:", metrics.mean_absolute_error(p_y_true, p_y_predictions), end=" ")
     # The coefficient of determination: 1 is perfect prediction
     print("R^2:", metrics.r2_score(p_y_true, p_y_predictions))
-    visualization.math_predictive.plot_true_vs_predicted(p_y_true, p_y_predictions, p_filename)
+    visualization.math_predictive.plot_true_vs_predicted(p_y_true, p_y_predictions, p_filename, p_status)
 
 
 def direction_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Training"):

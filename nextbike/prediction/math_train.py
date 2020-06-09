@@ -102,13 +102,13 @@ def train_neural_network(p_X_train_scaled, p_y_train, p_weather, p_testing=False
     # create a validation set which is 20% of the whole dataset. Therefore use formula to receive ca. 0.2857.
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     neural_network = keras.Sequential(
-        [layers.Dense(36, activation="relu", input_shape=[p_X_train_scaled.shape[1]]),
+        [layers.Dense(36, activation="relu", input_shape=[p_X_train_scaled.shape[1]], kernel_initializer="random_normal"),
          # layers.Dropout(0.2),
-         layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
-         layers.Dense(36, activation="relu"),
+         layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
@@ -117,7 +117,7 @@ def train_neural_network(p_X_train_scaled, p_y_train, p_weather, p_testing=False
     neural_network.compile(loss="mse",
                            optimizer=optimizer,
                            metrics=["mae", "mse"])
-    epochs = 20
+    epochs = 100
     # create a validation set which is 20% of the whole dataset. Therefore use formula to receive ca. 0.2857.
     history = neural_network.fit(X_train, y_train, epochs=epochs, validation_data=(X_val, y_val))
     if p_testing:
