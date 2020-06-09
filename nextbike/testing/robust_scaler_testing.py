@@ -22,7 +22,7 @@ def test_robust_scaler(p_df, p_weather):
     robust_scaler = RobustScaler()
     X_scaled_train = robust_scaler.fit_transform(X_train)
     print("Do PCA...")
-    pca = PCA(n_components=21)
+    pca = PCA(n_components=17)
     pca.fit(X_scaled_train)
     X_train_transformed = pca.transform(X_scaled_train)
     # Train
