@@ -1,6 +1,6 @@
 import click
 from datetime import datetime
-from nextbike import cli_code, utils, testing, io
+from nextbike import cli_code, utils, testing, io, visualization
 
 
 # TODO: OPTIONAL: add parameter option for different tests
@@ -49,10 +49,11 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
     if weather:
         weather_data = "_weather"
     if test:
-        # df = io.read_csv("Features_Duration.csv", "output")
+        df = io.read_csv("Trips.csv", "output")
         # testing_duration_models()
         # testing.robust_scaler_testing.test_robust_scaler(p_df=df, p_weather)
         # testing_direction_subsets()
+        visualization.visualize_trips_per_month(df)
         print("This can be used for testing-purposes")
     else:
         start_time_main = datetime.now().replace(microsecond=0)
