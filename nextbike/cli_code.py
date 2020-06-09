@@ -264,7 +264,7 @@ def train_direction_models(p_weather, p_mode=""):
     print("Do PCA...")
     # TODO: fit number of components
     X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
-                                                            p_number_components=15,
+                                                            p_number_components=21,
                                                             p_filename="PCA_Direction"+p_weather)
     # Train
     print("Train Dummy Classifier...")
