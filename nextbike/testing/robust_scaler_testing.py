@@ -4,7 +4,17 @@ from sklearn.decomposition import PCA
 
 
 def test_robust_scaler(p_df, p_weather):
-    # TODO: Docstring
+    """Tests robust scaler to not kick out noise hardcoded. Does PCA and trains neural networks with scaled data.
+    Evaluates performance of robust scaler.
+
+    For us, the robust scaler did not perform that good
+
+    Args:
+        p_df:       Whole data set
+        p_weather:  file ending when weather data is included
+    Returns:
+        No return
+    """
     # Prepare Train
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df)

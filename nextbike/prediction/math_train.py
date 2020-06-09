@@ -11,7 +11,17 @@ from sklearn.dummy import DummyRegressor
 
 
 def train_dummy_regression_median(p_X_train_scaled, p_y_train, p_weather):
-    # TODO: Docstring
+    """Train Dummy Regression Median Model
+
+    Train and save a Dummy Regression Median model. Then evaluate the error metrics by another method.
+
+    Args:
+        p_X_train_scaled:   scaled X train data
+        p_y_train:          y train data
+        p_weather:          file ending when weather data is included
+    Return:
+        lin_regr_sets:      linear regression sets
+    """
     # create a validation set which is 20% of the whole dataset. Therefore use formula to receive ca. 0.2857.
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     dummy_reg = DummyRegressor(strategy="median")
@@ -24,7 +34,17 @@ def train_dummy_regression_median(p_X_train_scaled, p_y_train, p_weather):
 
 
 def train_dummy_regression_mean(p_X_train_scaled, p_y_train, p_weather):
-    # TODO: Docstring
+    """Train Dummy Regression Mean Model
+
+    Train and save a Dummy Regression Mean model. Then evaluate the error metrics by another method.
+
+    Args:
+        p_X_train_scaled:   scaled X train data
+        p_y_train:          y train data
+        p_weather:          file ending when weather data is included
+    Return:
+        lin_regr_sets:      linear regression sets
+    """
     # create a validation set which is 20% of the whole dataset. Therefore use formula to receive ca. 0.2857.
     X_train, X_val, y_train, y_val = train_test_split(p_X_train_scaled, p_y_train, random_state=42, test_size=0.2 / 0.7)
     dummy_reg = DummyRegressor(strategy="mean")
@@ -115,13 +135,17 @@ def train_svm(p_X_train_scaled, p_y_train, p_weather):
     """Train Support Vector Machine Model
 
     Train and save a Support Vector Machine model.
+    SVM is not the best model. Optimal would be max iteration of -1,
+    but we decided to leave it at 1000 as it would run forever and we assume
+    that it would not deliver that much better results
     The properties of the SVM are:
-        - max iterations are 1000 #TODO: set max iterations
+        - max iterations are 1000
         - degree is 1
         - kernel is linear
         - cache_size is 2000 kb
         - gamma regularization
     Then evaluate the error metrics by another method.
+
     Args:
         p_X_train_scaled (DataFrame): Scaled X input of train set (matrix)
         p_y_train (Series): y output to train on (vector)

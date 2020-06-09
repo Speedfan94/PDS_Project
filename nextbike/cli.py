@@ -64,7 +64,6 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
             start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
         if viso:
             print("START VISUALIZE")
-            # TODO Rename visualization.math / geo to math_plot and geo_plot
             cli_code.visualize()
             start_time_step = utils.print_time_for_step(
                 p_step_name="STEP VISUALIZATION", p_start_time_step=start_time_step)
