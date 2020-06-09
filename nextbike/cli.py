@@ -53,7 +53,9 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
         # testing_duration_models()
         # testing.robust_scaler_testing.test_robust_scaler(p_df=df, p_weather)
         # testing_direction_subsets()
-        visualization.visualize_trips_per_month(df)
+        visualization.visualize_trips_per_month(p_df=df)
+        visualization.visualize_stations_moment(p_df=df)
+        visualization.visualize_postalcode(p_df=df)
         print("This can be used for testing-purposes")
     else:
         start_time_main = datetime.now().replace(microsecond=0)
