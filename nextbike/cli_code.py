@@ -43,6 +43,8 @@ def visualize(p_mode=""):
     utils.cast_datetime(p_df=df, p_datetime_columns=["Start_Time", "End_Time"])
     print("Visualize Aggregate Statistics...")
     visualization.math_descriptive.calculate_aggregate_statistics(p_df_trips=df, p_mode=p_mode)
+    print("Visualize Duration and count on different subsets...")
+    visualization.math_descriptive.plot_all_subet_lines_graphs(p_df_trips=df)
     print("Visualize Stations Map...")
     visualization.geo.visualize_stations_moment(p_df=df, p_mode=p_mode)
     print("Visualize Heatmap Christmas...")
