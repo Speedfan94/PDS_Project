@@ -446,10 +446,10 @@ def plot_all_subet_lines_graphs(p_df_trips):
     Data is grouped into different subsets and for each subset, a line in a different color is drawn.
 
     Currently draws duration and count for:
-    - x-axis: Hour          color: Month
-    - x-axis: Hour          color: Season
-    - x-axis: Hour of week  color: Day of week  (= days side-by-side)
-    - x-axis: Day of year   color: Month        (= months side-by-side)
+        - x-axis: Hour          color: Month
+        - x-axis: Hour          color: Season
+        - x-axis: Hour of week  color: Day of week  (= days side-by-side)
+        - x-axis: Day of year   color: Month        (= months side-by-side)
 
     Args:
         p_df_trips:     trips data set
@@ -473,8 +473,22 @@ def plot_all_subet_lines_graphs(p_df_trips):
 
 
 def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_column):
-    # TODO: Docstring
+    """Prepares the data for subset line graphs, creates figure and subplots
+    and calls plotting method for each subplot.
 
+    Data preparation:
+        1. Grouping df on p_column_on_x_axis and p_subset_column
+        2. Calculating duration mean and count of each group
+        3. Unstack to create matrix df
+        4. Call plotting method for each subplot
+
+    Args:
+        p_df_trips:             trips data set
+        p_column_on_x_axis:     column to be grouped by and plotted on x axis
+        p_subset_column:        subset to group on (plotted by one colored line for each subset entry)
+    Returns:
+        No return
+    """
     fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8))
 
     if p_subset_column == "Day_of_week_start":
@@ -491,22 +505,25 @@ def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_
 
     # data
     df_trips_per_hour_weekday = p_df_trips.groupby([p_column_on_x_axis, p_subset_column])
+
+    # create labels for x_axis
     column_on_x_axis_name_with_underscore = p_column_on_x_axis.replace("_start", "")
     column_on_x_axis_name = column_on_x_axis_name_with_underscore.replace("_", " ")
+    # create labels for subset
     subset_column_name_with_underscore = p_subset_column.replace("_start", "")
     subset_column_name = subset_column_name_with_underscore.replace("_", " ")
 
-    # duration
+    # plot duration by subset
     ax1.set_xlabel(column_on_x_axis_name)
     ax1.set_ylabel("Duration Mean [min]")
     ax1.set_title("Duration Mean per "+column_on_x_axis_name+" by "+subset_column_name)
     df_trips_per_hour_weekday_duration = df_trips_per_hour_weekday["Duration"].mean()
     df_trips_per_hour_weekday_duration = df_trips_per_hour_weekday_duration.unstack()
-    plot_lines_by_subset(p_plt_to_draw_on=ax1,
-                         p_df_data_by_subset=df_trips_per_hour_weekday_duration,
-                         p_labels_subset=labels_subset)
+    plot_subset_lines_data_onto_subplot(p_subplot=ax1,
+                                        p_df_data_by_subset=df_trips_per_hour_weekday_duration,
+                                        p_labels_subset=labels_subset)
 
-    # count
+    # plot count by subset
     ax2.set_xlabel(column_on_x_axis_name)
     ax2.set_ylabel("Number of trips")
     ax2.set_title("Number of trips per "+column_on_x_axis_name+" by "+subset_column_name)
@@ -514,13 +531,13 @@ def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_
     # to not have duplicated data
     df_trips_per_hour_weekday_count = df_trips_per_hour_weekday["Bike_Number"].count()
     df_trips_per_hour_weekday_count = df_trips_per_hour_weekday_count.unstack()
-    plot_lines_by_subset(p_plt_to_draw_on=ax2,
-                         p_df_data_by_subset=df_trips_per_hour_weekday_count,
-                         p_labels_subset=labels_subset)
+    plot_subset_lines_data_onto_subplot(p_subplot=ax2,
+                                        p_df_data_by_subset=df_trips_per_hour_weekday_count,
+                                        p_labels_subset=labels_subset)
 
     io.save_fig(
         fig,
-        p_filename="Subset_Lines_Duration_Counts_per_"+column_on_x_axis_name_with_underscore+"_by_"+subset_column_name_with_underscore+".png",
+        p_filename="SubsetLines_DurationCounts_"+column_on_x_axis_name_with_underscore+"_by_"+subset_column_name_with_underscore+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -528,12 +545,22 @@ def plot_duration_and_counts_by_subset(p_df_trips, p_column_on_x_axis, p_subset_
     plt.close(fig)
 
 
-def plot_lines_by_subset(p_plt_to_draw_on, p_df_data_by_subset, p_labels_subset):
-    # TODO: Docstring
+def plot_subset_lines_data_onto_subplot(p_subplot, p_df_data_by_subset, p_labels_subset):
+    """Plots the generated data of a subset line graph onto the given subplot
+    Is called twice: once for duration and once for count
 
-    # plotting
+    Args:
+        p_subplot:               subplot to draw on
+        p_df_data_by_subset:     duration means / counts per subset
+        p_labels_subset:         list of labels for the subsets
+    Returns:
+        No return
+    """
+
+    # plot line for every subset
     for subset_column in p_df_data_by_subset.columns:
+        # check for existance because we may have missing data in e.g. months (may and july)
         if subset_column in p_df_data_by_subset.columns:
-            p_plt_to_draw_on.plot(p_df_data_by_subset.index.values, p_df_data_by_subset[subset_column], label=p_labels_subset[subset_column])
+            p_subplot.plot(p_df_data_by_subset.index.values, p_df_data_by_subset[subset_column], label=p_labels_subset[subset_column])
 
-    p_plt_to_draw_on.legend(loc="upper right")
+    p_subplot.legend(loc="upper right")
