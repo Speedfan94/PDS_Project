@@ -107,8 +107,8 @@ def train_neural_network(p_X_train_scaled, p_y_train, p_weather, p_testing=False
          layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
          layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
          layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
-         layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
-         layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         #layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         #layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
@@ -117,7 +117,7 @@ def train_neural_network(p_X_train_scaled, p_y_train, p_weather, p_testing=False
     neural_network.compile(loss="mse",
                            optimizer=optimizer,
                            metrics=["mae", "mse"])
-    epochs = 100
+    epochs = 50
     # create a validation set which is 20% of the whole dataset. Therefore use formula to receive ca. 0.2857.
     history = neural_network.fit(X_train, y_train, epochs=epochs, validation_data=(X_val, y_val))
     if p_testing:
