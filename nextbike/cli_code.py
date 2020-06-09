@@ -542,18 +542,10 @@ def pred_by_best_classification_model(p_weather):
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
     # Predict
-    print("Predict by KNeighbors Classificaion...")
-    kn_y_prediction = prediction.geo_predict.predict_by_k_neighbors_classificaion(p_X_test=X_test, p_weather=p_weather)
-
     print("predict_by_neural_network_classificaion")
     nn_y_prediction = prediction.geo_predict.predict_by_neural_network_classificaion(p_X_test=X_test,
                                                                                      p_weather=p_weather)
     # Evaluate Prediction
-    prediction.evaluate.direction_error_metrics(p_y_true=y_test,
-                                                p_y_predictions=kn_y_prediction,
-                                                p_filename="KNeighbors_Classifier" + p_weather,
-                                                p_status="Testing")
-
     prediction.evaluate.direction_error_metrics(p_y_true=y_test,
                                                 p_y_predictions=nn_y_prediction,
                                                 p_filename="NN_Classifier" + p_weather,
