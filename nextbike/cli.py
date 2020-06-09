@@ -122,13 +122,12 @@ def train(regress, classify, weather):
     if regress:
         print("START TRAIN")
         cli_code.features_duration(p_weather=weather_data)
-        cli_code.training_duration_models(p_weather=weather_data)
+        cli_code.train_best_regression_model(p_weather=weather_data)
         start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
-
     if classify:
         print("START GEO TRAIN")
-        cli_code.features_direction(p_weather=weather_data)
-        cli_code.train_direction_models(p_weather=weather_data)
+        cli_code.features_direction(p_weather=weather_data, p_mode="_testing")
+        cli_code.train_best_classification_model(p_weather=weather_data)
         utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
     utils.print_time_for_step(p_step_name="COMMAND TRAIN", p_start_time_step=start_time_train)
 
@@ -150,8 +149,8 @@ def predict(filename, regress, classify, weather):
 
     Args:
         filename:   filename of new data csv file. File has to be located in 'data/input'
-        regress:    option whether to train regression models for duration prediction (Default: True)
-        classify:   option whether to train classification models for direction prediction (Default: False)
+        regress:    option whether to predict by regression model for duration regression (Default: True)
+        classify:   option whether to predict by classification model for direction classification (Default: False)
         weather:    option whether to include weather data (Default: False)
     Returns:
         No return
@@ -166,12 +165,12 @@ def predict(filename, regress, classify, weather):
     if regress:
         print("START PREDICT DURATION")
         cli_code.features_duration(p_weather=weather_data, p_mode="_testing")
-        cli_code.predict_duration_models(p_weather=weather_data)
+        cli_code.pred_by_best_reression_model(p_weather=weather_data)
         start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
     if classify:
         print("START GEO PREDICT")
         cli_code.features_direction(p_weather=weather_data, p_mode="_testing")
-        cli_code.predict_direction_models(p_weather=weather_data)
+        cli_code.pred_by_best_classification_model(p_weather=weather_data)
         utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
     utils.print_time_for_step(p_step_name="COMMAND PREDICT", p_start_time_step=start_time_predict)
 

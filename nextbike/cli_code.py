@@ -94,6 +94,7 @@ def training_duration_models(p_weather, p_mode=""):
 
     Args:
         p_weather (str): Fileending for generated files (include weather or not)
+        p_mode (str):     defines whether called by test set or not
     Returns:
         No return
     """
@@ -272,9 +273,9 @@ def features_direction(p_weather, p_mode=""):
 
 
 def train_direction_models(p_weather, p_mode=""):
-    """Predict the direction of a trip (towards or away from university).
+    """Train the direction models for trip classification (towards or away from university).
 
-    Method which runs the sequential flow of the direction prediction.
+    Method which runs the sequential flow of the direction classification training.
 
     Args:
         p_weather:  file ending when weather data is included
@@ -406,6 +407,151 @@ def predict_direction_models(p_weather):
                                                 p_y_predictions=rf_y_prediction,
                                                 p_filename="Random_Forest_Classifier" + p_weather,
                                                 p_status="Testing")
+    prediction.evaluate.direction_error_metrics(p_y_true=y_test,
+                                                p_y_predictions=nn_y_prediction,
+                                                p_filename="NN_Classifier" + p_weather,
+                                                p_status="Testing")
+
+
+def train_best_regression_model(p_weather, p_mode=""):
+    """Train the best model for regression on duration (Neural Network).
+
+    Method which runs the sequential flow on training the Neural Network.
+
+    Args:
+        p_weather (str): Fileending for generated files (include weather or not)
+        p_mode (str):    Defines whether called by test set or not
+    Returns:
+        No return
+    """
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_mode + p_weather + ".csv", p_io_folder="output")
+    print("Split Data...")
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df=df_features)
+    print("Scale Data...")
+    X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train,
+                                                      p_scaler_name="Standard_Scaler_Duration" + p_weather)
+    print("Do PCA...")
+    X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
+                                                            p_number_components=17,
+                                                            p_filename="PCA_Duration" + p_weather)
+    df_components = pd.DataFrame(X_train_transformed)
+    io.output.save_csv(p_df=y_train, p_filename="y_train_Duration" + p_weather + ".csv")
+    io.output.save_csv(p_df=df_components, p_filename="Components_Duration" + p_weather + ".csv")
+    # Train
+    # The sets are in order: y_train, y_val, y_prediction_train, y_prediction_val
+    print("Train NN...")
+    nn_regr_sets = prediction.math_train.train_neural_network(p_X_train_scaled=X_train_transformed,
+                                                              p_y_train=y_train, p_weather=p_weather)
+    # Evaluate Training
+    # NN Regression
+    prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[0],
+                                               p_y_predictions=nn_regr_sets[2],
+                                               p_filename="NN_Regression_Training" + p_weather)
+    prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[1],
+                                               p_y_predictions=nn_regr_sets[3],
+                                               p_filename="NN_Regression_Validation" + p_weather,
+                                               p_status="Validation")
+
+
+def train_best_classification_model(p_weather, p_mode=""):
+    """Train the best direction classification (towards or away from university) model (Neural Network).
+
+    Method which runs the sequential flow of the direction classification training.
+
+    Args:
+        p_weather:  file ending when weather data is included
+        p_mode:     defines whether called by test set or not (optional)
+    Returns:
+        No return
+    """
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_mode + p_weather + ".csv", p_io_folder="output")
+    print("Split Data...")
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
+    print("Scale Data...")
+    X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train,
+                                                      p_scaler_name="Standard_Scaler_Direction" + p_weather)
+    print("Do PCA...")
+    X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
+                                                            p_number_components=17,
+                                                            p_filename="PCA_Direction" + p_weather)
+    # Train
+    print("Train KNeighbors Classifier...")
+    kn_sets = prediction.geo_train.train_classification_k_neighbors(p_X_train_scaled=X_train_transformed,
+                                                                    p_y_train=y_train, p_weather=p_weather)
+    print("Train NN Classifier...")
+    nn_sets = prediction.geo_train.train_classification_neural_network(p_X_train_scaled=X_train_transformed,
+                                                                       p_y_train=y_train, p_weather=p_weather)
+    # Evaluate Training
+    # KNeighbors_Classifier
+    prediction.evaluate.direction_error_metrics(p_y_true=kn_sets[0],
+                                                p_y_predictions=kn_sets[2],
+                                                p_filename="KNeighbors_Classifier" + p_weather)
+    prediction.evaluate.direction_error_metrics(p_y_true=kn_sets[1],
+                                                p_y_predictions=kn_sets[3],
+                                                p_filename="KNeighbors_Classifier" + p_weather, p_status="Validation")
+
+    # Neural Network Classifier
+    prediction.evaluate.direction_error_metrics(p_y_true=nn_sets[0],
+                                                p_y_predictions=nn_sets[2],
+                                                p_filename="NN_Classifier" + p_weather)
+    prediction.evaluate.direction_error_metrics(p_y_true=nn_sets[1],
+                                                p_y_predictions=nn_sets[3],
+                                                p_filename="NN_Classifier" + p_weather, p_status="Validation")
+
+
+def pred_by_best_reression_model(p_weather):
+    """regress on the duration of trips by the best model (Neural Network).
+
+    Method which runs the sequential flow of the duration regression by the neural network.
+
+    Args:
+        p_weather (str):    option whether weather data should be included
+    Returns:
+        No return
+    """
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_weather + ".csv", p_io_folder="output")
+    print("Split Data...")
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df=df_features)
+    # Predict
+    print("Predict by NN...")
+    nn_y_prediction = prediction.math_predict.predict_by_nn(p_X_test=X_test, p_weather=p_weather)
+    # Evaluate Prediction
+    prediction.evaluate.duration_error_metrics(p_y_true=y_test,
+                                               p_y_predictions=nn_y_prediction,
+                                               p_filename="NN_Regression" + p_weather,
+                                               p_status="Testing")
+
+
+def pred_by_best_classification_model(p_weather):
+    """classify the direction of trips by the best model (Neural Network).
+
+    Method which runs the sequential flow of the direction classification by the neural network.
+
+    Args:
+        p_weather (str):    option whether weather data should be included
+    Returns:
+        No return
+    """
+    # Prepare
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_weather + ".csv", p_io_folder="output")
+    print("Split Data...")
+    X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
+    # Predict
+    print("Predict by KNeighbors Classificaion...")
+    kn_y_prediction = prediction.geo_predict.predict_by_k_neighbors_classificaion(p_X_test=X_test, p_weather=p_weather)
+
+    print("predict_by_neural_network_classificaion")
+    nn_y_prediction = prediction.geo_predict.predict_by_neural_network_classificaion(p_X_test=X_test,
+                                                                                     p_weather=p_weather)
+    # Evaluate Prediction
+    prediction.evaluate.direction_error_metrics(p_y_true=y_test,
+                                                p_y_predictions=kn_y_prediction,
+                                                p_filename="KNeighbors_Classifier" + p_weather,
+                                                p_status="Testing")
+
     prediction.evaluate.direction_error_metrics(p_y_true=y_test,
                                                 p_y_predictions=nn_y_prediction,
                                                 p_filename="NN_Classifier" + p_weather,
