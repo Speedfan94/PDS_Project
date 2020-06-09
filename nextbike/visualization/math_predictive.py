@@ -6,7 +6,7 @@ FONTSIZE_TITLE = 18
 FONTSIZE_AXIS_LABEL = 16
 
 
-def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
+def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name, p_status = ""):
     """Plot the true duration of trips against the predicted duration.
 
     Plot model predictions against the real duration values of trips.
@@ -26,7 +26,7 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
     ax_scatter.scatter(p_y_true, p_y_predict)
     io.save_fig(
         fig_scatter,
-        p_filename="pred_vs_true_"+p_model_name+".png",
+        p_filename="pred_vs_true_"+p_model_name+"_"+p_status+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -57,7 +57,7 @@ def plot_true_vs_predicted(p_y_true, p_y_predict, p_model_name):
     plt.legend(loc="upper right")
     io.save_fig(
         fig_distr,
-        p_filename="distribution_"+p_model_name+".png",
+        p_filename="distribution_"+p_model_name+"_"+p_status+".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
