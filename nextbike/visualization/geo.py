@@ -45,7 +45,7 @@ def visualize_stations_moment(p_df, p_mode=""):
             "<b>University:</b><br>", max_width=400
         ),
         tooltip="University",
-        icon=folium.Icon(color='black', icon="home"),
+        icon=folium.Icon(color="black", icon="home"),
     ).add_to(m)
     m.save(
         io.get_path(
@@ -77,7 +77,7 @@ def visualize_heatmap(p_df, p_mode=""):
 
     # mark each station as a point
     for index, row in stations.iterrows():
-        folium.CircleMarker([row['Latitude_end'], row['Longitude_end']],
+        folium.CircleMarker([row["Latitude_end"], row["Longitude_end"]],
                             radius=3,
                             popup=folium.Popup(
                                 "<b>Station Name:</b><br>" +
@@ -89,7 +89,7 @@ def visualize_heatmap(p_df, p_mode=""):
                             ).add_to(m)
 
     # convert to (n, 2) nd-array format for heatmap
-    stationArr = stations[['Latitude_end', 'Longitude_end']].values
+    stationArr = stations[["Latitude_end", "Longitude_end"]].values
 
     # plot heatmap
     m.add_child(plugins.HeatMap(stationArr, radius=20))
@@ -144,9 +144,9 @@ def visualize_postalcode(p_df, p_mode=""):
         name="choropleth",
         data=df_map,
         columns=["Postalcode", "Month_start"],
-        key_on='feature.properties.plz',
-        legend_name='Trips per postal code',
-        fill_color='YlGnBu',
+        key_on="feature.properties.plz",
+        legend_name="Trips per postal code",
+        fill_color="YlGnBu",
         fill_opacity=0.7,
         line_opacity=0.5,
     ).add_to(m)
@@ -159,7 +159,7 @@ def visualize_postalcode(p_df, p_mode=""):
 
     for index, row in df_stations.iterrows():
         folium.CircleMarker(
-            [row['Latitude_start'], row['Longitude_start']],
+            [row["Latitude_start"], row["Longitude_start"]],
             radius=3,
             popup=folium.Popup(
                 "<b>Station Name:</b><br>" +
@@ -177,7 +177,7 @@ def visualize_postalcode(p_df, p_mode=""):
             "<b>University</b><br>", max_width=400
         ),
         tooltip="University",
-        icon=folium.Icon(color='black', icon="home"),
+        icon=folium.Icon(color="black", icon="home"),
     ).add_to(m)
 
     m.save(
@@ -221,7 +221,7 @@ def visualize_trips_per_month(p_df, p_mode=""):
                 "<br><b>Bikes at Station: </b>" +
                 str(row["p_bikes_end"]), max_width=400
             ),
-            # icon=folium.Icon(color='green'),
+            # icon=folium.Icon(color="green"),
             fill_color="green",
             color="green"
         ).add_to(m)
@@ -237,7 +237,7 @@ def visualize_trips_per_month(p_df, p_mode=""):
                 "<br><b>Bikes at Station: </b>" +
                 str(row["p_bikes_end"]), max_width=400
             ),
-            # icon=folium.Icon(color='red'),
+            # icon=folium.Icon(color="red"),
             fill_color="red",
             color="red"
         ).add_to(m)
@@ -250,7 +250,7 @@ def visualize_trips_per_month(p_df, p_mode=""):
             "<b>University</b><br>", max_width=400
         ),
         tooltip="University",
-        icon=folium.Icon(color='black', icon="home"),
+        icon=folium.Icon(color="black", icon="home"),
     ).add_to(m)
 
     m.save(
