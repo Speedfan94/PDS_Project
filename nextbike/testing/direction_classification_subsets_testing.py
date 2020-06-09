@@ -4,8 +4,14 @@ from sklearn.decomposition import PCA
 
 
 def filter_subsets(p_df):
-    # TODO: Docstring
-    # TODO: What happens if month start is dropped from features?
+    """Filters data on different months and iterates over each month
+    to test with subset classification.
+
+    Args:
+        p_df:   Whole data set
+    Returns:
+        No return
+    """
     months = p_df["Month_start"].unique()
     months.sort()
     for month in months:
@@ -18,8 +24,16 @@ def filter_subsets(p_df):
         test_subset_classification(df_subset)
 
 
-def test_subset_classification(p_df_subset):
-    # TODO: Docstring
+def test_subset_classification(p_df_subset, p_weather):
+    """For each month, tries to classify direction with
+    dummy classifiers and k nearest neighbor classifiers.
+
+    Args:
+        p_df_subset:    subset of the data set to classify on
+        p_weather:      file ending when weather data is included
+    Returns:
+        No return
+    """
     X = p_df_subset.drop("Direction", axis=1)
     y = p_df_subset["Direction"]
     print("Scale Data...")
@@ -30,8 +44,8 @@ def test_subset_classification(p_df_subset):
     pca.fit(X_scaled_train)
     X_train_transformed = pca.transform(X_scaled_train)
     # Read Models
-    dummy = io.read_object("Dummy_classifier_model.pkl")
-    clf = io.read_object("KNearestNeighbours_classifier_model.pkl")
+    dummy = io.read_object("Dummy_classifier_model"+p_weather+".pkl")
+    clf = io.read_object("KNearestNeighbours_classifier_model"+p_weather+".pkl")
     # Predict
     print("Predict...")
     dummy_y_prediction = dummy.predict(X_train_transformed)

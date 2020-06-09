@@ -56,7 +56,7 @@ def quick_create_dist(p_df):
     Returns:
         p_df (DataFrame): DataFrame with added columns [Dist_start, Dist_end, Direction]
     """
-    uni = (49.452210, 11.079575)
+    uni = (49.458395, 11.085980)
     p_df["Dist_start"] = p_df.apply(lambda row: geodis.distance((row["Latitude_start"],
                                                                  row["Longitude_start"]), uni).km, axis=1)
     p_df["Dist_end"] = p_df.apply(lambda row: geodis.distance((row["Latitude_end"],

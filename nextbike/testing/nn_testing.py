@@ -7,7 +7,15 @@ from nextbike import io
 
 
 def test_neuralnetwork_model(p_components, p_y_train):
-    # TODO: Docstring
+    """Iteratively tests through different combinations of components,
+    trains neural networks on these components and measures their performances.
+
+    Args:
+        p_components:   PCA components
+        p_y_train:      y train data
+    Returns:
+        No return
+    """
     # p_components=p_components.iloc["1", "2"]
     df_metrics = pd.DataFrame(columns=["Components", "RMSE", "MAE", "R^2"])
     X_train_transformed = pd.DataFrame(p_components)
@@ -24,7 +32,7 @@ def test_neuralnetwork_model(p_components, p_y_train):
             metric = train_neural_network(X_train_transformed[tmp.astype(str)], p_y_train)
             df_metrics = df_metrics.append(metric, ignore_index=True)
     print()
-    io.save_csv(df_metrics,"NN_Metrics.csv")
+    io.save_csv(df_metrics, "NN_Metrics.csv")
     print("Min RMSE", df_metrics[df_metrics["RMSE"] == df_metrics["RMSE"].min()].iloc[0])
     print("Min MAE", df_metrics[df_metrics["MAE"] == df_metrics["MAE"].min()].iloc[0])
     print("Max R^2", df_metrics[df_metrics["R^2"] == df_metrics["R^2"].max()].iloc[0])
