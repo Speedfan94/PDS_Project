@@ -343,6 +343,7 @@ def plot_mean_duration(p_df, p_mode):
 
     Args:
         p_df (DataFrame): Dataframe of trips in nuremberg
+        p_mode (str): String if mode is Testing on ruremberg_test.csv or not
     Returns:
         No return
     """
