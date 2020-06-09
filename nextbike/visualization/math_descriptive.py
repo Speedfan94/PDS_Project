@@ -232,7 +232,7 @@ def plot_distribution(p_df, p_mode):
     plt.vlines(quantile_50, 0, 0.07, linestyles="dashed", label="50% Quantile", colors="yellow")
     plt.vlines(quantile_75, 0, 0.07, linestyles="dashed", label="75% Quantile", colors="red")
     plt.vlines(quantile_95, 0, 0.07, linestyles="dashed", label="95% Quantile")
-    plt.legend(loc="upper right")
+    plt.legend(loc="upper right", prop={"size": 20})
     io.save_fig(fig, p_filename="DurationMinutes_Distribution"+p_mode+".png", p_sub_folder2="math")
     plt.close(fig)
 
@@ -324,6 +324,7 @@ def corr_analysis(p_df, p_weather):
         linewidths=.5,
         cbar_kws={"shrink": .5}
     )
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=30, horizontalalignment="right")
 
     fig.add_axes(ax1)
     io.save_fig(
@@ -389,7 +390,14 @@ def plot_mean_duration(p_df, p_mode):
 
 
 def plot_pca_components(p_pca_explained_var, p_filename):
-    # TODO: docstring
+    """Plots the PCA components and their explained variance by component.
+
+    Args:
+        p_pca_explained_var:    explained variance by component
+        p_filename:             filename to save plot as
+    Returns:
+        No return
+    """
     fig, ax = plt.subplots(figsize=(16, 8), dpi=300)
     ax.set_xlabel("Component", fontsize=FONTSIZE_AXIS_LABEL)
     ax.set_ylabel("Explained Variance by Component", fontsize=FONTSIZE_AXIS_LABEL)
@@ -406,8 +414,14 @@ def plot_pca_components(p_pca_explained_var, p_filename):
     plt.close(fig)
 
 
-# TODO: add docstring
 def plot_features_influence(p_df):
+    """Plots the influence of each feature on the duration
+
+    Args:
+        p_df:   whole data set
+    Returns:
+        No return
+    """
     fig, ax = plt.subplots(figsize=(16, 8), dpi=300)
     i = 0
     for col in p_df.drop("Duration", axis=1).columns:
