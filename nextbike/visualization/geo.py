@@ -2,7 +2,6 @@ import folium
 from folium import plugins
 from .. import io
 import datetime as dt
-import folium.plugins as Fplugins
 
 uni = (49.458395, 11.085980)
 
@@ -24,31 +23,33 @@ def visualize_stations_moment(p_df, p_mode=""):
                                                                                                     keep="last")
     df_relevant_stations = df_relevant_stations.reset_index(drop=True)
     m = folium.Map(location=[49.452030, 11.076750], zoom_start=13)
-    for i in range(len(df_relevant_stations)):
-        folium.Marker(
-            location=[df_relevant_stations["Latitude_end"].iloc[i], df_relevant_stations["Longitude_end"].iloc[i]],
-            radius=5,
-            tooltip=str(df_relevant_stations["Place_end"].iloc[i]),
+
+    for index, row in df_relevant_stations.iterrows():
+        folium.CircleMarker(
+            location=[row["Latitude_end"], row["Longitude_end"]],
+            radius=row["p_bikes_end"],
+            tooltip=str(row["Place_end"]),
             popup=folium.Popup(
                 "<b>Station Name:</b><br>" +
-                str(df_relevant_stations["Place_end"].iloc[i]) +
+                str(row["Place_end"]) +
                 "<br><b>Bikes at Station: </b>" +
-                str(df_relevant_stations["p_bikes_end"].iloc[i]), max_width=400
+                str(row["p_bikes_end"]), max_width=400
             ),
-            fill_color="red",
-            color="red"
+            fill_color="blue",
+            color="blue"
         ).add_to(m)
+
     folium.Marker(
         location=uni,
         popup=folium.Popup(
             "<b>University:</b><br>", max_width=400
         ),
         tooltip="University",
-        icon=folium.Icon(color='black'),
+        icon=folium.Icon(color='black', icon="home"),
     ).add_to(m)
     m.save(
         io.get_path(
-            p_filename="Moment" + p_mode + ".html",
+            p_filename="One_Moment_In_Time_BikesPerStation_Circle" + p_mode + ".html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"
@@ -72,8 +73,6 @@ def visualize_heatmap(p_df, p_mode=""):
 
     stations = p_df[p_df["End_Time"].dt.date == dt.date(year=2019, month=12, day=24)]
 
-    # ToDo: Maybe filter out 0.0 ids and duplicated places
-    # todo: variable time to plot heatmap
     m = folium.Map([49.452030, 11.076750], zoom_start=13)
 
     # mark each station as a point
@@ -101,12 +100,12 @@ def visualize_heatmap(p_df, p_mode=""):
             "<b>University:</b><br>", max_width=400
         ),
         tooltip="University",
-        icon=folium.Icon(color='black'),
+        icon=folium.Icon(color="black", icon="home"),
     ).add_to(m)
 
     m.save(
         io.get_path(
-            p_filename="One-Day-in-Nuremberg" + p_mode + ".html",
+            p_filename="One_Day_in_Nuremberg_EndedTrips_HeatMap" + p_mode + ".html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"
@@ -135,7 +134,7 @@ def visualize_postalcode(p_df, p_mode=""):
         by="Start_Time", ascending=True
     ).reset_index()
 
-    m = folium.Map([49.452030, 11.076750], zoom_start=11)
+    m = folium.Map([49.452030, 11.076750], zoom_start=13)
 
     df_map["Postalcode"] = df_map["Postalcode_start"].astype(str)
 
@@ -151,13 +150,19 @@ def visualize_postalcode(p_df, p_mode=""):
         line_opacity=0.5,
     ).add_to(m)
 
+    p_df = p_df[p_df["Start_Place_id"] != 0.0]
+    # p_df = p_df[p_df["End_Place_id"] != 0.0]
     df_stations = p_df.drop_duplicates("Start_Place_id", keep="first")
+    # df_stations = p_df.drop_duplicates("End_Place_id", keep="first")
+
 
     for index, row in df_stations.iterrows():
         folium.CircleMarker(
             [row['Latitude_start'], row['Longitude_start']],
             radius=3,
-            popup=[row['Place_start'], row["Latitude_start"]],
+            popup=folium.Popup(
+                "<b>Station Name:</b><br>" +
+                str(row["Place_start"]), max_width=400),
             fill_color="#3db7e4",
             color="#3db7e4",
 
@@ -168,15 +173,15 @@ def visualize_postalcode(p_df, p_mode=""):
     folium.Marker(
         location=uni,
         popup=folium.Popup(
-            "<b>University:</b><br>", max_width=400
+            "<b>University</b><br>", max_width=400
         ),
         tooltip="University",
-        icon=folium.Icon(color='black'),
+        icon=folium.Icon(color='black', icon="home"),
     ).add_to(m)
 
     m.save(
         io.get_path(
-            p_filename="Month_Nuremberg" + p_mode + ".html",
+            p_filename="Month_Nuremberg_TripsStartet_per_Zip_Code_Included_Stations_choropleth" + p_mode + ".html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"
@@ -193,101 +198,62 @@ def visualize_trips_per_month(p_df, p_mode=""):
     Returns:
         no return
     """
-    # finding the month with most trips in the month
-    # month_most = p_df.groupby(by="Month_start").count().idxmax()["Start_Time"]
-    # Month_start,Day_start
 
-    # df_biggest_month = (p_df[p_df["Month_start"] == 12 & p_df["Day_start"] == 24])
-    # df_biggest_month = (p_df[p_df["Month_start"] == 12) & (p_df["Day_start"] == 24)
-    df_biggest_month = p_df[(p_df["Month_start"] == 12) & (p_df["Day_start"] == 24)]
-    # prints the number of trips per postal code code
-    # df_map = df_biggest_month.groupby(
-    #     by="Postalcode_start"
-    # ).count().sort_values(
-    #     by="Start_Time", ascending=True
-    # ).reset_index()
+    df_day = p_df[(p_df["Month_start"] == 12) & (p_df["Day_start"] == 24)]
 
-    m = folium.Map([49.452030, 11.076750], zoom_start=13)
+    m = folium.Map([49.452030, 11.076750], zoom_start=14)
 
-    # df_map["Postalcode"] = df_map["Postalcode_start"].astype(str)
-
-    # folium.Choropleth(
-    #     geo_data=f'{io.get_path(p_filename="postleitzahlen-nuremberg.geojson", p_io_folder="input")}',
-    #     name="choropleth",
-    #     # data=df_map,
-    #     # columns=["Postalcode", "Month_start"],
-    #     key_on='feature.properties.plz',
-    #     legend_name='Trips per postal code',
-    #     fill_color='YlGnBu',
-    #     fill_opacity=0.7,
-    #     line_opacity=0.5,
-    # ).add_to(m)
-
-    df_stations = p_df.drop_duplicates("Start_Place_id", keep="first")
-
-    for index, row in df_biggest_month.iterrows():
+    for index, row in df_day.iterrows():
         folium.PolyLine(locations=[(row["Latitude_start"], row["Longitude_start"]),
                                    (row["Latitude_end"], row["Longitude_end"])],
                         line_opacity=0.5, weight=1.5).add_to(m)
 
-    for index, row in df_biggest_month.iterrows():
-        folium.Marker(
+    for index, row in df_day.iterrows():
+        folium.CircleMarker(
             location=[row["Latitude_start"], row["Longitude_start"]],
             tooltip=str(row["Place_start"]),
+            radius=3,
             popup=folium.Popup(
                 "<b>Station Name:</b><br>" +
                 str(row["Place_end"]) +
                 "<br><b>Bikes at Station: </b>" +
                 str(row["p_bikes_end"]), max_width=400
             ),
-            icon=folium.Icon(color='green'),
+            # icon=folium.Icon(color='green'),
+            fill_color="green",
+            color="green"
         ).add_to(m)
 
-    df_stations = p_df.drop_duplicates("End_Place_id", keep="first")
-
-    for index, row in df_biggest_month.iterrows():
-        folium.Marker(
+    for index, row in df_day.iterrows():
+        folium.CircleMarker(
             location=(row["Latitude_end"], row["Longitude_end"]),
             tooltip=str(row["Place_end"]),
+            radius=3,
             popup=folium.Popup(
                 "<b>Station Name:</b><br>" +
                 str(row["Place_end"]) +
                 "<br><b>Bikes at Station: </b>" +
                 str(row["p_bikes_end"]), max_width=400
             ),
-            icon=folium.Icon(color='red'),
+            # icon=folium.Icon(color='red'),
+            fill_color="red",
+            color="red"
         ).add_to(m)
-
-
-    # for i in range(len(df_stations)):
-    #     folium.Marker(
-    #         location=[df_stations["Latitude_end"].iloc[i], df_stations["Longitude_end"].iloc[i]],
-    #         radius=5,
-    #         tooltip=str(df_stations["Place_end"].iloc[i]),
-    #         popup=folium.Popup(
-    #             "<b>Station Name:</b><br>" +
-    #             str(df_stations["Place_end"].iloc[i]) +
-    #             "<br><b>Bikes at Station: </b>" +
-    #             str(df_stations["p_bikes_end"].iloc[i]), max_width=400
-    #         ),
-    #         fill_color="red",
-    #         color="red"
-    #     ).add_to(m)
 
     folium.LayerControl().add_to(m)
 
     folium.Marker(
         location=uni,
         popup=folium.Popup(
-            "<b>University:</b><br>", max_width=400
+            "<b>University</b><br>", max_width=400
         ),
         tooltip="University",
-        icon=folium.Icon(color='black'),
+        icon=folium.Icon(color='black', icon="home"),
     ).add_to(m)
 
     m.save(
         io.get_path(
-            p_filename="Month_Nuremberg_Trips" + p_mode + ".html",
+            p_filename="Trips_One_Day_In_Time" + p_mode + ".html",
             p_io_folder="output",
             p_sub_folder1="data_plots",
             p_sub_folder2="geo"
