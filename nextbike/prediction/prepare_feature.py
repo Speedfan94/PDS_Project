@@ -26,13 +26,13 @@ def create_new_features(p_X, p_weather):
 
     Example methods for feature engineering could be found here:
     https://de.devoteam.com/blog-post/bedeutung-der-feature-engineering-methoden-2/
+
     Args:
         p_X (DataFrame):    Dataframe of existing features (matrix)
         p_weather:          option whether weather should be included
     Returns:
         p_X (DataFrame):    Dataframe with existing and new added features (matrix)
     """
-    # TODO Weather Data adding implement here, by triggering
 
     if len(p_weather) > 0:
         print("Adding Weather Data...")

@@ -12,10 +12,10 @@ def duration_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Trai
         - R^2
 
     Args:
-        p_y_true (Series): True values of duration (vector)
-        p_y_predictions (Series): Predicted values for train set of duration (vector)
-        p_filename (str): Name of the used model
-        p_status (str): string which states if metrics are for training or testing
+        p_y_true (Series):          True values of duration (vector)
+        p_y_predictions (Series):   Predicted values for train set of duration (vector)
+        p_filename (str):           Name of the used model
+        p_status (str):             string which states if metrics are for training or validation
     Returns:
         No return
     """
@@ -28,7 +28,23 @@ def duration_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Trai
 
 
 def direction_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Training"):
-    # TODO: docstring
+    """Evaluate the trained models by error metrics.
+
+    Print for the given model the following error metrics:
+        - Accuracy
+        - Confusion matrix
+        - Precision
+        - Recall
+        - F1 score
+
+    Args:
+        p_y_true:           True values of direction (vector)
+        p_y_predictions:    Predicted values for train set of direction (vector)
+        p_filename:         Name of the used model
+        p_status:           string which states if metrics are for training or testing
+    Returns:
+        No return
+    """
 
     accuracy = metrics.accuracy_score(p_y_true, p_y_predictions)
     confusion_matrix = metrics.confusion_matrix(p_y_true, p_y_predictions).flatten() # ohne Flatten: [[1, 4] [2, 5]] mit Flatten:[1, 4, 2, 5]
