@@ -324,6 +324,7 @@ def corr_analysis(p_df, p_weather):
         linewidths=.5,
         cbar_kws={"shrink": .5}
     )
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=30, horizontalalignment="right")
 
     fig.add_axes(ax1)
     io.save_fig(
