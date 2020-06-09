@@ -1,6 +1,6 @@
 import folium
 from folium import plugins
-from .. import io
+from nextbike import io
 import datetime as dt
 
 uni = (49.458395, 11.085980)

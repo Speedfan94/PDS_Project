@@ -105,7 +105,7 @@ def training_duration_models(p_weather, p_mode=""):
     X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train,
                                                       p_scaler_name="Standard_Scaler_Duration" + p_weather)
     print("Do PCA...")
-    components = 21
+    components = 17
     # if len(p_weather) > 0:
     #     components = 21
 
@@ -293,7 +293,7 @@ def train_direction_models(p_weather, p_mode=""):
     print("Do PCA...")
     # TODO: fit number of components
     X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
-                                                            p_number_components=21,
+                                                            p_number_components=17,
                                                             p_filename="PCA_Direction" + p_weather)
     # Train
     print("Train Dummy Classifier...")

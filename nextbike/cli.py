@@ -50,6 +50,7 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
         weather_data = "_weather"
     if test:
         df = io.read_csv("Trips.csv", "output")
+        # df = io.read_csv("Features_Duration.csv", "output")
         # testing_duration_models()
         # testing.robust_scaler_testing.test_robust_scaler(p_df=df, p_weather)
         # testing_direction_subsets()
