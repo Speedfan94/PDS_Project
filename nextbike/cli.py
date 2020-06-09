@@ -121,13 +121,13 @@ def train(regress, classify, weather):
         weather_data = "_weather"
     if regress:
         print("START TRAIN")
-        cli_code.features_duration(p_weather=weather_data)
-        cli_code.train_best_regression_model(p_weather=weather_data)
+        cli_code.features_duration(p_weather=weather_data, p_mode="_testing")
+        cli_code.train_best_regression_model(p_weather=weather_data, p_mode="_testing")
         start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
     if classify:
         print("START GEO TRAIN")
         cli_code.features_direction(p_weather=weather_data, p_mode="_testing")
-        cli_code.train_best_classification_model(p_weather=weather_data)
+        cli_code.train_best_classification_model(p_weather=weather_data, p_mode="_testing")
         utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
     utils.print_time_for_step(p_step_name="COMMAND TRAIN", p_start_time_step=start_time_train)
 
