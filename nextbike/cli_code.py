@@ -8,7 +8,8 @@ def cleaning(p_filename="nuremberg.csv", p_mode=""):
     Method which runs the sequential flow of the data cleaning part.
 
     Args:
-        No args
+        p_filename:     filename of csv input file to clean (Default: nuremberg.csv)
+        p_mode:         defines whether called by test set or not
     Returns:
         No return
     """
@@ -168,13 +169,21 @@ def training_duration_models(p_weather, p_mode=""):
 
 
 def testing_robust_scaler():
-    # TODO: Docstring
+    """Tests robust scaler on duration features.
+
+    Returns:
+        No return
+    """
     df_features = io.input.read_csv(p_filename="Features_Duration.csv", p_io_folder="output")
     testing.robust_scaler_testing.test_robust_scaler(p_df=df_features)
 
 
 def testing_duration_models():
-    # TODO: add docstring
+    """Tests duration models on duration component and true y values.
+
+    Returns:
+        No return
+    """
     df_components = io.input.read_csv(p_filename="Components_Duration.csv", p_io_folder="output").reset_index(drop=True)
     y_true = io.input.read_csv(p_filename="y_train_Duration.csv", p_io_folder="output")
     # testing.nn_testing.test_neuralnetwork_model(p_components=df_components, p_y_train=y_true)
@@ -230,7 +239,16 @@ def predict_duration_models(p_weather):
 
 
 def features_direction(p_weather, p_mode=""):
-    # TODO:Docstring
+    """Prepares features for direction prediction out of trip data.
+    Drops end information and unneeded features, creates new features
+    and saves them as csv file.
+
+    Args:
+        p_weather:  file ending when weather data is included
+        p_mode:     defines whether called by test set or not
+    Returns:
+        No return
+    """
     df_features = io.input.read_csv(p_filename="Trips"+p_mode+".csv", p_io_folder="output")
     print("Drop End Information")
     df_features = prediction.prepare_feature.drop_end_information(p_df=df_features, direction_needed=True)
@@ -250,7 +268,8 @@ def train_direction_models(p_weather, p_mode=""):
     Method which runs the sequential flow of the direction prediction.
 
     Args:
-        No args
+        p_weather:  file ending when weather data is included
+        p_mode:     defines whether called by test set or not
     Returns:
         No return
     """
@@ -321,14 +340,25 @@ def train_direction_models(p_weather, p_mode=""):
 
 
 def testing_direction_subsets():
-    # TODO: Docstring
+    """Tests direction classification on different subsets (like month).
+
+    Returns:
+        No return
+    """
     # data
     df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
     testing.direction_classification_subsets_testing.filter_subsets(p_df=df_features)
 
 
 def predict_direction_models(p_weather):
-    # TODO: Docstring
+    """Starts prediction of direction based on different models and
+    prints out the performances and error metrcis of the different models.
+
+    Args:
+        p_weather:  file ending when weather data is included
+    Returns:
+        No return
+    """
     # Prepare
     df_features = io.input.read_csv(p_filename="Features_Direction"+p_weather+".csv", p_io_folder="output")
     print("Split Data...")
