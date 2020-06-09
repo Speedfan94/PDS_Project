@@ -20,7 +20,7 @@ Great! You are now ready to use our nextbike analytics & prediction package!
 ## 2. Usage
 This package runs through different steps:
 - cleaning
-- viasualization
+- visualization
 - training
 - prediction
 
