@@ -51,6 +51,6 @@ def test_subset_classification(p_df_subset, p_weather):
     dummy_y_prediction = dummy.predict(X_train_transformed)
     kn_y_prediction = clf.predict(X_train_transformed)
     # Evaluate Predict
-    prediction.evaluate.direction_error_metrics(y, dummy_y_prediction, "Dummy_Classifier", "Testing")
-    prediction.evaluate.direction_error_metrics(y, kn_y_prediction, "KNeighbors_Classifier", "Testing")
+    prediction.evaluate.direction_error_metrics(y, dummy_y_prediction, "Dummy_Classifier"+p_weather, "Testing")
+    prediction.evaluate.direction_error_metrics(y, kn_y_prediction, "KNeighbors_Classifier"+p_weather, "Testing")
 

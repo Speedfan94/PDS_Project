@@ -10,8 +10,8 @@ def visualize_stations_moment(p_df, p_mode=""):
     """prints a map of nuremberg with all bikes at fixed stations at given point in time in a circleMarker
 
     Args:
-        p_df (DataFrame): DataFrame with trip data from nuremberg
-        p_mode (str): String which contains modus in which program is running
+        p_df (DataFrame):   DataFrame with trip data from nuremberg
+        p_mode (str):       String which contains modus in which program is running
     Returns:
         no return
     """
@@ -61,8 +61,8 @@ def visualize_heatmap(p_df, p_mode=""):
     """prints a heat map of nuremberg with all End Trips at the 24th of december 2019
 
     Args:
-        p_df (DataFrame): DataFrame with trip data from nuremberg
-        p_mode (str): String which contains modus in which program is running
+        p_df (DataFrame):   DataFrame with trip data from nuremberg
+        p_mode (str):       String which contains modus in which program is running
     Returns:
         no return
     """
@@ -119,8 +119,8 @@ def visualize_postalcode(p_df, p_mode=""):
     The fixed bike stations are marked as well
 
     Args:
-        p_df (DataFrame): DataFrame with trip data from nuremberg
-        p_mode (str): String which contains modus in which program is running
+        p_df (DataFrame):   DataFrame with trip data from nuremberg
+        p_mode (str):       String which contains mode in which program is running
     Returns:
         no return
     """

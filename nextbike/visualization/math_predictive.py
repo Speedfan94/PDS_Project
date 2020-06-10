@@ -70,7 +70,7 @@ def plot_train_loss(p_history, p_weather):
 
     Args:
         p_history (Object): History of loss during training of neural network
-        p_weather (str): Add Info, whether weather data is used
+        p_weather (str):    Add Info, whether weather data is used
     Returns:
         No return
     """
