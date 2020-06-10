@@ -24,7 +24,7 @@ def calculate_aggregate_statistics(p_df_trips, p_mode):
 
     Args:
         p_df_trips (DataFrame): DataFrame with trip data from nuremberg
-        p_mode (str): describes training or testing parameter
+        p_mode (str):           describes training or testing parameter
     Returns:
         No return
     """
@@ -75,11 +75,13 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
         - Saves plot as png file
 
     Args:
-        p_df_aggr_stats (DataFrame): aggregation statistics (mean, std, count) for each subset
-        p_total_stats: statistics of whole dataframe (mean, std, count)
-        p_aggr_time_period: time period to aggregate on (aka column name)
-        p_first_date: first date of dataset
-        p_last_date: last date of dataset
+        p_df_aggr_stats (DataFrame):    aggregation statistics (mean, std, count) for each subset
+        p_total_stats:                  statistics of whole dataframe (mean, std, count)
+        p_aggr_time_period:             time period to aggregate on (aka column name)
+        p_first_date:                   first date of dataset
+        p_last_date:                    last date of dataset
+        p_mode (str):                   describes training or testing parameter
+
     Returns:
         No return
     """
@@ -172,7 +174,7 @@ def plot_and_save_aggregate_stats(p_df_aggr_stats, p_total_stats, p_aggr_time_pe
         colors_legend = []
         pie_legend_title = pie_legend_title+" (Top 30)"
         for top_entry_index in df_top_entries.index:
-            # TODO: Legend colors are broken after filtering legend items
+            # Legend colors are broken after filtering legend items, tried to fix it without success
             colors_legend.append(colors_pie_counts[top_entry_index])
             patches_legend.append(patches[top_entry_index])
     ax2.legend(patches_legend,
@@ -214,7 +216,8 @@ def plot_distribution(p_df, p_mode):
     """Plot the distribution of trip duration including quantile lines.
 
     Args:
-        p_df (DataFrame): DataFrame with trip data from nuremberg
+        p_df (DataFrame):   DataFrame with trip data from nuremberg
+        p_mode:             defines whether called by test set or not (optional)
     Returns:
         No return
     """
@@ -246,7 +249,8 @@ def plot_distribution_monthly(p_df, p_mode):
     and the normal distribution over all months beside.
 
     Args:
-        p_df (DataFrame): DataFrame with trip data from nuremberg
+        p_df (DataFrame):   DataFrame with trip data from nuremberg
+        p_mode:             defines whether called by test set or not (optional)
     Returns:
         No return
     """
@@ -299,11 +303,13 @@ def plot_distribution_monthly(p_df, p_mode):
     plt.close(fig)
 
 
-def corr_analysis(p_df, p_weather):
+def corr_analysis(p_df, p_weather, p_mode):
     """Plot correlation between features.
 
     Args:
-        p_df (DataFrame): DataFrame of trips in nuremberg
+        p_df (DataFrame):   DataFrame of trips in nuremberg
+        p_weather:          file ending when weather data is included
+        p_mode:             defines whether called by test set or not (optional)
     Returns:
         No return
     """
@@ -333,7 +339,7 @@ def corr_analysis(p_df, p_weather):
     fig.add_axes(ax1)
     io.save_fig(
         fig,
-        p_filename="Correlation"+p_weather+".png",
+        p_filename="Correlation" + p_mode + p_weather + ".png",
         p_io_folder="output",
         p_sub_folder1="data_plots",
         p_sub_folder2="math"
@@ -345,8 +351,8 @@ def plot_mean_duration(p_df, p_mode):
     """Plot the mean duration for each day of year and visualize the seasons.
 
     Args:
-        p_df (DataFrame): Dataframe of trips in nuremberg
-        p_mode (str): String if mode is Testing on ruremberg_test.csv or not
+        p_df (DataFrame):   DataFrame of trips in nuremberg
+        p_mode (str):       String if mode is Testing on nuremberg_test.csv or not
     Returns:
         No return
     """
@@ -441,7 +447,6 @@ def plot_features_influence(p_df):
 
         io.save_fig(fig, str(i)+col+"_Duration.png", p_sub_folder2="features")
         plt.close()
-    print("DONE")
 
 
 def plot_all_subet_lines_graphs(p_df_trips, p_mode=""):
@@ -457,7 +462,7 @@ def plot_all_subet_lines_graphs(p_df_trips, p_mode=""):
 
     Args:
         p_df_trips:     trips data set
-        p_mode:                 file ending if called with test data
+        p_mode:         file ending if called with test data
     Returns:
         No return
     """
