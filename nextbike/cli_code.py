@@ -112,7 +112,7 @@ def train_all_duration_models(p_weather):
     print("Do PCA...")
     components = 17
     # if len(p_weather) > 0:
-    #     components = 21
+    #     components = 19
 
     X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
                                                             p_number_components=components,
@@ -141,42 +141,42 @@ def train_all_duration_models(p_weather):
     # Dummy Regression Mean
     prediction.evaluate.duration_error_metrics(p_y_true=d_mean_sets[0],
                                                p_y_predictions=d_mean_sets[2],
-                                               p_filename="Dummy_Mean_Regression_Training" + p_weather)
+                                               p_filename="Dummy_Mean_Regression" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=d_mean_sets[1],
                                                p_y_predictions=d_mean_sets[3],
-                                               p_filename="Dummy_Mean_Regression_Validation" + p_weather,
+                                               p_filename="Dummy_Mean_Regression" + p_weather,
                                                p_status="Validation")
     # Dummy Regression Median
     prediction.evaluate.duration_error_metrics(p_y_true=dummy_med_sets[0],
                                                p_y_predictions=dummy_med_sets[2],
-                                               p_filename="Dummy_Med_Regression_Training" + p_weather)
+                                               p_filename="Dummy_Med_Regression" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=dummy_med_sets[1],
                                                p_y_predictions=dummy_med_sets[3],
-                                               p_filename="Dummy_Med_Regression_Validation" + p_weather,
+                                               p_filename="Dummy_Med_Regression" + p_weather,
                                                p_status="Validation")
     # Linear Regression
     prediction.evaluate.duration_error_metrics(p_y_true=lin_regr_sets[0],
                                                p_y_predictions=lin_regr_sets[2],
-                                               p_filename="Linear_Regression_Training" + p_weather)
+                                               p_filename="Linear_Regression" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=lin_regr_sets[1],
                                                p_y_predictions=lin_regr_sets[3],
-                                               p_filename="Linear_Regression_Validation" + p_weather,
+                                               p_filename="Linear_Regression" + p_weather,
                                                p_status="Validation")
     # SVM Regression
     prediction.evaluate.duration_error_metrics(p_y_true=svm_regr_sets[0],
                                                p_y_predictions=svm_regr_sets[2],
-                                               p_filename="SVM_Regression_Training" + p_weather)
+                                               p_filename="SVM_Regression" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=svm_regr_sets[1],
                                                p_y_predictions=svm_regr_sets[3],
-                                               p_filename="SVM_Regression_Validation" + p_weather,
+                                               p_filename="SVM_Regression" + p_weather,
                                                p_status="Validation")
     # NN Regression
     prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[0],
                                                p_y_predictions=nn_regr_sets[2],
-                                               p_filename="NN_Regression_Training" + p_weather)
+                                               p_filename="NN_Regression" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[1],
                                                p_y_predictions=nn_regr_sets[3],
-                                               p_filename="NN_Regression_Validation" + p_weather,
+                                               p_filename="NN_Regression" + p_weather,
                                                p_status="Validation")
 
 
@@ -453,10 +453,10 @@ def train_best_regression_model(p_weather):
     # NN Regression
     prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[0],
                                                p_y_predictions=nn_regr_sets[2],
-                                               p_filename="NN_Regression_Training" + p_weather)
+                                               p_filename="NN_Regression" + p_weather)
     prediction.evaluate.duration_error_metrics(p_y_true=nn_regr_sets[1],
                                                p_y_predictions=nn_regr_sets[3],
-                                               p_filename="NN_Regression_Validation" + p_weather,
+                                               p_filename="NN_Regression" + p_weather,
                                                p_status="Validation")
 
 

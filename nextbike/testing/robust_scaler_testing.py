@@ -29,8 +29,8 @@ def test_robust_scaler(p_df, p_weather):
     print("Train NN...")
     nn_regr_sets = prediction.math_train.train_neural_network(X_train_transformed, y_train, p_testing=True, p_weather=p_weather)
     # Evaluate Training
-    prediction.evaluate.duration_error_metrics(nn_regr_sets[0], nn_regr_sets[2], "NN_Regression_Training"+p_weather)
-    prediction.evaluate.duration_error_metrics(nn_regr_sets[1], nn_regr_sets[3], "NN_Regression_Validation"+p_weather)
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[0], nn_regr_sets[2], "NN_Regression"+p_weather)
+    prediction.evaluate.duration_error_metrics(nn_regr_sets[1], nn_regr_sets[3], "NN_Regression"+p_weather, "Validation")
 
     # Prepare Predict
     X_scaled_test = robust_scaler.transform(X_test)
@@ -39,4 +39,4 @@ def test_robust_scaler(p_df, p_weather):
     print("Predict by NN...")
     nn_y_prediction = prediction.math_predict.predict_by_nn(X_test_transformed, p_testing=True)
     # Evaluate Prediction
-    prediction.evaluate.duration_error_metrics(y_test, nn_y_prediction, "NN_Regression", "Testing")
+    prediction.evaluate.duration_error_metrics(y_test, nn_y_prediction, "NN_Regression"+p_weather, "Testing")
