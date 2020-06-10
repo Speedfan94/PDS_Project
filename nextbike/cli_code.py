@@ -482,21 +482,10 @@ def train_best_classification_model(p_weather):
                                                             p_number_components=17,
                                                             p_filename="PCA_Direction" + p_weather)
     # Train
-    print("Train KNeighbors Classifier...")
-    kn_sets = prediction.geo_train.train_classification_k_neighbors(p_X_train_scaled=X_train_transformed,
-                                                                    p_y_train=y_train, p_weather=p_weather)
     print("Train NN Classifier...")
     nn_sets = prediction.geo_train.train_classification_neural_network(p_X_train_scaled=X_train_transformed,
                                                                        p_y_train=y_train, p_weather=p_weather)
     # Evaluate Training
-    # KNeighbors_Classifier
-    prediction.evaluate.direction_error_metrics(p_y_true=kn_sets[0],
-                                                p_y_predictions=kn_sets[2],
-                                                p_filename="KNeighbors_Classifier" + p_weather)
-    prediction.evaluate.direction_error_metrics(p_y_true=kn_sets[1],
-                                                p_y_predictions=kn_sets[3],
-                                                p_filename="KNeighbors_Classifier" + p_weather, p_status="Validation")
-
     # Neural Network Classifier
     prediction.evaluate.direction_error_metrics(p_y_true=nn_sets[0],
                                                 p_y_predictions=nn_sets[2],
