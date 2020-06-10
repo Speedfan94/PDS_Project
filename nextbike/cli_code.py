@@ -19,8 +19,10 @@ def cleaning(p_filename="nuremberg.csv", p_mode=""):
     df_trips = datapreparation.data_clean.data_cleaning(p_df_original=df)
     print("Add Features...")
     df_trips_add_feat = datapreparation.feature_add.additional_feature_creation(p_df_trips=df_trips)
-    print("Clean Noise...")
-    df_trips_filter_duration = datapreparation.data_clean.drop_noise(p_df_trips=df_trips_add_feat)
+    df_trips_filter_duration = df_trips_add_feat
+    if len(p_mode) < 1:
+        print("Clean Noise...")
+        df_trips_filter_duration = datapreparation.data_clean.drop_noise(p_df_trips=df_trips_add_feat)
     print("Clean Postalcodes...")
     df_trips_only_nuremberg = datapreparation.geo_clean.only_nuremberg(p_df=df_trips_filter_duration)
     print("Add Distances to University...")
@@ -415,7 +417,7 @@ def predict_direction_models(p_weather):
                                                 p_status="Testing")
 
 
-def train_best_regression_model(p_weather, p_mode=""):
+def train_best_regression_model(p_weather):
     """Train the best model for regression on duration (Neural Network).
 
     Method which runs the sequential flow on training the Neural Network.
@@ -427,7 +429,7 @@ def train_best_regression_model(p_weather, p_mode=""):
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Duration" + p_mode + p_weather + ".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df=df_features)
     print("Scale Data...")
@@ -456,7 +458,7 @@ def train_best_regression_model(p_weather, p_mode=""):
                                                p_status="Validation")
 
 
-def train_best_classification_model(p_weather, p_mode=""):
+def train_best_classification_model(p_weather):
     """Train the best direction classification (towards or away from university) model (Neural Network).
 
     Method which runs the sequential flow of the direction classification training.
@@ -468,7 +470,7 @@ def train_best_classification_model(p_weather, p_mode=""):
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Direction" + p_mode + p_weather + ".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
     print("Scale Data...")
