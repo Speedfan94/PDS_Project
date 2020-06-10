@@ -37,8 +37,8 @@ def train_linear_regression(p_components, p_y_train):
     Train and save a Linear Regression model. Then evaluate the error metrics by another method.
 
     Args:
-        p_X_train_scaled (DataFrame): Scaled X input of train set (matrix)
-        p_y_train (Series): y output to train on (vector)
+        p_components (DataFrame):   pca components
+        p_y_train (Series):         y output to train on (vector)
     Returns:
         No return
     """
