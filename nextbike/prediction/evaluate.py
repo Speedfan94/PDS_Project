@@ -1,7 +1,6 @@
 from nextbike import visualization
 import numpy as np
 from sklearn import metrics
-from termcolor import colored
 
 
 def duration_error_metrics(p_y_true, p_y_predictions, p_filename, p_status="Training"):
