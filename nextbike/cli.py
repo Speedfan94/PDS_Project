@@ -105,7 +105,7 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
                                  "BEWARE: This method will overwrite the existing models!!!")
 @click.option("--regress/--no-regress", default=True,
               help="Deactivate to skip training regression models used for trip duration prediction. Default: True.")
-@click.option("--classify/--no-classify", default=False,
+@click.option("--classify/--no-classify", default=True,
               help="Activate to also train classification models used for direction prediction. Default: False")
 @click.option("--weather/--no-weather", default=False,
               help="Activate to include weather data. Be sure to insert weather data for given time period"
@@ -155,7 +155,7 @@ def train(regress, classify, weather):
                                    "File has to be inserted into 'data/input' directory")
 @click.option("--regress/--no-regress", default=True,
               help="Deactivate to skip training regression models used for trip duration prediction. Default: True.")
-@click.option("--classify/--no-classify", default=False,
+@click.option("--classify/--no-classify", default=True,
               help="Activate to also train classification models used for direction prediction. Default: False")
 @click.option("--weather/--no-weather", default=False,
               help="Activate to include weather data. Be sure to insert weather data for given time period"
