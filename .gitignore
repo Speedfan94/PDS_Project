@@ -6,7 +6,7 @@ nextbike/data/input/nuremberg.csv
 
 
 # output results (outcommend to upload to git)
-nextbike/data/output/
+# nextbike/data/output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

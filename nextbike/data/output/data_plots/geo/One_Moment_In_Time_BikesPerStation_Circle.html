@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_0dfb3f68b4d24e96880e7c142c9175d7 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_0dfb3f68b4d24e96880e7c142c9175d7" ></div>
+        
+</body>
+<script>    
+    
+            var map_0dfb3f68b4d24e96880e7c142c9175d7 = L.map(
+                "map_0dfb3f68b4d24e96880e7c142c9175d7",
+                {
+                    center: [49.45203, 11.07675],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 13,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_2b68fd0a03db4a5bb5a10411c065334c = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+            var circle_marker_b8bc27b06c2f45c4a25455a8faff2871 = L.circleMarker(
+                [49.452632522439, 11.095933914185],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_98e6f567b4634fa7b429f4292d2301ff = L.popup({"maxWidth": 400});
+
+        
+            var html_3ae6886fe57245a090610c4aada84f21 = $(`<div id="html_3ae6886fe57245a090610c4aada84f21" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Ohm-Hochschule (Wassertorstr.)<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_98e6f567b4634fa7b429f4292d2301ff.setContent(html_3ae6886fe57245a090610c4aada84f21);
+        
+
+        circle_marker_b8bc27b06c2f45c4a25455a8faff2871.bindPopup(popup_98e6f567b4634fa7b429f4292d2301ff)
+        ;
+
+        
+    
+    
+            circle_marker_b8bc27b06c2f45c4a25455a8faff2871.bindTooltip(
+                `<div>
+                     Ohm-Hochschule (Wassertorstr.)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_93583cdd49ad40a2b8841ae14f31ff9f = L.circleMarker(
+                [49.453322999397, 11.07882142067],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 3, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_fc3fe4fc309c43d38e9e11f6a6893b83 = L.popup({"maxWidth": 400});
+
+        
+            var html_7a8939a0684e4f719091f39127dc7724 = $(`<div id="html_7a8939a0684e4f719091f39127dc7724" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Heilig-Geist-Spital (Spitalgasse)<br><b>Bikes at Station: </b>3</div>`)[0];
+            popup_fc3fe4fc309c43d38e9e11f6a6893b83.setContent(html_7a8939a0684e4f719091f39127dc7724);
+        
+
+        circle_marker_93583cdd49ad40a2b8841ae14f31ff9f.bindPopup(popup_fc3fe4fc309c43d38e9e11f6a6893b83)
+        ;
+
+        
+    
+    
+            circle_marker_93583cdd49ad40a2b8841ae14f31ff9f.bindTooltip(
+                `<div>
+                     Heilig-Geist-Spital (Spitalgasse)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_f5968c56b4d044dc9cd8c37f14d5b774 = L.circleMarker(
+                [49.451031833901, 11.069653630257001],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_f0318bce3d71404da8e863d083f79537 = L.popup({"maxWidth": 400});
+
+        
+            var html_27999bcfc2c34e85a4712116a23f59d3 = $(`<div id="html_27999bcfc2c34e85a4712116a23f59d3" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Vordere Ledergasse / Schlotfegergasse<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_f0318bce3d71404da8e863d083f79537.setContent(html_27999bcfc2c34e85a4712116a23f59d3);
+        
+
+        circle_marker_f5968c56b4d044dc9cd8c37f14d5b774.bindPopup(popup_f0318bce3d71404da8e863d083f79537)
+        ;
+
+        
+    
+    
+            circle_marker_f5968c56b4d044dc9cd8c37f14d5b774.bindTooltip(
+                `<div>
+                     Vordere Ledergasse / Schlotfegergasse
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_50d14336274d4303b91e53ebe29a71dc = L.circleMarker(
+                [49.463333822297, 11.078065037727],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_77f3429cc38343f1b92aa68dd0e73db0 = L.popup({"maxWidth": 400});
+
+        
+            var html_85b09eed02db4a2dae99ca1b4c0d1261 = $(`<div id="html_85b09eed02db4a2dae99ca1b4c0d1261" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Kaulbachplatz<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_77f3429cc38343f1b92aa68dd0e73db0.setContent(html_85b09eed02db4a2dae99ca1b4c0d1261);
+        
+
+        circle_marker_50d14336274d4303b91e53ebe29a71dc.bindPopup(popup_77f3429cc38343f1b92aa68dd0e73db0)
+        ;
+
+        
+    
+    
+            circle_marker_50d14336274d4303b91e53ebe29a71dc.bindTooltip(
+                `<div>
+                     U-Bhf Kaulbachplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_7de0f715c4a84b8e978d7b79e4b6b8b5 = L.circleMarker(
+                [49.459501, 11.060263],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_60d62b19f67a46d88ca733b0fa39b1e6 = L.popup({"maxWidth": 400});
+
+        
+            var html_36f6cea89e57418798d61c2dc0992464 = $(`<div id="html_36f6cea89e57418798d61c2dc0992464" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>St. Johannis<br><b>Bikes at Station: </b>8</div>`)[0];
+            popup_60d62b19f67a46d88ca733b0fa39b1e6.setContent(html_36f6cea89e57418798d61c2dc0992464);
+        
+
+        circle_marker_7de0f715c4a84b8e978d7b79e4b6b8b5.bindPopup(popup_60d62b19f67a46d88ca733b0fa39b1e6)
+        ;
+
+        
+    
+    
+            circle_marker_7de0f715c4a84b8e978d7b79e4b6b8b5.bindTooltip(
+                `<div>
+                     St. Johannis
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_edd599fe5cda4415901a976d80b8a94c = L.circleMarker(
+                [49.45879764913, 11.081235408783],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_65deb578946c4054ba96306f236092ce = L.popup({"maxWidth": 400});
+
+        
+            var html_d3face2ead5e48afa9e0229ace417db0 = $(`<div id="html_d3face2ead5e48afa9e0229ace417db0" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Maxtor<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_65deb578946c4054ba96306f236092ce.setContent(html_d3face2ead5e48afa9e0229ace417db0);
+        
+
+        circle_marker_edd599fe5cda4415901a976d80b8a94c.bindPopup(popup_65deb578946c4054ba96306f236092ce)
+        ;
+
+        
+    
+    
+            circle_marker_edd599fe5cda4415901a976d80b8a94c.bindTooltip(
+                `<div>
+                     Maxtor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_acc1546d59134980984ef5da765b12fc = L.circleMarker(
+                [49.447680331969, 11.066080927848999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_b7726443f6704ea7bac25f72beb5965f = L.popup({"maxWidth": 400});
+
+        
+            var html_2efb58999ca9410c88ce3e8a7fc2d6c4 = $(`<div id="html_2efb58999ca9410c88ce3e8a7fc2d6c4" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Plärrer<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_b7726443f6704ea7bac25f72beb5965f.setContent(html_2efb58999ca9410c88ce3e8a7fc2d6c4);
+        
+
+        circle_marker_acc1546d59134980984ef5da765b12fc.bindPopup(popup_b7726443f6704ea7bac25f72beb5965f)
+        ;
+
+        
+    
+    
+            circle_marker_acc1546d59134980984ef5da765b12fc.bindTooltip(
+                `<div>
+                     Plärrer
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_95ddaa1ad2b04d0085afeb270a801905 = L.circleMarker(
+                [49.457127, 11.089604],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_af40c1b929f243378f99a767e4ad4073 = L.popup({"maxWidth": 400});
+
+        
+            var html_e978af1f76334e81b4305e2f36b6e478 = $(`<div id="html_e978af1f76334e81b4305e2f36b6e478" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Rathenauplatz<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_af40c1b929f243378f99a767e4ad4073.setContent(html_e978af1f76334e81b4305e2f36b6e478);
+        
+
+        circle_marker_95ddaa1ad2b04d0085afeb270a801905.bindPopup(popup_af40c1b929f243378f99a767e4ad4073)
+        ;
+
+        
+    
+    
+            circle_marker_95ddaa1ad2b04d0085afeb270a801905.bindTooltip(
+                `<div>
+                     Rathenauplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_d32fc6f7e4954d02838fe8ccbc73a6c8 = L.circleMarker(
+                [49.42877100000001, 11.086338],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_523a047dde8b417d9abb9e8d119a0262 = L.popup({"maxWidth": 400});
+
+        
+            var html_ca67f7e3ea5d47c1a4baeca4037ed865 = $(`<div id="html_ca67f7e3ea5d47c1a4baeca4037ed865" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Frankenstraße<br><b>Bikes at Station: </b>6</div>`)[0];
+            popup_523a047dde8b417d9abb9e8d119a0262.setContent(html_ca67f7e3ea5d47c1a4baeca4037ed865);
+        
+
+        circle_marker_d32fc6f7e4954d02838fe8ccbc73a6c8.bindPopup(popup_523a047dde8b417d9abb9e8d119a0262)
+        ;
+
+        
+    
+    
+            circle_marker_d32fc6f7e4954d02838fe8ccbc73a6c8.bindTooltip(
+                `<div>
+                     Frankenstraße
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_09e1df878cb747f1908533986a3a8a96 = L.circleMarker(
+                [49.447097893592996, 11.074706912040998],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_738b33d1e77548a1b5b3e8b15537247f = L.popup({"maxWidth": 400});
+
+        
+            var html_93d2c17dc2294548809ff9cf10802f41 = $(`<div id="html_93d2c17dc2294548809ff9cf10802f41" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Opernhaus (Germanisches Nationalmuseum)  <br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_738b33d1e77548a1b5b3e8b15537247f.setContent(html_93d2c17dc2294548809ff9cf10802f41);
+        
+
+        circle_marker_09e1df878cb747f1908533986a3a8a96.bindPopup(popup_738b33d1e77548a1b5b3e8b15537247f)
+        ;
+
+        
+    
+    
+            circle_marker_09e1df878cb747f1908533986a3a8a96.bindTooltip(
+                `<div>
+                     U-Bhf Opernhaus (Germanisches Nationalmuseum)  
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_445769b67121429092ce10b5e8e97151 = L.circleMarker(
+                [49.455837229762004, 11.07890188694],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_5f920dbb80624eedbee9b917e6e8682e = L.popup({"maxWidth": 400});
+
+        
+            var html_3bd25f452d534ecfa8abeb3bad7d2ec9 = $(`<div id="html_3bd25f452d534ecfa8abeb3bad7d2ec9" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Theresienstr. / Rathaus<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_5f920dbb80624eedbee9b917e6e8682e.setContent(html_3bd25f452d534ecfa8abeb3bad7d2ec9);
+        
+
+        circle_marker_445769b67121429092ce10b5e8e97151.bindPopup(popup_5f920dbb80624eedbee9b917e6e8682e)
+        ;
+
+        
+    
+    
+            circle_marker_445769b67121429092ce10b5e8e97151.bindTooltip(
+                `<div>
+                     Theresienstr. / Rathaus
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_d84bdd0a43794e51b45cbe7706199748 = L.circleMarker(
+                [49.464268200890004, 11.085940003394999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_8b2b894a045743ba86954f8b11713a12 = L.popup({"maxWidth": 400});
+
+        
+            var html_b279d61b920a4884a844883ba8406392 = $(`<div id="html_b279d61b920a4884a844883ba8406392" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Schillerplatz<br><b>Bikes at Station: </b>4</div>`)[0];
+            popup_8b2b894a045743ba86954f8b11713a12.setContent(html_b279d61b920a4884a844883ba8406392);
+        
+
+        circle_marker_d84bdd0a43794e51b45cbe7706199748.bindPopup(popup_8b2b894a045743ba86954f8b11713a12)
+        ;
+
+        
+    
+    
+            circle_marker_d84bdd0a43794e51b45cbe7706199748.bindTooltip(
+                `<div>
+                     Schillerplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_14211358eb4d42a9825f11fbc940e568 = L.circleMarker(
+                [49.45298, 11.087437],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_4e811be9e8ac4479bbf3ad5443bbe98d = L.popup({"maxWidth": 400});
+
+        
+            var html_c86db5ed6c18415fa1684f5dbb589de8 = $(`<div id="html_c86db5ed6c18415fa1684f5dbb589de8" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Wöhrder Wiese<br><b>Bikes at Station: </b>6</div>`)[0];
+            popup_4e811be9e8ac4479bbf3ad5443bbe98d.setContent(html_c86db5ed6c18415fa1684f5dbb589de8);
+        
+
+        circle_marker_14211358eb4d42a9825f11fbc940e568.bindPopup(popup_4e811be9e8ac4479bbf3ad5443bbe98d)
+        ;
+
+        
+    
+    
+            circle_marker_14211358eb4d42a9825f11fbc940e568.bindTooltip(
+                `<div>
+                     Wöhrder Wiese
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_bfd3338833f04558a886a04b8294eea1 = L.circleMarker(
+                [49.460736295655, 11.092527508736],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_418255ab8f334c5c8a2de0e6df5940e9 = L.popup({"maxWidth": 400});
+
+        
+            var html_3f2aa38afaaf4800babfdbafb5f308d9 = $(`<div id="html_3f2aa38afaaf4800babfdbafb5f308d9" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Rennweg<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_418255ab8f334c5c8a2de0e6df5940e9.setContent(html_3f2aa38afaaf4800babfdbafb5f308d9);
+        
+
+        circle_marker_bfd3338833f04558a886a04b8294eea1.bindPopup(popup_418255ab8f334c5c8a2de0e6df5940e9)
+        ;
+
+        
+    
+    
+            circle_marker_bfd3338833f04558a886a04b8294eea1.bindTooltip(
+                `<div>
+                     U-Bhf Rennweg
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_480799c37db4434fa9a113e647bb0bd3 = L.circleMarker(
+                [49.449957704225, 11.082774996758001],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_2d6192a3ed2c45b686cabc40a791bb81 = L.popup({"maxWidth": 400});
+
+        
+            var html_7a9334b13f1041dcb78406d526eb897b = $(`<div id="html_7a9334b13f1041dcb78406d526eb897b" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Lorenzer Str. / Marientormauer<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_2d6192a3ed2c45b686cabc40a791bb81.setContent(html_7a9334b13f1041dcb78406d526eb897b);
+        
+
+        circle_marker_480799c37db4434fa9a113e647bb0bd3.bindPopup(popup_2d6192a3ed2c45b686cabc40a791bb81)
+        ;
+
+        
+    
+    
+            circle_marker_480799c37db4434fa9a113e647bb0bd3.bindTooltip(
+                `<div>
+                     Lorenzer Str. / Marientormauer
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_cc37a8ae6470454fba4151da2c2317a3 = L.circleMarker(
+                [49.44809, 11.081892],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_e90abc89137a41a1b9f49029587edf05 = L.popup({"maxWidth": 400});
+
+        
+            var html_48b7256acdcc4444bffd6d97944c87e6 = $(`<div id="html_48b7256acdcc4444bffd6d97944c87e6" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Königstor<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_e90abc89137a41a1b9f49029587edf05.setContent(html_48b7256acdcc4444bffd6d97944c87e6);
+        
+
+        circle_marker_cc37a8ae6470454fba4151da2c2317a3.bindPopup(popup_e90abc89137a41a1b9f49029587edf05)
+        ;
+
+        
+    
+    
+            circle_marker_cc37a8ae6470454fba4151da2c2317a3.bindTooltip(
+                `<div>
+                     Königstor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_88cede1fd28648f7b45e8feb70e34232 = L.circleMarker(
+                [49.462407, 11.072183],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_e8c12194512644c1aec670f1b231e125 = L.popup({"maxWidth": 400});
+
+        
+            var html_4f02f2b0e51743afbb6fef50e2647f30 = $(`<div id="html_4f02f2b0e51743afbb6fef50e2647f30" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Friedrich-Ebert-Platz<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_e8c12194512644c1aec670f1b231e125.setContent(html_4f02f2b0e51743afbb6fef50e2647f30);
+        
+
+        circle_marker_88cede1fd28648f7b45e8feb70e34232.bindPopup(popup_e8c12194512644c1aec670f1b231e125)
+        ;
+
+        
+    
+    
+            circle_marker_88cede1fd28648f7b45e8feb70e34232.bindTooltip(
+                `<div>
+                     Friedrich-Ebert-Platz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_cd2e6324039e441094c271832e999944 = L.circleMarker(
+                [49.46073978236, 11.105536222458],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_87da51737d0143f1895fb79c74661d96 = L.popup({"maxWidth": 400});
+
+        
+            var html_bbcd39e8010d4e758743f0e85495a154 = $(`<div id="html_bbcd39e8010d4e758743f0e85495a154" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Äußere Sulzbacher Str. / B4R<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_87da51737d0143f1895fb79c74661d96.setContent(html_bbcd39e8010d4e758743f0e85495a154);
+        
+
+        circle_marker_cd2e6324039e441094c271832e999944.bindPopup(popup_87da51737d0143f1895fb79c74661d96)
+        ;
+
+        
+    
+    
+            circle_marker_cd2e6324039e441094c271832e999944.bindTooltip(
+                `<div>
+                     Äußere Sulzbacher Str. / B4R
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_cf8362f2a9784c7090e29ef13cb8e741 = L.circleMarker(
+                [49.464245, 11.100174],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_e631bc963faa4102a6bac2120c5dc73f = L.popup({"maxWidth": 400});
+
+        
+            var html_a54ca885fffa4d899b3f69631afd1cd4 = $(`<div id="html_a54ca885fffa4d899b3f69631afd1cd4" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Schoppershof<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_e631bc963faa4102a6bac2120c5dc73f.setContent(html_a54ca885fffa4d899b3f69631afd1cd4);
+        
+
+        circle_marker_cf8362f2a9784c7090e29ef13cb8e741.bindPopup(popup_e631bc963faa4102a6bac2120c5dc73f)
+        ;
+
+        
+    
+    
+            circle_marker_cf8362f2a9784c7090e29ef13cb8e741.bindTooltip(
+                `<div>
+                     Schoppershof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_cf52929bd2cc40eabaddb5161da444b2 = L.circleMarker(
+                [49.443982, 11.054495],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_e88606c746484368a1a8976df3bf4cf3 = L.popup({"maxWidth": 400});
+
+        
+            var html_63d2508942f7408cbaefb14c0da87e51 = $(`<div id="html_63d2508942f7408cbaefb14c0da87e51" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>St. Leonhard<br><b>Bikes at Station: </b>9</div>`)[0];
+            popup_e88606c746484368a1a8976df3bf4cf3.setContent(html_63d2508942f7408cbaefb14c0da87e51);
+        
+
+        circle_marker_cf52929bd2cc40eabaddb5161da444b2.bindPopup(popup_e88606c746484368a1a8976df3bf4cf3)
+        ;
+
+        
+    
+    
+            circle_marker_cf52929bd2cc40eabaddb5161da444b2.bindTooltip(
+                `<div>
+                     St. Leonhard
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_97f1edbb86224719b758744658965052 = L.circleMarker(
+                [49.448755, 11.097747],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_9dfbe65b22214cab8fbb10d09657daa4 = L.popup({"maxWidth": 400});
+
+        
+            var html_397d18dba0f149a6a2f1c2125f4ebf66 = $(`<div id="html_397d18dba0f149a6a2f1c2125f4ebf66" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Dürrenhof<br><b>Bikes at Station: </b>6</div>`)[0];
+            popup_9dfbe65b22214cab8fbb10d09657daa4.setContent(html_397d18dba0f149a6a2f1c2125f4ebf66);
+        
+
+        circle_marker_97f1edbb86224719b758744658965052.bindPopup(popup_9dfbe65b22214cab8fbb10d09657daa4)
+        ;
+
+        
+    
+    
+            circle_marker_97f1edbb86224719b758744658965052.bindTooltip(
+                `<div>
+                     Dürrenhof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_de396ce2f719465d9809844a760a938e = L.circleMarker(
+                [49.451257, 11.103913],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_3cf4c57b12a74fe6b74cf430517fdcac = L.popup({"maxWidth": 400});
+
+        
+            var html_1594189e3bab4ec19c9bf6684250103e = $(`<div id="html_1594189e3bab4ec19c9bf6684250103e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Wöhrder See<br><b>Bikes at Station: </b>15</div>`)[0];
+            popup_3cf4c57b12a74fe6b74cf430517fdcac.setContent(html_1594189e3bab4ec19c9bf6684250103e);
+        
+
+        circle_marker_de396ce2f719465d9809844a760a938e.bindPopup(popup_3cf4c57b12a74fe6b74cf430517fdcac)
+        ;
+
+        
+    
+    
+            circle_marker_de396ce2f719465d9809844a760a938e.bindTooltip(
+                `<div>
+                     Wöhrder See
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_e1642b91ed514fccb62ed03b9a36871a = L.circleMarker(
+                [49.450868, 11.055621],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_8d116571d4934df0b2469a821f8c889c = L.popup({"maxWidth": 400});
+
+        
+            var html_432460bf43a84b18a421edca758d5229 = $(`<div id="html_432460bf43a84b18a421edca758d5229" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Gostenhof<br><b>Bikes at Station: </b>4</div>`)[0];
+            popup_8d116571d4934df0b2469a821f8c889c.setContent(html_432460bf43a84b18a421edca758d5229);
+        
+
+        circle_marker_e1642b91ed514fccb62ed03b9a36871a.bindPopup(popup_8d116571d4934df0b2469a821f8c889c)
+        ;
+
+        
+    
+    
+            circle_marker_e1642b91ed514fccb62ed03b9a36871a.bindTooltip(
+                `<div>
+                     Gostenhof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_8e3f4383b06a42ff9ea763ca9ad10b35 = L.circleMarker(
+                [49.453567, 11.048017],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_495b4679a0aa497db3ee9ddffd544be3 = L.popup({"maxWidth": 400});
+
+        
+            var html_411f0635685a423cad4daf2b5541f1ba = $(`<div id="html_411f0635685a423cad4daf2b5541f1ba" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Bärenschanze<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_495b4679a0aa497db3ee9ddffd544be3.setContent(html_411f0635685a423cad4daf2b5541f1ba);
+        
+
+        circle_marker_8e3f4383b06a42ff9ea763ca9ad10b35.bindPopup(popup_495b4679a0aa497db3ee9ddffd544be3)
+        ;
+
+        
+    
+    
+            circle_marker_8e3f4383b06a42ff9ea763ca9ad10b35.bindTooltip(
+                `<div>
+                     Bärenschanze
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_e6c837a457a64168bd7d49c5b25c64bf = L.circleMarker(
+                [49.433846, 11.111491000000001],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_c73118b7fcc04a248589a36a56fb12bf = L.popup({"maxWidth": 400});
+
+        
+            var html_aebaa05dca6847ba9a7b03592ac91c3c = $(`<div id="html_aebaa05dca6847ba9a7b03592ac91c3c" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Doku-Zentrum<br><b>Bikes at Station: </b>7</div>`)[0];
+            popup_c73118b7fcc04a248589a36a56fb12bf.setContent(html_aebaa05dca6847ba9a7b03592ac91c3c);
+        
+
+        circle_marker_e6c837a457a64168bd7d49c5b25c64bf.bindPopup(popup_c73118b7fcc04a248589a36a56fb12bf)
+        ;
+
+        
+    
+    
+            circle_marker_e6c837a457a64168bd7d49c5b25c64bf.bindTooltip(
+                `<div>
+                     Doku-Zentrum
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_1bbe4664a35445ebbe854d7675d32474 = L.circleMarker(
+                [49.435604999999995, 11.116642],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_776c1a9640bc4fb19b03255aa1cebed6 = L.popup({"maxWidth": 400});
+
+        
+            var html_8f368b166b8a4cbb87ea175377b46db2 = $(`<div id="html_8f368b166b8a4cbb87ea175377b46db2" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Dutzendteich<br><b>Bikes at Station: </b>8</div>`)[0];
+            popup_776c1a9640bc4fb19b03255aa1cebed6.setContent(html_8f368b166b8a4cbb87ea175377b46db2);
+        
+
+        circle_marker_1bbe4664a35445ebbe854d7675d32474.bindPopup(popup_776c1a9640bc4fb19b03255aa1cebed6)
+        ;
+
+        
+    
+    
+            circle_marker_1bbe4664a35445ebbe854d7675d32474.bindTooltip(
+                `<div>
+                     Dutzendteich
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_f267eeaefa8347d58964b1f377952261 = L.circleMarker(
+                [49.438548, 11.102160000000001],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_0671a537b1674fc0ba728815de79779c = L.popup({"maxWidth": 400});
+
+        
+            var html_19e489d4a5b8448baf2fa7df68871a8c = $(`<div id="html_19e489d4a5b8448baf2fa7df68871a8c" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Platz der Opfer des Faschismus<br><b>Bikes at Station: </b>10</div>`)[0];
+            popup_0671a537b1674fc0ba728815de79779c.setContent(html_19e489d4a5b8448baf2fa7df68871a8c);
+        
+
+        circle_marker_f267eeaefa8347d58964b1f377952261.bindPopup(popup_0671a537b1674fc0ba728815de79779c)
+        ;
+
+        
+    
+    
+            circle_marker_f267eeaefa8347d58964b1f377952261.bindTooltip(
+                `<div>
+                     Platz der Opfer des Faschismus
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_2c0377716fe04ce8a19a40c155e620d7 = L.circleMarker(
+                [49.443170613507995, 11.099774837494],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_8d859647ad794c1ab564cde4db934245 = L.popup({"maxWidth": 400});
+
+        
+            var html_7d127b0fb7154afeb81e0326b0909192 = $(`<div id="html_7d127b0fb7154afeb81e0326b0909192" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Peterskirche / Regensburger Str.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_8d859647ad794c1ab564cde4db934245.setContent(html_7d127b0fb7154afeb81e0326b0909192);
+        
+
+        circle_marker_2c0377716fe04ce8a19a40c155e620d7.bindPopup(popup_8d859647ad794c1ab564cde4db934245)
+        ;
+
+        
+    
+    
+            circle_marker_2c0377716fe04ce8a19a40c155e620d7.bindTooltip(
+                `<div>
+                     Peterskirche / Regensburger Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_6692e8bc15264b1ea0271d3bcd22062f = L.circleMarker(
+                [49.443941445511996, 11.054402589798],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_f41025b4af704733b79eb2b74e53fd13 = L.popup({"maxWidth": 400});
+
+        
+            var html_32b782d9314548d78a239f4bfbce7a82 = $(`<div id="html_32b782d9314548d78a239f4bfbce7a82" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Rothenburger Str. (Villa Leon)<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_f41025b4af704733b79eb2b74e53fd13.setContent(html_32b782d9314548d78a239f4bfbce7a82);
+        
+
+        circle_marker_6692e8bc15264b1ea0271d3bcd22062f.bindPopup(popup_f41025b4af704733b79eb2b74e53fd13)
+        ;
+
+        
+    
+    
+            circle_marker_6692e8bc15264b1ea0271d3bcd22062f.bindTooltip(
+                `<div>
+                     U-Bhf Rothenburger Str. (Villa Leon)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_47cad2bfb1db4d6e8f32785751efdd41 = L.circleMarker(
+                [49.438658000000004, 11.035631],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_2da60c6c17d74915a207e665c2a000ee = L.popup({"maxWidth": 400});
+
+        
+            var html_a3ba9fd199a142b890fd157adf79b041 = $(`<div id="html_a3ba9fd199a142b890fd157adf79b041" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Gustav-Adolf-Str.<br><b>Bikes at Station: </b>10</div>`)[0];
+            popup_2da60c6c17d74915a207e665c2a000ee.setContent(html_a3ba9fd199a142b890fd157adf79b041);
+        
+
+        circle_marker_47cad2bfb1db4d6e8f32785751efdd41.bindPopup(popup_2da60c6c17d74915a207e665c2a000ee)
+        ;
+
+        
+    
+    
+            circle_marker_47cad2bfb1db4d6e8f32785751efdd41.bindTooltip(
+                `<div>
+                     Gustav-Adolf-Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_49fbe3109698405a8b6d08c6025251a0 = L.circleMarker(
+                [49.436354675701, 11.091309785843],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_eb56fdd4a27f4864875319afa201453e = L.popup({"maxWidth": 400});
+
+        
+            var html_2a1a5fedd1474539b2d198229436b9f4 = $(`<div id="html_2a1a5fedd1474539b2d198229436b9f4" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Allersberger Str. / Gudrunstr.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_eb56fdd4a27f4864875319afa201453e.setContent(html_2a1a5fedd1474539b2d198229436b9f4);
+        
+
+        circle_marker_49fbe3109698405a8b6d08c6025251a0.bindPopup(popup_eb56fdd4a27f4864875319afa201453e)
+        ;
+
+        
+    
+    
+            circle_marker_49fbe3109698405a8b6d08c6025251a0.bindTooltip(
+                `<div>
+                     Allersberger Str. / Gudrunstr.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_3f82fc262cab4b969e4f366932e6a025 = L.circleMarker(
+                [49.440019, 11.080525999999999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_5ddaf0ee490248b699eac4adf066f621 = L.popup({"maxWidth": 400});
+
+        
+            var html_8c59e2c01332424a8b84ee18192ee47b = $(`<div id="html_8c59e2c01332424a8b84ee18192ee47b" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Aufseßplatz<br><b>Bikes at Station: </b>9</div>`)[0];
+            popup_5ddaf0ee490248b699eac4adf066f621.setContent(html_8c59e2c01332424a8b84ee18192ee47b);
+        
+
+        circle_marker_3f82fc262cab4b969e4f366932e6a025.bindPopup(popup_5ddaf0ee490248b699eac4adf066f621)
+        ;
+
+        
+    
+    
+            circle_marker_3f82fc262cab4b969e4f366932e6a025.bindTooltip(
+                `<div>
+                     Aufseßplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_4ad2a1eb13574689b6c6a993c04914cf = L.circleMarker(
+                [49.429569190849, 11.017650961875999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_bc377870656b4845bc0f68f5e7f6e330 = L.popup({"maxWidth": 400});
+
+        
+            var html_95581c6206b5420ea303ad2b5f127ade = $(`<div id="html_95581c6206b5420ea303ad2b5f127ade" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Südwestpark (Fitnessstudio)<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_bc377870656b4845bc0f68f5e7f6e330.setContent(html_95581c6206b5420ea303ad2b5f127ade);
+        
+
+        circle_marker_4ad2a1eb13574689b6c6a993c04914cf.bindPopup(popup_bc377870656b4845bc0f68f5e7f6e330)
+        ;
+
+        
+    
+    
+            circle_marker_4ad2a1eb13574689b6c6a993c04914cf.bindTooltip(
+                `<div>
+                     Südwestpark (Fitnessstudio)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_011c1ea9dba446f4b85de2c800ab6ee1 = L.circleMarker(
+                [49.42806195319199, 11.022795438766],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_98e26f214f5c4ede81eafb184aa0129c = L.popup({"maxWidth": 400});
+
+        
+            var html_d467f9525e694c19a90270974b6b6d8a = $(`<div id="html_d467f9525e694c19a90270974b6b6d8a" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Südwestpark (Nordost)<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_98e26f214f5c4ede81eafb184aa0129c.setContent(html_d467f9525e694c19a90270974b6b6d8a);
+        
+
+        circle_marker_011c1ea9dba446f4b85de2c800ab6ee1.bindPopup(popup_98e26f214f5c4ede81eafb184aa0129c)
+        ;
+
+        
+    
+    
+            circle_marker_011c1ea9dba446f4b85de2c800ab6ee1.bindTooltip(
+                `<div>
+                     Südwestpark (Nordost)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_08aa2335c67a4eac80a86266c74d3a38 = L.circleMarker(
+                [49.426313918194, 11.018208861350999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_9e620242c1e74eabb3982360f063cdc4 = L.popup({"maxWidth": 400});
+
+        
+            var html_8bc03a1b4cae4667b9187807a707ce55 = $(`<div id="html_8bc03a1b4cae4667b9187807a707ce55" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>S-Bhf Stein (Südwestpark)<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_9e620242c1e74eabb3982360f063cdc4.setContent(html_8bc03a1b4cae4667b9187807a707ce55);
+        
+
+        circle_marker_08aa2335c67a4eac80a86266c74d3a38.bindPopup(popup_9e620242c1e74eabb3982360f063cdc4)
+        ;
+
+        
+    
+    
+            circle_marker_08aa2335c67a4eac80a86266c74d3a38.bindTooltip(
+                `<div>
+                     S-Bhf Stein (Südwestpark)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_4d4d2c4e9419453fadac354db73b57ee = L.circleMarker(
+                [49.428084631878995, 11.019732356072],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_f1fa089f3278470f8fbb813f1f8e6498 = L.popup({"maxWidth": 400});
+
+        
+            var html_91cec082287c402586d37774775c5745 = $(`<div id="html_91cec082287c402586d37774775c5745" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Südwestpark (Zentral)<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_f1fa089f3278470f8fbb813f1f8e6498.setContent(html_91cec082287c402586d37774775c5745);
+        
+
+        circle_marker_4d4d2c4e9419453fadac354db73b57ee.bindPopup(popup_f1fa089f3278470f8fbb813f1f8e6498)
+        ;
+
+        
+    
+    
+            circle_marker_4d4d2c4e9419453fadac354db73b57ee.bindTooltip(
+                `<div>
+                     Südwestpark (Zentral)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_92ef9e062ba64baba777d59363c999e0 = L.circleMarker(
+                [49.472538, 11.104286],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_50d589c091a941e0859b11119b9c76fd = L.popup({"maxWidth": 400});
+
+        
+            var html_b18ac8744da1495497f09368ca2ff713 = $(`<div id="html_b18ac8744da1495497f09368ca2ff713" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Nordostbahnhof<br><b>Bikes at Station: </b>8</div>`)[0];
+            popup_50d589c091a941e0859b11119b9c76fd.setContent(html_b18ac8744da1495497f09368ca2ff713);
+        
+
+        circle_marker_92ef9e062ba64baba777d59363c999e0.bindPopup(popup_50d589c091a941e0859b11119b9c76fd)
+        ;
+
+        
+    
+    
+            circle_marker_92ef9e062ba64baba777d59363c999e0.bindTooltip(
+                `<div>
+                     Nordostbahnhof
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_d75dfee4a52d4a868a8a590fb174877a = L.circleMarker(
+                [49.478493, 11.110039],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_1e7381597b86471a8c84649a05caf09b = L.popup({"maxWidth": 400});
+
+        
+            var html_3a1e2a07d21b467d8a777b46b2b81311 = $(`<div id="html_3a1e2a07d21b467d8a777b46b2b81311" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Herrnhütte<br><b>Bikes at Station: </b>18</div>`)[0];
+            popup_1e7381597b86471a8c84649a05caf09b.setContent(html_3a1e2a07d21b467d8a777b46b2b81311);
+        
+
+        circle_marker_d75dfee4a52d4a868a8a590fb174877a.bindPopup(popup_1e7381597b86471a8c84649a05caf09b)
+        ;
+
+        
+    
+    
+            circle_marker_d75dfee4a52d4a868a8a590fb174877a.bindTooltip(
+                `<div>
+                     Herrnhütte
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_3a15a7aa03cf4f68a718b4b610a00247 = L.circleMarker(
+                [49.485354, 11.123716],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_f3efc79d8a3545d785c710e17aa8df27 = L.popup({"maxWidth": 400});
+
+        
+            var html_f12f6fdcf9b24cdeb8f91ba52aadaa34 = $(`<div id="html_f12f6fdcf9b24cdeb8f91ba52aadaa34" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Nordostpark Süd<br><b>Bikes at Station: </b>14</div>`)[0];
+            popup_f3efc79d8a3545d785c710e17aa8df27.setContent(html_f12f6fdcf9b24cdeb8f91ba52aadaa34);
+        
+
+        circle_marker_3a15a7aa03cf4f68a718b4b610a00247.bindPopup(popup_f3efc79d8a3545d785c710e17aa8df27)
+        ;
+
+        
+    
+    
+            circle_marker_3a15a7aa03cf4f68a718b4b610a00247.bindTooltip(
+                `<div>
+                     Nordostpark Süd
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_72bfa643bcbd401f9d99ceacde808250 = L.circleMarker(
+                [49.48715839545999, 11.12761080265],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 3, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_0c672be4287943bea6305c486a910261 = L.popup({"maxWidth": 400});
+
+        
+            var html_036d4e89116844358b0c847fe6700b0e = $(`<div id="html_036d4e89116844358b0c847fe6700b0e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Nordostpark Nord<br><b>Bikes at Station: </b>3</div>`)[0];
+            popup_0c672be4287943bea6305c486a910261.setContent(html_036d4e89116844358b0c847fe6700b0e);
+        
+
+        circle_marker_72bfa643bcbd401f9d99ceacde808250.bindPopup(popup_0c672be4287943bea6305c486a910261)
+        ;
+
+        
+    
+    
+            circle_marker_72bfa643bcbd401f9d99ceacde808250.bindTooltip(
+                `<div>
+                     Nordostpark Nord
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_1551ffc3bcdf4be99c6047e4ff4ab0b6 = L.circleMarker(
+                [49.44831507729, 11.087028980255],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_c5f0b34b44aa43c4abe307481a983416 = L.popup({"maxWidth": 400});
+
+        
+            var html_85b966ab3e5e43c4a44265a6c1f1e3dd = $(`<div id="html_85b966ab3e5e43c4a44265a6c1f1e3dd" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Willy-Brandt-Platz<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_c5f0b34b44aa43c4abe307481a983416.setContent(html_85b966ab3e5e43c4a44265a6c1f1e3dd);
+        
+
+        circle_marker_1551ffc3bcdf4be99c6047e4ff4ab0b6.bindPopup(popup_c5f0b34b44aa43c4abe307481a983416)
+        ;
+
+        
+    
+    
+            circle_marker_1551ffc3bcdf4be99c6047e4ff4ab0b6.bindTooltip(
+                `<div>
+                     Willy-Brandt-Platz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_89afdf4d1d054d1a9f0c1b5d583adcd9 = L.circleMarker(
+                [49.458187447755, 11.07345700264],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_bdd4d7c108364ea3a1b50006079a3c61 = L.popup({"maxWidth": 400});
+
+        
+            var html_2b8b9146d0104a59bf0bc582419157a2 = $(`<div id="html_2b8b9146d0104a59bf0bc582419157a2" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Hst. Tiergärtnertor<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_bdd4d7c108364ea3a1b50006079a3c61.setContent(html_2b8b9146d0104a59bf0bc582419157a2);
+        
+
+        circle_marker_89afdf4d1d054d1a9f0c1b5d583adcd9.bindPopup(popup_bdd4d7c108364ea3a1b50006079a3c61)
+        ;
+
+        
+    
+    
+            circle_marker_89afdf4d1d054d1a9f0c1b5d583adcd9.bindTooltip(
+                `<div>
+                     Hst. Tiergärtnertor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_955ec73172b5402cb9746d784d40d01a = L.circleMarker(
+                [49.440969664486, 11.090059876442002],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_15a4cca7022f46c6a1d6fbbf10ad1bca = L.popup({"maxWidth": 400});
+
+        
+            var html_63e50647532541bfa91025bb0c53bd12 = $(`<div id="html_63e50647532541bfa91025bb0c53bd12" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Allersberger Str. / Paulstr.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_15a4cca7022f46c6a1d6fbbf10ad1bca.setContent(html_63e50647532541bfa91025bb0c53bd12);
+        
+
+        circle_marker_955ec73172b5402cb9746d784d40d01a.bindPopup(popup_15a4cca7022f46c6a1d6fbbf10ad1bca)
+        ;
+
+        
+    
+    
+            circle_marker_955ec73172b5402cb9746d784d40d01a.bindTooltip(
+                `<div>
+                     Allersberger Str. / Paulstr.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_f8b4655859a94d9092a4083d2102047e = L.circleMarker(
+                [49.446614848133, 11.007606089114999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_2e3af5e5da1b455d964ddc8c396a0a75 = L.popup({"maxWidth": 400});
+
+        
+            var html_6182086ab1c340d883f28f91ef125a3e = $(`<div id="html_6182086ab1c340d883f28f91ef125a3e" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Virnsberger Str. / Sigmundstr. (DATEV)<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_2e3af5e5da1b455d964ddc8c396a0a75.setContent(html_6182086ab1c340d883f28f91ef125a3e);
+        
+
+        circle_marker_f8b4655859a94d9092a4083d2102047e.bindPopup(popup_2e3af5e5da1b455d964ddc8c396a0a75)
+        ;
+
+        
+    
+    
+            circle_marker_f8b4655859a94d9092a4083d2102047e.bindTooltip(
+                `<div>
+                     Virnsberger Str. / Sigmundstr. (DATEV)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_4c2dfdf6bb774e6da60bc958f0affc42 = L.circleMarker(
+                [49.457364535583, 11.08494758606],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_58680970e58c4426b1935bfae7afa74b = L.popup({"maxWidth": 400});
+
+        
+            var html_6bc2ca8cac2e4ee5a36884e1f61ebd47 = $(`<div id="html_6bc2ca8cac2e4ee5a36884e1f61ebd47" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Hirschelgasse - FAU <br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_58680970e58c4426b1935bfae7afa74b.setContent(html_6bc2ca8cac2e4ee5a36884e1f61ebd47);
+        
+
+        circle_marker_4c2dfdf6bb774e6da60bc958f0affc42.bindPopup(popup_58680970e58c4426b1935bfae7afa74b)
+        ;
+
+        
+    
+    
+            circle_marker_4c2dfdf6bb774e6da60bc958f0affc42.bindTooltip(
+                `<div>
+                     Hirschelgasse - FAU 
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_a9416c3fbdfa417d931ab4f46f334426 = L.circleMarker(
+                [49.46492713627301, 11.119349598885],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_00f4cc2c406549a08d38c306e65f4130 = L.popup({"maxWidth": 400});
+
+        
+            var html_ebf353f81fe94d77b4d2deafcf873af6 = $(`<div id="html_ebf353f81fe94d77b4d2deafcf873af6" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Äußere Sulzbacher Str. / Bismarckstr. (CNO)<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_00f4cc2c406549a08d38c306e65f4130.setContent(html_ebf353f81fe94d77b4d2deafcf873af6);
+        
+
+        circle_marker_a9416c3fbdfa417d931ab4f46f334426.bindPopup(popup_00f4cc2c406549a08d38c306e65f4130)
+        ;
+
+        
+    
+    
+            circle_marker_a9416c3fbdfa417d931ab4f46f334426.bindTooltip(
+                `<div>
+                     Äußere Sulzbacher Str. / Bismarckstr. (CNO)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_452d2eb323864abc8c05e8cf713100b2 = L.circleMarker(
+                [49.493970754275, 11.078048944473],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_ead2a10123634d47aafa6272f76b5be6 = L.popup({"maxWidth": 400});
+
+        
+            var html_8063a77b130c4e2ea6f75e248d0ee699 = $(`<div id="html_8063a77b130c4e2ea6f75e248d0ee699" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>U-Bhf Flughafen Nürnberg<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_ead2a10123634d47aafa6272f76b5be6.setContent(html_8063a77b130c4e2ea6f75e248d0ee699);
+        
+
+        circle_marker_452d2eb323864abc8c05e8cf713100b2.bindPopup(popup_ead2a10123634d47aafa6272f76b5be6)
+        ;
+
+        
+    
+    
+            circle_marker_452d2eb323864abc8c05e8cf713100b2.bindTooltip(
+                `<div>
+                     U-Bhf Flughafen Nürnberg
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_e680b84c3d964ba380950ce9dc41195d = L.circleMarker(
+                [49.42875975415999, 11.130899190903001],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_03a2d7387add4ac3931ff8b7465afaf7 = L.popup({"maxWidth": 400});
+
+        
+            var html_5e045670933c45538d5081fb27be7469 = $(`<div id="html_5e045670933c45538d5081fb27be7469" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>easyCredit-Haus / Beuthener Str.<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_03a2d7387add4ac3931ff8b7465afaf7.setContent(html_5e045670933c45538d5081fb27be7469);
+        
+
+        circle_marker_e680b84c3d964ba380950ce9dc41195d.bindPopup(popup_03a2d7387add4ac3931ff8b7465afaf7)
+        ;
+
+        
+    
+    
+            circle_marker_e680b84c3d964ba380950ce9dc41195d.bindTooltip(
+                `<div>
+                     easyCredit-Haus / Beuthener Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_7947d70a1fe647d2be05533ee90f9537 = L.circleMarker(
+                [49.470676, 11.11205],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_67d26b31a97540f49e07b3ef38e83fed = L.popup({"maxWidth": 400});
+
+        
+            var html_62950e6ae2094c45a6fcd5cbd476f1c0 = $(`<div id="html_62950e6ae2094c45a6fcd5cbd476f1c0" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>WBG / Plauener Str.<br><b>Bikes at Station: </b>4</div>`)[0];
+            popup_67d26b31a97540f49e07b3ef38e83fed.setContent(html_62950e6ae2094c45a6fcd5cbd476f1c0);
+        
+
+        circle_marker_7947d70a1fe647d2be05533ee90f9537.bindPopup(popup_67d26b31a97540f49e07b3ef38e83fed)
+        ;
+
+        
+    
+    
+            circle_marker_7947d70a1fe647d2be05533ee90f9537.bindTooltip(
+                `<div>
+                     WBG / Plauener Str.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_d320c6aa0ccc4a74879840d6062fd8f9 = L.circleMarker(
+                [49.451750232172, 11.083359718322999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_5da601364d07488aa81819bc1df3da30 = L.popup({"maxWidth": 400});
+
+        
+            var html_a4ca6dc98eba456a883973f8cbd50ec7 = $(`<div id="html_a4ca6dc98eba456a883973f8cbd50ec7" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Cinecittà<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_5da601364d07488aa81819bc1df3da30.setContent(html_a4ca6dc98eba456a883973f8cbd50ec7);
+        
+
+        circle_marker_d320c6aa0ccc4a74879840d6062fd8f9.bindPopup(popup_5da601364d07488aa81819bc1df3da30)
+        ;
+
+        
+    
+    
+            circle_marker_d320c6aa0ccc4a74879840d6062fd8f9.bindTooltip(
+                `<div>
+                     Cinecittà
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_315771af3a2d4b39b21e0fe6122537f4 = L.circleMarker(
+                [49.44898, 11.07519],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_2e302f30e91d4e6f806243e452485b8b = L.popup({"maxWidth": 400});
+
+        
+            var html_82b3be2dfb034a7d84af16264acad7e8 = $(`<div id="html_82b3be2dfb034a7d84af16264acad7e8" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Kornmarkt<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_2e302f30e91d4e6f806243e452485b8b.setContent(html_82b3be2dfb034a7d84af16264acad7e8);
+        
+
+        circle_marker_315771af3a2d4b39b21e0fe6122537f4.bindPopup(popup_2e302f30e91d4e6f806243e452485b8b)
+        ;
+
+        
+    
+    
+            circle_marker_315771af3a2d4b39b21e0fe6122537f4.bindTooltip(
+                `<div>
+                     Kornmarkt
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_c50518ef757e4e8ab884511cd7614d08 = L.circleMarker(
+                [49.449922829490006, 11.070694327354],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_49ef22e407c44676a96b8711766a2ca0 = L.popup({"maxWidth": 400});
+
+        
+            var html_491f7d682de14dc9bb97032d76da5413 = $(`<div id="html_491f7d682de14dc9bb97032d76da5413" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Jakobsplatz/ Dr. Kurt Schumacherstr.<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_49ef22e407c44676a96b8711766a2ca0.setContent(html_491f7d682de14dc9bb97032d76da5413);
+        
+
+        circle_marker_c50518ef757e4e8ab884511cd7614d08.bindPopup(popup_49ef22e407c44676a96b8711766a2ca0)
+        ;
+
+        
+    
+    
+            circle_marker_c50518ef757e4e8ab884511cd7614d08.bindTooltip(
+                `<div>
+                     Jakobsplatz/ Dr. Kurt Schumacherstr.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_f1f53a7d9bd54d698b30e8e85524efdc = L.circleMarker(
+                [49.45127246362001, 11.072287559509],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_4ec5ffca1cc74790b7663cbe54e0d24e = L.popup({"maxWidth": 400});
+
+        
+            var html_c51ad9a0fe114da5879a69dcd87e6d17 = $(`<div id="html_c51ad9a0fe114da5879a69dcd87e6d17" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Josephsplatz<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_4ec5ffca1cc74790b7663cbe54e0d24e.setContent(html_c51ad9a0fe114da5879a69dcd87e6d17);
+        
+
+        circle_marker_f1f53a7d9bd54d698b30e8e85524efdc.bindPopup(popup_4ec5ffca1cc74790b7663cbe54e0d24e)
+        ;
+
+        
+    
+    
+            circle_marker_f1f53a7d9bd54d698b30e8e85524efdc.bindTooltip(
+                `<div>
+                     Josephsplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_8c558375ecb1416991ebd221d970d05f = L.circleMarker(
+                [49.456168498765, 11.083804965018999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_5fca21e988b8446f9f80ee70874b940d = L.popup({"maxWidth": 400});
+
+        
+            var html_108938c5d3be4664a343a611c187c281 = $(`<div id="html_108938c5d3be4664a343a611c187c281" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Innerer Laufer Platz<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_5fca21e988b8446f9f80ee70874b940d.setContent(html_108938c5d3be4664a343a611c187c281);
+        
+
+        circle_marker_8c558375ecb1416991ebd221d970d05f.bindPopup(popup_5fca21e988b8446f9f80ee70874b940d)
+        ;
+
+        
+    
+    
+            circle_marker_8c558375ecb1416991ebd221d970d05f.bindTooltip(
+                `<div>
+                     Innerer Laufer Platz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_1868aff762954cedb3dbcca8156000d1 = L.circleMarker(
+                [49.45094, 11.07953],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_cd072e2f606c49a883d7134d9d4bc149 = L.popup({"maxWidth": 400});
+
+        
+            var html_91ba02d99cbd49abb1a2af9c68ba4f05 = $(`<div id="html_91ba02d99cbd49abb1a2af9c68ba4f05" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Lorenzkirche<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_cd072e2f606c49a883d7134d9d4bc149.setContent(html_91ba02d99cbd49abb1a2af9c68ba4f05);
+        
+
+        circle_marker_1868aff762954cedb3dbcca8156000d1.bindPopup(popup_cd072e2f606c49a883d7134d9d4bc149)
+        ;
+
+        
+    
+    
+            circle_marker_1868aff762954cedb3dbcca8156000d1.bindTooltip(
+                `<div>
+                     Lorenzkirche
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_1b94f003e02b42d786f548fbe9394d00 = L.circleMarker(
+                [49.454201774186004, 11.073215603828],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_4d3db8af12c64d80ba03e9ffef2dc6e0 = L.popup({"maxWidth": 400});
+
+        
+            var html_95c61d7c599b4990b79e764a416c9e58 = $(`<div id="html_95c61d7c599b4990b79e764a416c9e58" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Maxplatz<br><b>Bikes at Station: </b>5</div>`)[0];
+            popup_4d3db8af12c64d80ba03e9ffef2dc6e0.setContent(html_95c61d7c599b4990b79e764a416c9e58);
+        
+
+        circle_marker_1b94f003e02b42d786f548fbe9394d00.bindPopup(popup_4d3db8af12c64d80ba03e9ffef2dc6e0)
+        ;
+
+        
+    
+    
+            circle_marker_1b94f003e02b42d786f548fbe9394d00.bindTooltip(
+                `<div>
+                     Maxplatz
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_872a80ca954e48839e3d0886b2e9bb1c = L.circleMarker(
+                [49.458051458985004, 11.077582240105],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_65185a1faa9e493e89b30a4668b7068f = L.popup({"maxWidth": 400});
+
+        
+            var html_c4b0d65da30d4aa3bff402c4610d7e98 = $(`<div id="html_c4b0d65da30d4aa3bff402c4610d7e98" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Burg/ Jugendherberge<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_65185a1faa9e493e89b30a4668b7068f.setContent(html_c4b0d65da30d4aa3bff402c4610d7e98);
+        
+
+        circle_marker_872a80ca954e48839e3d0886b2e9bb1c.bindPopup(popup_65185a1faa9e493e89b30a4668b7068f)
+        ;
+
+        
+    
+    
+            circle_marker_872a80ca954e48839e3d0886b2e9bb1c.bindTooltip(
+                `<div>
+                     Burg/ Jugendherberge
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_6702742c9be24ee485ce645df2e107ba = L.circleMarker(
+                [49.45867, 11.084439999999999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_7fba58179d904c12829401461e324b4a = L.popup({"maxWidth": 400});
+
+        
+            var html_f2a40539f474476084d59b24984c930f = $(`<div id="html_f2a40539f474476084d59b24984c930f" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>FAU/ Lange Gasse<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_7fba58179d904c12829401461e324b4a.setContent(html_f2a40539f474476084d59b24984c930f);
+        
+
+        circle_marker_6702742c9be24ee485ce645df2e107ba.bindPopup(popup_7fba58179d904c12829401461e324b4a)
+        ;
+
+        
+    
+    
+            circle_marker_6702742c9be24ee485ce645df2e107ba.bindTooltip(
+                `<div>
+                     FAU/ Lange Gasse
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_7e93456720ad49d7893af2efa7967fa0 = L.circleMarker(
+                [49.45745, 11.08799],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_cf1835b4158a439498c32ae947a0effc = L.popup({"maxWidth": 400});
+
+        
+            var html_a23d0fba280e4a15907bc87fcc88feca = $(`<div id="html_a23d0fba280e4a15907bc87fcc88feca" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>FAU/ Laufer Tor<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_cf1835b4158a439498c32ae947a0effc.setContent(html_a23d0fba280e4a15907bc87fcc88feca);
+        
+
+        circle_marker_7e93456720ad49d7893af2efa7967fa0.bindPopup(popup_cf1835b4158a439498c32ae947a0effc)
+        ;
+
+        
+    
+    
+            circle_marker_7e93456720ad49d7893af2efa7967fa0.bindTooltip(
+                `<div>
+                     FAU/ Laufer Tor
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_05600c8846e04a198f4705bb29e6de3f = L.circleMarker(
+                [49.453563617869996, 11.079765558243],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_dd8e440383354df8ba7309a539b1a80c = L.popup({"maxWidth": 400});
+
+        
+            var html_f312d9c3cd4c45c584073677ab3dc50d = $(`<div id="html_f312d9c3cd4c45c584073677ab3dc50d" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Neue Gasse<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_dd8e440383354df8ba7309a539b1a80c.setContent(html_f312d9c3cd4c45c584073677ab3dc50d);
+        
+
+        circle_marker_05600c8846e04a198f4705bb29e6de3f.bindPopup(popup_dd8e440383354df8ba7309a539b1a80c)
+        ;
+
+        
+    
+    
+            circle_marker_05600c8846e04a198f4705bb29e6de3f.bindTooltip(
+                `<div>
+                     Neue Gasse
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_6c8d309e515e4f52a3a246e434afad5c = L.circleMarker(
+                [49.45179208029001, 11.077319383620999],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_8cb80645eb314fa98fb96ca410f4cd6d = L.popup({"maxWidth": 400});
+
+        
+            var html_a7db00125ad741bf8a311ba84522cf09 = $(`<div id="html_a7db00125ad741bf8a311ba84522cf09" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Adler Parkhaus<br><b>Bikes at Station: </b>2</div>`)[0];
+            popup_8cb80645eb314fa98fb96ca410f4cd6d.setContent(html_a7db00125ad741bf8a311ba84522cf09);
+        
+
+        circle_marker_6c8d309e515e4f52a3a246e434afad5c.bindPopup(popup_8cb80645eb314fa98fb96ca410f4cd6d)
+        ;
+
+        
+    
+    
+            circle_marker_6c8d309e515e4f52a3a246e434afad5c.bindTooltip(
+                `<div>
+                     Adler Parkhaus
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_b84716c55b72402493440de15ff94f8c = L.circleMarker(
+                [49.4346732188675, 11.10543966293335],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+        var popup_bf91b4f411cf4cfc81a8a1d9ba0b1b15 = L.popup({"maxWidth": 400});
+
+        
+            var html_279a9321fefa4b17bd9f77123246495c = $(`<div id="html_279a9321fefa4b17bd9f77123246495c" style="width: 100.0%; height: 100.0%;"><b>Station Name:</b><br>Lager alte Räder Norisbike<br><b>Bikes at Station: </b>1</div>`)[0];
+            popup_bf91b4f411cf4cfc81a8a1d9ba0b1b15.setContent(html_279a9321fefa4b17bd9f77123246495c);
+        
+
+        circle_marker_b84716c55b72402493440de15ff94f8c.bindPopup(popup_bf91b4f411cf4cfc81a8a1d9ba0b1b15)
+        ;
+
+        
+    
+    
+            circle_marker_b84716c55b72402493440de15ff94f8c.bindTooltip(
+                `<div>
+                     Lager alte Räder Norisbike
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7f0f2cb6854d4075aeec3ebd4aebcb91 = L.marker(
+                [49.458395, 11.08598],
+                {}
+            ).addTo(map_0dfb3f68b4d24e96880e7c142c9175d7);
+        
+    
+            var icon_7fcf568eccc049dbac5f1645e30e67eb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "home", "iconColor": "white", "markerColor": "black", "prefix": "glyphicon"}
+            );
+            marker_7f0f2cb6854d4075aeec3ebd4aebcb91.setIcon(icon_7fcf568eccc049dbac5f1645e30e67eb);
+        
+    
+        var popup_a395d76f88e64792832d67ba789d7c3c = L.popup({"maxWidth": 400});
+
+        
+            var html_63934f451cb2415090f7e1a6881bb446 = $(`<div id="html_63934f451cb2415090f7e1a6881bb446" style="width: 100.0%; height: 100.0%;"><b>University:</b><br></div>`)[0];
+            popup_a395d76f88e64792832d67ba789d7c3c.setContent(html_63934f451cb2415090f7e1a6881bb446);
+        
+
+        marker_7f0f2cb6854d4075aeec3ebd4aebcb91.bindPopup(popup_a395d76f88e64792832d67ba789d7c3c)
+        ;
+
+        
+    
+    
+            marker_7f0f2cb6854d4075aeec3ebd4aebcb91.bindTooltip(
+                `<div>
+                     University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
