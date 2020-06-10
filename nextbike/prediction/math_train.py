@@ -93,9 +93,10 @@ def train_neural_network(p_X_train_scaled, p_y_train, p_weather, p_testing=False
     Then evaluate the error metrics by another method.
 
     Args:
-        p_X_train_scaled (DataFrame): Scaled X input of train set (matrix)
-        p_y_train (Series): y output to train on (vector)
-        p_testing (Boolean): states if testing should be done
+        p_X_train_scaled (DataFrame):   Scaled X input of train set (matrix)
+        p_y_train (Series):             y output to train on (vector)
+        p_weather:                      file ending when weather data is included
+        p_testing (Boolean):            states if testing should be done
     Returns:
         No return
     """
@@ -107,8 +108,8 @@ def train_neural_network(p_X_train_scaled, p_y_train, p_weather, p_testing=False
          layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
          layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
          layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
-         #layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
-         #layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         # layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
+         # layers.Dense(36, activation="relu", kernel_initializer="random_normal"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dense(36, activation="softmax"),
          # layers.Dropout(0.2),
@@ -147,8 +148,9 @@ def train_svm(p_X_train_scaled, p_y_train, p_weather):
     Then evaluate the error metrics by another method.
 
     Args:
-        p_X_train_scaled (DataFrame): Scaled X input of train set (matrix)
-        p_y_train (Series): y output to train on (vector)
+        p_X_train_scaled (DataFrame):   Scaled X input of train set (matrix)
+        p_y_train (Series):             y output to train on (vector)
+        p_weather:                      file ending when weather data is included
     Returns:
         svm_regression_sets (List): list of y_train, y_val, y_prediction_train, y_prediction_val
     """

@@ -1,9 +1,5 @@
 # splitting
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import KFold
-
-# measures
-from sklearn.model_selection import cross_val_score, cross_val_predict
 
 
 def simple_split_duration(p_df):

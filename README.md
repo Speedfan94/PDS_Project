@@ -20,7 +20,7 @@ Great! You are now ready to use our nextbike analytics & prediction package!
 ## 2. Usage
 This package runs through different steps:
 - cleaning
-- visualization
+- visualization / descriptive analysis
 - training
 - prediction
 
@@ -28,7 +28,35 @@ General terminal command to run the project:
 
 ```nextbike [OPTIONS] [COMMAND] [ARGS] [CMD-OPTIONS]```
 
-### 2.1 Options
+### 2.1 Commands
+
+As this package provides pre-built models, all these commands can be called directly out-of-the-box.
+
+Referenced csv files have to be already copied into ```data/input``` directory before running these commands!
+Make sure these files exist before running the commands.
+
+| Command | Options | Description |
+|---------|---------|-------------|
+| ```nextbike transform new_data.csv``` |  | Cleans the given data set & creates trip data. File has to be located inside ```data/input``` directory. If no file is given, runs with initial ```nuremberg.csv``` dataset. |
+| ```nextbike descriptive_analysis new_data.csv``` |  | Runs a descriptive analysis, including data cleaning and visualization. File has to be located inside ```data/input``` directory. If no file is given, runs with initial ```nuremberg.csv``` dataset. |
+| ```nextbike train``` |  | (Re-)Trains the best performing models (NN) for predictions (regression and classification). BEWARE: Running this method overwrites all provided models and retrains them again! |
+| | ```--regress/--no-regress``` | (De-)Activates training of regression model (for trip duration prediction), by default activated. |
+| | ```--classify/--no-classify``` | (De-)Activates training of classification model (for trip direction prediction), by default activated. |
+| | ```--weather/--no-weather``` | If activated, weather data is additionally included for training, by default deactivated. |
+| ```nextbike predict new_data.csv``` |  | Runs regression (for trip duration) and classification (for trip direction) predictions using the existing (best performing) models (NN). File has to be located inside ```data/input``` directory. If no file is given, runs with initial ```nuremberg.csv``` dataset. |
+| | ```--regress/--no-regress``` | (De-)Activates training of regression model (for trip duration prediction), by default activated. |
+| | ```--classify/--no-classify``` | (De-)Activates training of classification model (for trip direction prediction), by default activated. |
+| | ```--weather/--no-weather``` | If activated, weather data is additionally included for training, by default deactivated. |
+
+
+### 2.2 Options
+
+These options can be set to run the default main command.
+This command is intended to only use for developing or testing purposes.
+It runs all steps explicitly activated via the corresponding option on the original ```nuremberg.csv``` data file.
+Additionally, it trains/uses models of all regression and all classification algorithms in training and predicting and evaluates all prediction algorithms.
+
+To only train/use the best performing models, run the above commands!
 
 | Option | Name | Description |
 |--------|------|-------------|
@@ -44,15 +72,3 @@ General terminal command to run the project:
 By default, all these options are deactivated.
 
 To run one or multiple of these steps, add the corresponding option when running nextbike (e.g.: ```nextbike --clean --viso```).
-
-### 2.2 Commands
-
-| Command | Options | Description |
-|---------|---------|-------------|
-| ```nextbike transform new_data.csv``` |  | Cleans the given data set & creates trip data. File has to be located inside ```data/input``` directory. If no file is given, runs with initial ```nuremberg.csv``` dataset. |
-| ```nextbike descriptive_analysis new_data.csv``` | ```--no-clean``` | Runs a descriptive analysis, including data cleaning and visualization. Able to skip cleaning with option. |
-| ```nextbike train``` | ```--no-regress``` ```--classify``` | Trains models for prediction. By default, only trains regression model for trip duration prediction. With options, activate classification model for direction prediction, too. |
-| ```nextbike predict new_data.csv``` | ```--no-regress``` ```--classify``` | Runs predictions based on built models. By default, only runs regression prediction for duration. With option, also direction prediction is possible. |
-
-Referenced csv files have to be already copied into ```data/input``` directory before running these commands!
-Make sure these files exist.

@@ -34,4 +34,5 @@ def print_time_for_step(p_step_name, p_start_time_step):
     """
     start_time_next_step = datetime.now().replace(microsecond=0)
     print("=== TIME FOR "+p_step_name+":", (start_time_next_step - p_start_time_step))
+    print()
     return start_time_next_step
