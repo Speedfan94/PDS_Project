@@ -19,10 +19,12 @@ def cleaning(p_filename="nuremberg.csv", p_mode=""):
     df_trips = datapreparation.data_clean.data_cleaning(p_df_original=df)
     print("Add Features...")
     df_trips_add_feat = datapreparation.feature_add.additional_feature_creation(p_df_trips=df_trips)
-    df_trips_filter_duration = df_trips_add_feat
-    if len(p_mode) < 1:
-        print("Clean Noise...")
-        df_trips_filter_duration = datapreparation.data_clean.drop_noise(p_df_trips=df_trips_add_feat)
+    # if uncommented, noise cleaning on test-data does not happen.
+    # in Future research a noise elimination model should be trained and used instead
+    # df_trips_filter_duration = df_trips_add_feat
+    # if len(p_mode) < 1:
+    print("Clean Noise...")
+    df_trips_filter_duration = datapreparation.data_clean.drop_noise(p_df_trips=df_trips_add_feat)
     print("Clean Postalcodes...")
     df_trips_only_nuremberg = datapreparation.geo_clean.only_nuremberg(p_df=df_trips_filter_duration)
     print("Add Distances to University...")
