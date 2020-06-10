@@ -37,7 +37,7 @@ def visualize(p_mode=""):
     Method which runs the sequential flow of the data visualization part.
 
     Args:
-        No args
+        p_mode:     defines whether called by test set or not (optional)
     Returns:
         No return
     """
@@ -69,14 +69,13 @@ def features_duration(p_weather, p_mode=""):
     Method which runs the sequential flow of the feature preparation and creation part.
 
     Args:
-        p_weather       option whether weather data should be included
+        p_weather:      option whether weather data should be included
+        p_mode:         defines whether called by test set or not (optional)
     Returns:
         No return
     """
     df_trips = io.input.read_csv(p_filename="Trips" + p_mode + ".csv", p_io_folder="output")
 
-    # TODO: Add corr analysis before feature selection be aware of non numerical features
-    # visualization.math_descriptive.corr_analysis(df_features_2)
     print("Drop End Information")
     df_only_start = prediction.prepare_feature.drop_end_information(p_df=df_trips)
     print("Create Dummie Variables...")
@@ -86,24 +85,25 @@ def features_duration(p_weather, p_mode=""):
     print("Visualize correlations...")
     df_features_2 = prediction.prepare_feature.drop_features(p_df=df_features_2)
     df_features_2 = df_features_2.drop(["Place_start", "Start_Time"], axis=1)
-    visualization.math_descriptive.corr_analysis(p_df=df_features_2, p_weather=p_weather)
+    visualization.math_descriptive.corr_analysis(p_df=df_features_2, p_weather=p_weather, p_mode=p_mode)
     io.output.save_csv(p_df=df_features_2, p_filename="Features_Duration" + p_mode + p_weather + ".csv")
+    # tried to plot influence of each feature on duration
+    # not that meaningful, no visual pattern could be seen so we skip this
     # visualization.math.plot_features_influence(df_features_2)
 
 
-def training_duration_models(p_weather, p_mode=""):
+def train_all_duration_models(p_weather):
     """Train the different machine learning models.
 
     Method which runs the sequential flow on training the ML models.
 
     Args:
         p_weather (str): Fileending for generated files (include weather or not)
-        p_mode (str):     defines whether called by test set or not
     Returns:
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Duration" + p_mode + p_weather + ".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df=df_features)
     print("Scale Data...")
@@ -180,29 +180,33 @@ def training_duration_models(p_weather, p_mode=""):
                                                p_status="Validation")
 
 
-def testing_robust_scaler():
+def testing_robust_scaler(p_weather):
     """Tests robust scaler on duration features.
 
+    Args:
+        p_weather:  file ending when weather data is included
     Returns:
         No return
     """
-    df_features = io.input.read_csv(p_filename="Features_Duration.csv", p_io_folder="output")
-    testing.robust_scaler_testing.test_robust_scaler(p_df=df_features)
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_weather + ".csv", p_io_folder="output")
+    testing.robust_scaler_testing.test_robust_scaler(p_df=df_features, p_weather=p_weather)
 
 
-def testing_duration_models():
+def testing_duration_models(p_weather):
     """Tests duration models on duration component and true y values.
 
+    Args:
+        p_weather:  file ending when weather data is included
     Returns:
         No return
     """
-    df_components = io.input.read_csv(p_filename="Components_Duration.csv", p_io_folder="output").reset_index(drop=True)
+    df_components = io.input.read_csv(p_filename="Components_Duration" + p_weather + ".csv", p_io_folder="output").reset_index(drop=True)
     y_true = io.input.read_csv(p_filename="y_train_Duration.csv", p_io_folder="output")
     # testing.nn_testing.test_neuralnetwork_model(p_components=df_components, p_y_train=y_true)
     testing.linear_regression_testing.test_regression_model(p_components=df_components, p_y_train=y_true)
 
 
-def predict_duration_models(p_weather):
+def predict_by_all_duration_models(p_weather):
     """Predict the duration of trips by different models.
 
     Method which runs the sequential flow of the duration prediction by different trained ML models.
@@ -276,27 +280,24 @@ def features_direction(p_weather, p_mode=""):
     io.output.save_csv(p_df=df_features, p_filename="Features_Direction" + p_mode + p_weather + ".csv")
 
 
-def train_direction_models(p_weather, p_mode=""):
+def train_all_direction_models(p_weather):
     """Train the direction models for trip classification (towards or away from university).
 
     Method which runs the sequential flow of the direction classification training.
 
     Args:
         p_weather:  file ending when weather data is included
-        p_mode:     defines whether called by test set or not
     Returns:
         No return
     """
-    # TODO: Feature selection etc...
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Direction" + p_mode + p_weather + ".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
     print("Scale Data...")
     X_scaled_train = prediction.prepare_feature.scale(p_X_train=X_train,
                                                       p_scaler_name="Standard_Scaler_Direction" + p_weather)
     print("Do PCA...")
-    # TODO: fit number of components
     X_train_transformed = prediction.prepare_feature.do_pca(p_X_scaled_train=X_scaled_train,
                                                             p_number_components=17,
                                                             p_filename="PCA_Direction" + p_weather)
@@ -356,18 +357,20 @@ def train_direction_models(p_weather, p_mode=""):
                                                 p_filename="NN_Classifier" + p_weather, p_status="Validation")
 
 
-def testing_direction_subsets():
+def testing_direction_subsets(p_weather):
     """Tests direction classification on different subsets (like month).
 
+    Args:
+        p_weather:  file ending when weather data is included
     Returns:
         No return
     """
     # data
-    df_features = io.input.read_csv(p_filename="Features_Direction.csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_weather + ".csv", p_io_folder="output")
     testing.direction_classification_subsets_testing.filter_subsets(p_df=df_features)
 
 
-def predict_direction_models(p_weather):
+def predict_by_all_direction_models(p_weather):
     """Starts prediction of direction based on different models and
     prints out the performances and error metrcis of the different models.
 
@@ -424,7 +427,6 @@ def train_best_regression_model(p_weather):
 
     Args:
         p_weather (str): Fileending for generated files (include weather or not)
-        p_mode (str):    Defines whether called by test set or not
     Returns:
         No return
     """
@@ -465,7 +467,6 @@ def train_best_classification_model(p_weather):
 
     Args:
         p_weather:  file ending when weather data is included
-        p_mode:     defines whether called by test set or not (optional)
     Returns:
         No return
     """
@@ -505,18 +506,20 @@ def train_best_classification_model(p_weather):
                                                 p_filename="NN_Classifier" + p_weather, p_status="Validation")
 
 
-def pred_by_best_reression_model(p_weather):
+def predict_by_best_regression_model(p_weather, p_mode=""):
     """regress on the duration of trips by the best model (Neural Network).
 
     Method which runs the sequential flow of the duration regression by the neural network.
 
     Args:
         p_weather (str):    option whether weather data should be included
+        p_mode:             defines whether called by test set or not (optional)
+
     Returns:
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Duration" + p_weather + ".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Duration" + p_mode + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_duration(p_df=df_features)
     # Predict
@@ -525,22 +528,24 @@ def pred_by_best_reression_model(p_weather):
     # Evaluate Prediction
     prediction.evaluate.duration_error_metrics(p_y_true=y_test,
                                                p_y_predictions=nn_y_prediction,
-                                               p_filename="NN_Regression" + p_weather,
+                                               p_filename="NN_Regression" + p_mode + p_weather,
                                                p_status="Testing")
 
 
-def pred_by_best_classification_model(p_weather):
+def predict_by_best_classification_model(p_weather, p_mode):
     """classify the direction of trips by the best model (Neural Network).
 
     Method which runs the sequential flow of the direction classification by the neural network.
 
     Args:
         p_weather (str):    option whether weather data should be included
+        p_mode:             defines whether called by test set or not (optional)
+
     Returns:
         No return
     """
     # Prepare
-    df_features = io.input.read_csv(p_filename="Features_Direction" + p_weather + ".csv", p_io_folder="output")
+    df_features = io.input.read_csv(p_filename="Features_Direction" + p_mode + p_weather + ".csv", p_io_folder="output")
     print("Split Data...")
     X_train, X_test, y_train, y_test = prediction.split.simple_split_direction(p_df=df_features)
     # Predict

@@ -1,9 +1,8 @@
 import click
 from datetime import datetime
-from nextbike import cli_code, utils, testing, io, visualization
+from nextbike import cli_code, utils, io, visualization
 
 
-# TODO: OPTIONAL: add parameter option for different tests
 @click.group(invoke_without_command=True)
 @click.option("--test/--no-test", default=False,
               help="Activate to test some alternative algorithms and their performance. Default: False")
@@ -45,56 +44,65 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
     Returns:
         No return
     """
+    if not (test | clean | viso | traindur | pred | traingeo | predgeo):
+        # No option activated, nothing to do in main
+        return
+
+    print("=== START COMMAND: MAIN")
+    print()
+    start_time_main = datetime.now().replace(microsecond=0)
+    start_time_step = start_time_main
+
+    # initialize file endings if weather or custom csv file is used
     weather_data = ""
     if weather:
         weather_data = "_weather"
+
     if test:
+        print("=== START STEP: TEST")
+        print("Testing alternative models/scaler")
         df = io.read_csv("Trips.csv", "output")
-        # df = io.read_csv("Features_Duration.csv", "output")
-        # testing_duration_models()
-        # testing.robust_scaler_testing.test_robust_scaler(p_df=df, p_weather)
-        # testing_direction_subsets()
+        # cli_code.testing_duration_models(p_weather=weather_data)
+        # cli_code.testing_robust_scaler(p_weather=weather_data)
+        # cli_code.testing_direction_subsets(p_weather=weather_data)
         visualization.visualize_trips_per_month(p_df=df)
         visualization.visualize_stations_moment(p_df=df)
         visualization.visualize_postalcode(p_df=df)
-        print("This can be used for testing-purposes")
+        utils.print_time_for_step(p_step_name="STEP TEST", p_start_time_step=start_time_step)
     else:
-        start_time_main = datetime.now().replace(microsecond=0)
-        start_time_step = start_time_main
-
         if clean:
-            print("START CLEAN")
+            print("=== START STEP: CLEAN")
             cli_code.cleaning()
             start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
         if viso:
-            print("START VISUALIZE")
+            print("=== START STEP: VISUALIZATION")
             cli_code.visualize()
             start_time_step = utils.print_time_for_step(
                 p_step_name="STEP VISUALIZATION", p_start_time_step=start_time_step)
         if traindur:
-            print("START TRAIN")
+            print("=== START STEP: TRAIN DURATION")
             cli_code.features_duration(p_weather=weather_data)
-            cli_code.training_duration_models(p_weather=weather_data)
-            start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
+            cli_code.train_all_duration_models(p_weather=weather_data)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN DURATION", p_start_time_step=start_time_step)
         if pred:
-            print("START PREDICT")
-            cli_code.predict_duration_models(p_weather=weather_data)
-            start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
+            print("=== START STEP: PREDICT DURATION")
+            cli_code.predict_by_all_duration_models(p_weather=weather_data)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT DURATION", p_start_time_step=start_time_step)
         if traingeo:
-            print("START GEO TRAIN")
+            print("=== START STEP: TRAIN DIRECTION")
             cli_code.features_direction(p_weather=weather_data)
-            cli_code.train_direction_models(weather_data)
-            start_time_step = utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
+            cli_code.train_all_direction_models(weather_data)
+            start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN DIRECTION", p_start_time_step=start_time_step)
         if predgeo:
-            print("START GEO PREDICT")
-            cli_code.predict_direction_models(p_weather=weather_data)
-            utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
+            print("=== START STEP: PREDICT DIRECTION")
+            cli_code.predict_by_all_direction_models(p_weather=weather_data)
+            utils.print_time_for_step(p_step_name="STEP PREDICT DIRECTION", p_start_time_step=start_time_step)
 
-        # As we in general do not run any of these main command stages, the print might confuse users
-        # utils.print_time_for_step("COMMAND MAIN", start_time_main)
+    utils.print_time_for_step("COMMAND MAIN", start_time_main)
 
 
-@main.command(name="train", help="Train ML models based on nuremberg.csv and save them as pkl files in 'data/output'.")
+@main.command(name="train", help="Train ML models based on nuremberg.csv and save them as pkl files in 'data/output'."
+                                 "BEWARE: This method will overwrite the existing models!!!")
 @click.option("--regress/--no-regress", default=True,
               help="Deactivate to skip training regression models used for trip duration prediction. Default: True.")
 @click.option("--classify/--no-classify", default=False,
@@ -103,7 +111,8 @@ def main(test, clean, viso, traindur, pred, traingeo, predgeo, weather):
               help="Activate to include weather data. Be sure to insert weather data for given time period"
                    "into 'data/input' directory first by yourself.")
 def train(regress, classify, weather):
-    """Train ML models based on nuremberg.csv and save them as pkl files in 'data/output'
+    """Train ML models based on nuremberg.csv and save them as pkl files in 'data/output'.
+    BEWARE: This method will overwrite the existing models!!!
 
     Args:
         regress:    option whether to train regression models for duration prediction (Default: True)
@@ -112,23 +121,32 @@ def train(regress, classify, weather):
     Returns:
         No return
     """
+    print("=== START COMMAND: TRAIN")
+    print()
     start_time_train = datetime.now().replace(microsecond=0)
     start_time_step = start_time_train
+
+    # initialize file endings if weather or custom csv file is used
     weather_data = ""
-    print("START CLEAN")
-    cli_code.cleaning(p_filename="nuremberg.csv")
     if weather:
         weather_data = "_weather"
+
+    print("=== START STEP: CLEAN")
+    cli_code.cleaning(p_filename="nuremberg.csv")
+    start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
+
     if regress:
-        print("START TRAIN")
+        print("=== START STEP: TRAIN DURATION")
         cli_code.features_duration(p_weather=weather_data)
         cli_code.train_best_regression_model(p_weather=weather_data)
-        start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN", p_start_time_step=start_time_step)
+        start_time_step = utils.print_time_for_step(p_step_name="STEP TRAIN DURATION", p_start_time_step=start_time_step)
+
     if classify:
-        print("START GEO TRAIN")
-        cli_code.features_direction(p_weather=weather_data, p_mode="_testing")
+        print("=== START STEP: TRAIN DIRECTION")
+        cli_code.features_direction(p_weather=weather_data)
         cli_code.train_best_classification_model(p_weather=weather_data)
-        utils.print_time_for_step(p_step_name="STEP GEO TRAIN", p_start_time_step=start_time_step)
+        utils.print_time_for_step(p_step_name="STEP TRAIN DIRECTION", p_start_time_step=start_time_step)
+
     utils.print_time_for_step(p_step_name="COMMAND TRAIN", p_start_time_step=start_time_train)
 
 
@@ -155,23 +173,35 @@ def predict(filename, regress, classify, weather):
     Returns:
         No return
     """
+    print("=== START COMMAND: PREDICT")
+    print()
     start_time_predict = datetime.now().replace(microsecond=0)
     start_time_step = start_time_predict
+
+    # initialize file endings if weather or custom csv file is used
+    run_on_original_dataset = ""
+    if filename != "nuremberg.csv":
+        run_on_original_dataset = "_testing"
     weather_data = ""
     if weather:
         weather_data = "_weather"
-    print("START CLEAN")
-    cli_code.cleaning(p_filename=filename, p_mode="_testing")
+
+    print("=== START STEP: CLEAN")
+    cli_code.cleaning(p_filename=filename, p_mode=run_on_original_dataset)
+    start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
+
     if regress:
-        print("START PREDICT DURATION")
-        cli_code.features_duration(p_weather=weather_data, p_mode="_testing")
-        cli_code.pred_by_best_reression_model(p_weather=weather_data)
-        start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT", p_start_time_step=start_time_step)
+        print("=== START STEP: PREDICT DURATION")
+        cli_code.features_duration(p_weather=weather_data, p_mode=run_on_original_dataset)
+        cli_code.predict_by_best_regression_model(p_weather=weather_data, p_mode=run_on_original_dataset)
+        start_time_step = utils.print_time_for_step(p_step_name="STEP PREDICT DURATION", p_start_time_step=start_time_step)
+
     if classify:
-        print("START GEO PREDICT")
-        cli_code.features_direction(p_weather=weather_data, p_mode="_testing")
-        cli_code.pred_by_best_classification_model(p_weather=weather_data)
-        utils.print_time_for_step(p_step_name="STEP GEO PREDICT", p_start_time_step=start_time_step)
+        print("=== START STEP: PREDICT DIRECTION")
+        cli_code.features_direction(p_weather=weather_data, p_mode=run_on_original_dataset)
+        cli_code.predict_by_best_classification_model(p_weather=weather_data, p_mode=run_on_original_dataset)
+        utils.print_time_for_step(p_step_name="STEP PREDICT DIRECTION", p_start_time_step=start_time_step)
+
     utils.print_time_for_step(p_step_name="COMMAND PREDICT", p_start_time_step=start_time_predict)
 
 
@@ -189,10 +219,20 @@ def transform(filename):
     Returns:
         No return
     """
-
+    print("=== START COMMAND: TRANSFORM")
+    print()
     start_time_transform = datetime.now().replace(microsecond=0)
-    print("START CLEAN")
-    cli_code.cleaning(p_filename=filename, p_mode="_testing")
+    start_time_step = start_time_transform
+
+    # initialize file endings if weather or custom csv file is used
+    run_on_original_dataset = ""
+    if filename != "nuremberg.csv":
+        run_on_original_dataset = "_testing"
+
+    print("=== START STEP: CLEAN")
+    cli_code.cleaning(p_filename=filename, p_mode=run_on_original_dataset)
+    utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
+
     utils.print_time_for_step(p_step_name="COMMAND TRANSFORM", p_start_time_step=start_time_transform)
 
 
@@ -209,14 +249,24 @@ def descriptive_analysis(filename):
     Returns:
         No return
     """
+    print("=== START COMMAND: DESCRIPTIVE ANALYSIS")
+    print()
     start_time_desc_analysis = datetime.now().replace(microsecond=0)
     start_time_step = start_time_desc_analysis
-    print("START CLEAN")
-    cli_code.cleaning(p_filename=filename, p_mode="_testing")
+
+    # initialize file endings if weather or custom csv file is used
+    run_on_original_dataset = ""
+    if filename != "nuremberg.csv":
+        run_on_original_dataset = "_testing"
+
+    print("=== START STEP: CLEAN")
+    cli_code.cleaning(p_filename=filename, p_mode=run_on_original_dataset)
     start_time_step = utils.print_time_for_step(p_step_name="STEP CLEAN", p_start_time_step=start_time_step)
-    print("START VISUALIZATION")
-    cli_code.visualize(p_mode="_testing")
+
+    print("=== START STEP: VISUALIZATION")
+    cli_code.visualize(p_mode=run_on_original_dataset)
     utils.print_time_for_step(p_step_name="STEP VISUALIZATION", p_start_time_step=start_time_step)
+
     utils.print_time_for_step(p_step_name="COMMAND DESCRIPTIVE ANALYSIS", p_start_time_step=start_time_desc_analysis)
 
 
